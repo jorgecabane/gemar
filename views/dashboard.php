@@ -229,7 +229,7 @@
     ================================================ -->
 
 	<!-- jQuery Library -->
-	<script type="text/javascript" src="js/plugins/jquery-1.11.2.min.js"></script>
+	<script type="text/javascript" src="js/plugins/jquery-2.1.4.min.js"></script>
 	<!--materialize js-->
 	<script type="text/javascript" src="js/materialize.min.js"></script>
 	<!--scrollbar-->
@@ -272,11 +272,21 @@
   				var load = $(this);
   				var what = load.attr('what');
   				var where = load.attr('where');
-  				console.log("what:" + what + " where: " +where);
+  				//console.log("what:" + what + " where: " +where);
   				$('#'+ where +'').load( ""+ what + "");
+//  				$('#'+ where +'').hide().fadeIn("slow");
+  			    setTimeout(function() {
+  			    	$('#'+ where +'').addClass('loaded');      
+  			    }, 5000);
 			});
 		});
     </script>
 </body>
 
 </html>
+
+	<?php
+	if ($login->isAdminUser() == true) {
+	    include("admin/profile_modal.php");
+	}
+	?>

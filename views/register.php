@@ -13,26 +13,49 @@ if (isset($registration)) {
     }
 }
 ?>
-
-<!-- register form -->
-<form method="post" action="register.php" name="registerform">
-
-    <!-- the user name input field uses a HTML5 pattern check -->
-    <label for="login_input_username">Username (only letters and numbers, 2 to 64 characters)</label>
-    <input id="login_input_username" class="login_input" type="text" pattern="[a-zA-Z0-9]{2,64}" name="user_name" required />
-
-    <!-- the email input field uses a HTML5 email type check -->
-    <label for="login_input_email">User's email</label>
-    <input id="login_input_email" class="login_input" type="email" name="user_email" required />
-
-    <label for="login_input_password_new">Password (min. 6 characters)</label>
-    <input id="login_input_password_new" class="login_input" type="password" name="user_password_new" pattern=".{6,}" required autocomplete="off" />
-
-    <label for="login_input_password_repeat">Repeat password</label>
-    <input id="login_input_password_repeat" class="login_input" type="password" name="user_password_repeat" pattern=".{6,}" required autocomplete="off" />
-    <input type="submit"  name="register" value="Register" />
-
-</form>
-
-<!-- backlink -->
-<a href="index.php">Back to Login Page</a>
+  
+  <div id="login-page" class="row center center-align">
+    <div class="col s12 z-depth-4 card-panel">
+      <div class="login-form center" style="margin-left:40%">
+        <div class="row">
+          <div class="input-field col s12 center">
+            <h4>Registrar Nuevo Usuario</h4>
+            <p class="center">Join to our community now !</p>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="mdi-social-person-outline prefix"></i>
+            <input id="username" type="text">
+            <label for="username" class="center-align">Username</label>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="mdi-communication-email prefix"></i>
+            <input id="email" type="email">
+            <label for="email" class="center-align">Email</label>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="mdi-action-lock-outline prefix"></i>
+            <input id="password" type="password">
+            <label for="password">Password</label>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="mdi-action-lock-outline prefix"></i>
+            <input id="password-again" type="password">
+            <label for="password-again">Password again</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <a href="#" class="btn waves-effect waves-light col s12">Registrar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

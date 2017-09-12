@@ -34,7 +34,7 @@
 			<div class="collapsible-body">
 				<ul>
 					<li>
-						<a href="user-profile-page.html">Perfiles</a>
+						<a class="waves-effect waves-light modal-trigger modal-profile-trigger" href="#modal5">Perfiles</a>
 					</li>
 					<li>
 						<a href="#" what="views/admin/register_new_user.php" where="content" class="load-content">Registrar Nuevos</a>
