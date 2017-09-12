@@ -1,11 +1,11 @@
 <li class="bold active">
-	<a href="index.html" class="waves-effect waves-cyan">
+	<a href="index.php" class="waves-effect waves-cyan">
 		<i class="mdi-action-dashboard"></i>
 		Dashboard
 	</a>
 </li>
 <li class="bold">
-	<a href="app-calendar.html" class="waves-effect waves-cyan">
+	<a href="#" class="waves-effect waves-cyan load-content"  what="views/app_calendar.php" where="content">
 		<i class="mdi-editor-insert-invitation"></i>
 		Calendario
 	</a>

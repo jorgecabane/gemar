@@ -15,7 +15,7 @@ if (isset($registration)) {
 ?>
   
   <div id="login-page" class="row center center-align">
-    <div class="col s12 z-depth-4 card-panel">
+
       <div class="login-form center" style="margin-left:40%">
         <div class="row">
           <div class="input-field col s12 center">
@@ -57,5 +57,5 @@ if (isset($registration)) {
           </div>
         </div>
       </div>
-    </div>
+
   </div>

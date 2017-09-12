@@ -12,7 +12,7 @@
 		</div>
 		
 		<ul class="collection" id="profle-ul-filter">
-			<li class="collection-item avatar waves-effect waves-block waves-teal">
+			<li class="collection-item avatar waves-effect waves-block waves-teal load-content" what="views/user_profile_page.php?id=1" where="content">
 				<img src="images/avatar.jpg" alt=""	class="circle"> 
 				<span class="title profile-name">Jorge Cabané</span>
 				<p>
@@ -23,7 +23,7 @@
 					<i class="mdi-action-open-in-browser"></i>
 				</a>
 			</li>
-			<li class="collection-item avatar waves-effect waves-block waves-teal">
+			<li class="collection-item avatar waves-effect waves-block waves-teal load-content" what="views/user_profile_page.php?id=2" where="content">
 				<i class="mdi-file-folder circle"></i>
 				<span class="title profile-name">Francisco Torres</span>
 				<p>
@@ -33,7 +33,7 @@
 					<i class="mdi-action-open-in-browser"></i>
 				</a>
 			</li>
-			<li class="collection-item avatar waves-effect waves-block waves-teal">
+			<li class="collection-item avatar waves-effect waves-block waves-teal load-content" what="views/user_profile_page.php?id=3" where="content">
 				<i class="mdi-action-assessment circle green"></i> 
 				<span class="title profile-name">Sofia Veragua</span>
 				<p>
@@ -43,7 +43,7 @@
 					<i class="mdi-action-open-in-browser"></i>
 				</a>
 			</li>
-			<li class="collection-item avatar waves-effect waves-block waves-teal">
+			<li class="collection-item avatar waves-effect waves-block waves-teal load-content" what="views/user_profile_page.php?id=4" where="content">
 			<i class="mdi-av-play-arrow circle red"></i> 
 				<span class="title profile-name">Roberta Martinez</span>
 				<p>
@@ -79,5 +79,6 @@ $( document ).ready(function() {
 	$( ".modal-profile-trigger" ).on('click', function() {
 		$('#profile-filter').focus();
 	});
+
 });
 </script>
