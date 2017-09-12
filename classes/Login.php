@@ -154,4 +154,21 @@ class Login
 		$_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
 		//returns the session is still active
     }
+
+     /**
+     * simply return if the user is admin or not
+     * @return boolean user's admin role
+     */
+        public function isAdminUser()
+    {
+        if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 1) {
+            return true;
+        }
+        else if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 0) {
+            return false;
+        }
+        else {
+            return false;
+        }
+    }
 }
