@@ -35,12 +35,11 @@
 <!-- CORE CSS-->
 <link href="css/materialize.min.css" type="text/css" rel="stylesheet"
 	media="screen,projection">
-<link href="css/style.min.css" type="text/css" rel="stylesheet"
+<link href="css/style.css" type="text/css" rel="stylesheet"
 	media="screen,projection">
 <!-- Custome CSS-->
 <link href="css/custom/custom.min.css" type="text/css" rel="stylesheet"
 	media="screen,projection">
-
 
 <!-- INCLUDED PLUGIN CSS ON THIS PAGE -->
 <link href="js/plugins/perfect-scrollbar/perfect-scrollbar.css"
@@ -71,7 +70,7 @@
 				<div class="nav-wrapper">
 					<ul class="left">
 						<li><h1 class="logo-wrapper">
-								<a href="index.html" class="brand-logo darken-1"><img
+								<a href="index.php" class="brand-logo darken-1"><img
 									src="images/materialize-logo.png" alt="materialize logo"></a> <span
 									class="logo-text">Materialize</span>
 							</h1></li>
@@ -135,9 +134,8 @@
 
 			<!-- START LEFT SIDEBAR NAV-->
 			<aside id="left-sidebar-nav">
-				<ul id="slide-out" class="side-nav fixed leftside-navigation"
-					style="margin-top: 1%">
-					<li class="user-details cyan darken-2">
+				<ul id="slide-out" class="side-nav fixed leftside-navigation">
+					<li class="user-details cyan darken-1">
 						<div class="row">
 							<div class="col col s4 m4 l4">
 								<img src="images/avatar.jpg" alt=""
@@ -224,6 +222,24 @@
 	<!-- END FOOTER -->
 
 
+	<!-- Floating Action Button -->
+	<div class="fixed-action-btn" style="bottom: 50px; right: 19px;">
+		<a class="btn-floating btn-large"> <i class="mdi-action-stars"></i>
+		</a>
+		<ul>
+			<li><a href="css-helpers.html" class="btn-floating red"><i
+					class="large mdi-communication-live-help"></i></a></li>
+			<li><a href="app-widget.html"
+				class="btn-floating yellow darken-1"><i
+					class="large mdi-device-now-widgets"></i></a></li>
+			<li><a href="app-calendar.html" class="btn-floating green"><i
+					class="large mdi-editor-insert-invitation"></i></a></li>
+			<li><a href="app-email.html" class="btn-floating blue"><i
+					class="large mdi-communication-email"></i></a></li>
+		</ul>
+	</div>
+	<!-- Floating Action Button -->
+
 	<!-- ================================================
     Scripts
     ================================================ -->
@@ -251,6 +267,7 @@
 	<script type="text/javascript" src="js/plugins.min.js"></script>
 	<!--custom-script.js - Add your own theme custom JS-->
 	<script type="text/javascript" src="js/custom-script.js"></script>
+
 	<!-- Toast Notification -->
 	<script type="text/javascript">
     // Toast Notification
@@ -274,6 +291,15 @@
   				var where = load.attr('where');
   				//console.log("what:" + what + " where: " +where);
   				$('#'+ where +'').load( ""+ what + "");
+
+  				if($('#modal5').css('bottom') == "0px"){
+  					setTimeout(function() {
+	  			    	$('#modal5').hide();
+	  					$('.lean-overlay').hide();
+	  					$('body').css('overflow-y', 'scroll');      
+  			   		 }, 100);
+  				}
+  				
 //  				$('#'+ where +'').hide().fadeIn("slow");
   			    setTimeout(function() {
   			    	$('#'+ where +'').addClass('loaded');      
@@ -281,12 +307,20 @@
 			});
 		});
     </script>
+    <script>
+$( document ).ready(function() {
+	$( ".sidebarlink" ).on('click', function() {
+		$( ".sidebarlink" ).removeClass('active');
+		$(this).addClass('active');
+	});
+});				
+</script>
 </body>
 
 </html>
 
 	<?php
 	if ($login->isAdminUser() == true) {
-	    include("admin/profile_modal.php");
+	    
 	}
 	?>

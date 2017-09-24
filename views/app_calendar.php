@@ -1,47 +1,54 @@
+<?php
+require_once dirname(__FILE__) . "/../include/lib.php";
+?>
   <link href="js/plugins/fullcalendar/css/fullcalendar.min.css" type="text/css" rel="stylesheet" media="screen,projection">
         
         <!--start container-->
         <div class="container">
           <div class="section">
-
             <div id="full-calendar">              
               <div class="row">
-                <div class="col s12 m4 l3">
-                  <div id='external-events'>    
-                    <h4 class="header">Draggable Events</h4>
-                    <div class='fc-event cyan'>March Invoices</div>
-                    <div class='fc-event teal'>Call Emy</div>
-                    <div class='fc-event cyan darken-1'>Dinner with Team</div>
-                    <div class='fc-event cyan accent-4'>Meeting with Support Team</div>
-                    <div class='fc-event teal accent-4'>Meeting with Sales Team</div>
-                    <div class='fc-event light-blue accent-3'>Design an iOS App</div>
-                    <div class='fc-event light-blue accent-4'>Company Party</div>
-                    <p>
-                      <input type='checkbox' id='drop-remove' />
-                      <label for='drop-remove'>remove after drop</label>
-                    </p>
+                <div class="col s12 m2 l2">
+
+                  <!-- Select de Centros -->
+                  <div>
+                    <h4 class="header">Criticidad</h4>
+                    <select class="browser-default" id="criticidad" name="criticidad"> 
+                      <option value="0" event-color="#59f442" selected>No Crítico</option>
+                      <option value="1" event-color="#f4424e">Crítico</option>
+                    </select>
                   </div>
+                  <!-- Fin Select de Centros -->
+                  
+                  <!-- Pills Inspectores -->
+                  <div id='external-events'>    
+                    <h4 class="header">Inspectores</h4>
+                  <!-- Filtro de Pills -->
+
+                  <div class="dataPills_filter">
+                    <input type="search" id="profile-filter" placeholder="Filtro">
+                  </div>
+
+                  <!-- Fin Filtro de Pills -->
+                    <?php
+
+                    $users = get_users();
+                
+                    foreach($users as $user){
+                      echo "<a class='label fc-event' role='button' data-toggle='collapse' href='#user ".$user->user_id."' aria-expanded='false' aria-controls='user" .$user->user_id . "' event-color='#59f442' userid='" . $user->user_id  . "' style='background-color: #59f442; border-color: #59f442;'>" . $user->user_name . "</a>";
+                    }
+
+                    ?>
+
+                  </div>
+                  <!-- Fin Pills Inspectores -->
                 </div>
                 <div class="col s12 m8 l9">
                   <div id='calendar'></div>
                 </div>
               </div>
             </div>
-            </div>
-
-            <!-- Floating Action Button -->
-            <div class="fixed-action-btn" style="bottom: 50px; right: 19px;">
-                <a class="btn-floating btn-large">
-                  <i class="mdi-action-stars"></i>
-                </a>
-                <ul>
-                  <li><a href="css-helpers.html" class="btn-floating red"><i class="large mdi-communication-live-help"></i></a></li>
-                  <li><a href="app-widget.html" class="btn-floating yellow darken-1"><i class="large mdi-device-now-widgets"></i></a></li>
-                  <li><a href="app-calendar.html" class="btn-floating green"><i class="large mdi-editor-insert-invitation"></i></a></li>
-                  <li><a href="app-email.html" class="btn-floating blue"><i class="large mdi-communication-email"></i></a></li>
-                </ul>
-            </div>
-            <!-- Floating Action Button -->
+          </div>
         </div>
         <!--end container-->
     <!-- Calendar Script -->
@@ -49,3 +56,11 @@
     <script type="text/javascript" src="js/plugins/fullcalendar/lib/moment.min.js"></script>
     <script type="text/javascript" src="js/plugins/fullcalendar/js/fullcalendar.min.js"></script>
     <script type="text/javascript" src="js/plugins/fullcalendar/fullcalendar-script.js"></script>
+
+    <!-- CUSTOM -->
+    <script src="js/plugins/fullcalendar/js/custom/saveBD.js"></script><!-- SAVE Event to BD -->
+    <script src="js/plugins/fullcalendar/js/custom/eventReceive.js"></script><!-- eventReceive -->
+    <script src="js/plugins/fullcalendar/js/custom/updateEvent.js"></script><!-- updateEvent -->
+    <script src="js/plugins/fullcalendar/js/custom/verifyEvent.js"></script><!-- verifyEvent -->
+    <script src="js/plugins/fullcalendar/js/custom/deleteEvent.js"></script><!-- deleteEvent -->
+    <script src="js/plugins/fullcalendar/js/custom/renderEvent.js"></script><!-- renderEvent -->

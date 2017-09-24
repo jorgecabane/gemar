@@ -1,7 +1,4 @@
 
-      <!-- START CONTENT -->
-      <section id="content">        
-
         <!--start container-->
         <div class="container">
 
@@ -560,14 +557,6 @@
           </div>
         </div>
         </div>
-        <!--end container-->
-      </section>
-      <!-- END CONTENT -->
 
-    </div>
-    <!-- END WRAPPER -->
-
-  </div>
-  <!-- END MAIN -->
-
-
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <!--prism-->

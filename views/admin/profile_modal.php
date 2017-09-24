@@ -1,3 +1,29 @@
+<script>
+$( document ).ready(function() {
+	$( "#profile-filter" ).on('keyup', function() {
+		  $("#profle-ul-filter").find('.profile-name').parent().show();
+		  var filter = $("#profile-filter").val();
+		  if ( filter.length > 1 ){
+
+				var lis = $("#profle-ul-filter").find('.profile-name');
+				$.each( lis, function( key, value ) {
+					 var here = $(this);
+					 var text = here.text().toLowerCase();
+					 var index = text.indexOf(filter.toLowerCase());
+
+					 if( parseFloat(index) == -1){
+						 here.parent().hide();
+					 }
+				});
+		  }
+	});
+
+	$( ".modal-profile-trigger" ).on('click', function() {
+		$('#profile-filter').focus();
+	});
+
+});
+</script>
 <div id="modal5" class="modal bottom-sheet">
 	<div class="modal-content">
 		<div class="row">
@@ -56,6 +82,7 @@
 		</ul>
 	</div>
 </div>
+
 <script>
 $( document ).ready(function() {
 	$( "#profile-filter" ).on('keyup', function() {
