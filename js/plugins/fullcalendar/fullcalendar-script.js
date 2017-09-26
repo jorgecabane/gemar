@@ -4,23 +4,51 @@
 
     /* initialize the external events
     -----------------------------------------------------------------*/
+
+    /*cuando se cambia la criticidad se "instancia" nuevamente los pills pero con el color de la ésta
+     */
+    $('#criticidad').change(function () {
+        color = $('#criticidad option:selected').attr('event-color');
+        criticidadtext = $('#criticidad option:selected').text();
+        idcriticidad = $('#criticidad').val();
+
+        $('#external-events .fc-event, .medico').each(function () {
+            $(this).css('background', color).css('border', color).css("line-height", "1.45");
+            $(this).attr('event-color', color); // se asigna el color de la criticidad correspondiente a cada elemento
+
+            userid = $(this).attr('userid');
+            $(this).data('event', {
+                title: criticidadtext, // use the element's text as the event title
+                description: $.trim($(this).text()),
+                //stick: true, // maintain when user navigates (see docs on the renderEvent method)
+                color: color, //cambia el color al color asignado
+                editable: true,
+                criticidad: idcriticidad,
+                userid: userid,
+                fromBD: 0,
+                saved: 0
+            });
+        });// each
+    });
+
+
     $('#external-events .fc-event').each(function () {
       /*
-       * funcion que asigna el event a un pill de TM la primera vez
+       * funcion que asigna el event a un pill de usuarios la primera vez
        * que se crean los pills
        */
       color = $(this).attr('event-color');
-      centro = $('#centros option:selected').text();
-      centroid = $('#centros').val();
+      idcriticidad = $('#criticidad').val();
+      criticidadtext = $('#criticidad option:selected').text();
       userid = $(this).attr('userid');
       // store data so the calendar knows to render an event upon drop
       $(this).data('event', {
-          title: centro, // use the element's text as the event title
+          title: criticidadtext, // use the element's text as the event title
           description: $.trim($(this).text()),
           //stick: true, // maintain when user navigates (see docs on the renderEvent method)
           color: color, //cambia el color al color asignado
           editable: true,
-          centroid: centroid,
+          criticidad: idcriticidad,  
           userid: userid,
           fromBD: 0,
           saved: 0

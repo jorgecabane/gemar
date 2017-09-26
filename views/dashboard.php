@@ -292,9 +292,10 @@
   				//console.log("what:" + what + " where: " +where);
   				$('#'+ where +'').load( ""+ what + "");
 
-  				if($('#modal5').css('bottom') == "0px"){
+  				if($('#modal_perfiles, modal_calendario').css('bottom') == "0px"){
   					setTimeout(function() {
-	  			    	$('#modal5').hide();
+	  			    	$('#modal_perfiles').hide();
+	  			    	$('#modal_calendario').hide();
 	  					$('.lean-overlay').hide();
 	  					$('body').css('overflow-y', 'scroll');      
   			   		 }, 100);
@@ -321,6 +322,7 @@ $( document ).ready(function() {
 
 	<?php
 	if ($login->isAdminUser() == true) {
-	    
+		require_once dirname(__FILE__) . "/admin/profile_modal.php";
+		require_once dirname(__FILE__) . "/admin/calendar_modal.php";
 	}
 	?>

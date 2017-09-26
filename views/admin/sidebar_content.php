@@ -5,7 +5,7 @@
 	</a>
 </li>
 <li class="bold sidebarlink">
-	<a href="#" class="waves-effect waves-cyan load-content"  what="views/app_calendar.php" where="content">
+	<a class="waves-effect waves-light modal-trigger modal-profile-trigger" href="#modal_calendario">
 		<i class="mdi-editor-insert-invitation"></i>
 		Calendario
 	</a>
@@ -34,7 +34,7 @@
 			<div class="collapsible-body">
 				<ul>
 					<li class="sidebarlink">
-						<a class="waves-effect waves-light modal-trigger modal-profile-trigger" href="#modal5">Perfiles</a>
+						<a class="waves-effect waves-light modal-trigger modal-profile-trigger" href="#modal_perfiles">Perfiles</a>
 					</li>
 					<li class="sidebarlink">
 						<a href="#" what="views/admin/register_new_user.php" where="content" class="load-content">Registrar Nuevos</a>
@@ -45,6 +45,3 @@
 	</ul>
 </li>
 
-<?php
-
-require_once dirname(__FILE__) . "/profile_modal.php";
