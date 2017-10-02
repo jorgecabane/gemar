@@ -5,17 +5,21 @@ var eventReceive = function(event) {
         saveBD(event);
     }
     else {
-        $('#modalEvento').modal('show');
+        //console.log(event);
+        $('#fecha-inicio').val(event.start.format('DD MMM, YYYY'));
+        $('#fecha-fin').val(event.start.add(1, 'days').format('DD MMM, YYYY'));
+        Materialize.updateTextFields();
+        $('#modalEvento').openModal();
         $('#eventDate').html('<div class="alert alert-sm alert-info">' + event.start.format() + '</div>');
-        $('#eventTitle').html('<div class="alert alert-sm alert-info">' + event.description + ' <strong>(' + event.title + ')</strong></div>');
+        $('#inspector-modal-evento').html('<div class="alert alert-sm alert-info">' + event.description + ' <strong>(' + event.title + ')</strong></div>');
         $('#evento')
-                .attr('start', event.start.format())
-                .attr('end', event.end.format())
-                .attr('idtm', event.idTM)
-                .attr('ideco', event.idEco)
-                .attr('color', event.color)
-                .attr('title', event.title)
-                .attr('description', event.description);
+            .attr('start', event.start.format())
+            .attr('end', event.end.format())
+            .attr('userid', event.userid)
+            .attr('centroid', event.centroid)
+            .attr('color', event.color)
+            .attr('title', event.title)
+            .attr('description', event.description);
     }
 };
 

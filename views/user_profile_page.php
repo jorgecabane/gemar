@@ -1,4 +1,12 @@
-
+<?php
+session_start();
+if(isset($_REQUIERE['id'])) {
+  $userid = $_REQUIERE['id'];
+}
+else {
+  $userid = $_SESSION['user_id'];
+}
+?>
         <!--start container-->
         <div class="container">
 

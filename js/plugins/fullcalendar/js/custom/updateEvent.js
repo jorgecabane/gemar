@@ -6,26 +6,26 @@
  */
 var updateEvent = function(event, element) {
     idEvento = event.id;
-    //$('#calendar').fullCalendar('updateEvent', event);
+    $('#calendar').fullCalendar('updateEvent', event);
 
     end = event.end.format();
     start = event.start.format();
     //alert(idEvento);
 
-    verifyEvent(event);
+    //verifyEvent(event);
+
     $.ajax({
-        url: 'Include/updatearEvento.php',
+        url: 'query/update_event.php',
         async: true,
         data: {"idEvento": idEvento, "start": start, "end": end},
         method: 'POST',
         beforeSend: function() {
-            $('.progress').slideDown();
+            $('.calendar-loading-gif').slideDown();
         },
         success: function(output) {
             if (output === '1') {
                 //console.log(output);
-                $('.progress').slideUp();
-                getCupos();
+                $('.calendar-loading-gif').slideUp();
             }
         }//success
     });//ajax

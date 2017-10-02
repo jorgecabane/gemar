@@ -127,5 +127,3 @@
     <!-- ================================================
     Scripts
 -->
-    <!--plugins.js - Some Specific JS codes for Plugin Settings-->
-    <script type="text/javascript" src="js/plugins.min.js"></script>

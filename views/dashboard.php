@@ -78,7 +78,7 @@
 					<div class="header-search-wrapper hide-on-med-and-down">
 						<i class="mdi-action-search"></i> <input type="text" name="Search"
 							class="header-search-input z-depth-2"
-							placeholder="Explore Materialize" />
+							placeholder="Explorar" />
 					</div>
 					<ul class="right hide-on-med-and-down">
 						<li><a href="javascript:void(0);"

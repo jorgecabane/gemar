@@ -70,7 +70,7 @@ class Login
 
                 // database query, getting all the info of the selected user (allows login via email address in the
                 // username field)
-                $sql = "SELECT user_name, user_email, user_password_hash, user_role
+                $sql = "SELECT user_name, user_email, user_password_hash, user_role, user_id
                         FROM users
                         WHERE user_name = '" . $user_name . "' OR user_email = '" . $user_name . "';";
                 $result_of_login_check = $this->db_connection->query($sql);
@@ -89,6 +89,7 @@ class Login
                         $_SESSION['user_name'] = $result_row->user_name;
                         $_SESSION['user_email'] = $result_row->user_email;
                         $_SESSION['user_role'] = $result_row->user_role;
+                        $_SESSION['user_id'] = $result_row->user_id;
                         $_SESSION['user_login_status'] = 1;
 
                     } else {

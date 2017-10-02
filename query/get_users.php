@@ -10,16 +10,16 @@ function get_users($user_id = null) {
 	global $con;
 
 	if ($user_id == null) { // si se utilizo la funcion sin un id especifico
-		$query = "SELECT user_id, user_name, user_email, user_role, user_phone, user_region, user_title, user_discipline, user_image_path, user_color_tag
+		$query = "SELECT user_id, user_name, user_email, user_role, user_phone, user_region, user_title, user_discipline, user_image_path, user_color_tag, concat(user_first_name,' ', user_last_name) as nombre, user_first_name, user_last_name
 				  FROM users
 				  WHERE user_role = 0
-                  ORDER BY user_name ASC";
+                  ORDER BY user_last_name ASC";
 	} 
 	else { // si se indico un id para buscar solo los datos de dicha persona
-		$query = "SELECT user_id, user_name, user_email, user_role, user_phone, user_region, user_title, user_discipline, user_image_path, user_color_tag
+		$query = "SELECT user_id, user_name, user_email, user_role, user_phone, user_region, user_title, user_discipline, user_image_path, user_color_tag, concat(user_first_name,' ', user_last_name) as nombre, user_first_name, user_last_name
 				  FROM users
 				  WHERE user_role = 0 AND user_id = $user_id
-                  ORDER BY user_name ASC";
+                  ORDER BY user_last_name ASC";
     }
 
     // if returns something

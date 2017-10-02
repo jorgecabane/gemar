@@ -6,21 +6,40 @@
 var saveBD = function(event) {
     start = event.start.format();
     end = event.end.format();
-    idTM = event.idTM;
-    idEco = event.idEco;
+    userid = event.userid;
+    centroid = event.centroid;
+    nombreproyecto = event.nombre_proyecto;
+    ordencompra = event.orden_compra;
+    contactoproyecto = event.contacto_proyecto;
+    descripcionproyecto = event.descripcion_proyecto;
+    visitasagendadas = event.visitas_agendadas;
+    criticidad = event.criticidad;
+    color = event.color;
 
-    verifyEvent(event);
+    //verifyEvent(event);
     if (event.fromBD === 0) {
         if (event.saved === 0) {
             //si el evento no se encuentra guardado en la bbdd
             //armado de JSON para envio de datos
             $.ajax({
-                url: 'Include/insertarEvento.php',
+                url: 'query/insert_event.php',
                 async: true,
-                data: {"idTM": idTM, "idEco": idEco, "start": start, "end": end},
+                data: {
+                    "userid": userid,
+                    "centroid": centroid, 
+                    "start": start, 
+                    "end": end, 
+                    "nombreproyecto": nombreproyecto, 
+                    "ordencompra": ordencompra, 
+                    "contactoproyecto": contactoproyecto,
+                    "descripcionproyecto": descripcionproyecto,
+                    "visitasagendadas": visitasagendadas,
+                    "criticidad": criticidad,
+                    "color": color
+                },
                 method: 'POST',
                 beforeSend: function() {
-                    $('.progress').slideDown();
+                    $('.calendar-loading-gif').slideDown();
                 },
                 success: function(output) {
                     if (output !== '0') {
@@ -37,8 +56,7 @@ var saveBD = function(event) {
                             $('#undoEvent').attr('idEvent', event.id);
                         }
 
-                        $('.progress').slideUp();
-                        getCupos();
+                        $('.calendar-loading-gif').slideUp();
 
                     }
                 }//success

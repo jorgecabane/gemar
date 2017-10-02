@@ -4,7 +4,7 @@
  * @returns {undefined}
  */
 var deleteEvent = function(event, jsEvent) {
-    var trashEl = jQuery('#deleteArea');
+    var trashEl = jQuery('#delete-dropzone');
     var ofs = trashEl.offset();
 
     var x1 = ofs.left;
@@ -19,18 +19,18 @@ var deleteEvent = function(event, jsEvent) {
         if (confirma) {
             //console.log(event.id);
             $('#calendar').fullCalendar('removeEvents', event._id);
+
             $.ajax({
-                url: 'Include/eliminarEvento.php',
+                url: 'query/delete_event.php',
                 async: true,
                 data: {"idEvento": event.id},
                 method: 'POST',
                 beforeSend: function() {
-                    $('.progress').slideDown();
+                    $('.calendar-loading-gif').slideDown();
                 },
                 success: function(output) {
                     if (output === '1') {
-                        $('.progress').slideUp();
-                        getCupos();
+                        $('.calendar-loading-gif').slideUp();
                     }//si se borro de la base de datos
                 }//success
             });//ajax */
