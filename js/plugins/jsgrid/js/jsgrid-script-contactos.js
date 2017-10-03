@@ -1,5 +1,14 @@
 $(function() {
-            jsGrid.locale("es");
+    
+    jsGrid.locale("es");
+
+    $.ajax({
+        type: "GET",
+        url: "query/get_empresas.php"
+        }).done(function(empresas) {
+            empresas = $.parseJSON(empresas);
+            
+
             
             // OData Service
             $("#jsGrid-custom").jsGrid({
@@ -13,24 +22,27 @@ $(function() {
                 pageButtonCount: 5,
                 filtering: false,    
                 deleteConfirm: function(item) {
-                    return "La Empresa \"" + item.Nombre + "\" será eliminada. ¿Está seguro de esta acción?";
+                    return "El Contacto \"" + item.Nombre + "\" será eliminado. ¿Está seguro de esta acción?";
                 },
                 onItemDeleted: function(args) {
-                    deleteEmpresa(args.item);
+                    deleteContacto(args.item);
                 },
                 onItemUpdated: function(args) {
-                    updateEmpresa(args.item);
+                    updateContacto(args.item);
                 },
-                controller: {
+                controller:  {
                     loadData: function() {
                         var d = $.Deferred();
 
                         $.ajax({
-                            url: "query/get_empresas.php",
-                            dataType: "json"
+                            url: "query/get_contactos.php",
+                            dataType: "json",
+                            data: {
+                                "ajax":true
+                            }
                         }).done(function(response) {
-                            //console.log(response);
-                            d.resolve(response);
+                                
+                                d.resolve(response);
                         });
 
                         return d.promise();
@@ -38,14 +50,13 @@ $(function() {
                 },
                 fields: [
                     { name: "id", type: "number"},
+                    { name: "Empresa", type: "select", items: empresas, valueField: "id", textField: "Nombre" },
                     { name: "Nombre", type: "text", align: "center", width: "auto" },
-                    { name: "Rut", type: "text", align: "center", width: "auto" },
-                    { name: "Giro", type: "text", align: "center", width: "auto" },
-                    { name: "Direccion", type: "text", align: "center", width: "auto" },
-                    { name: "Comuna", type: "text", align: "center", width: "auto" },
-                    { name: "Ciudad", type: "text", align: "center", width: "auto" },
-                    { name: "RazonSocial", type: "text", align: "center", width: "auto" },
                     { name: "Email", type: "text", align: "center", width: "auto" },
+                    { name: "Direccion", type: "text", align: "center", width: "auto" },
+                    { name: "Telefono", type: "text", align: "center", width: "auto" },
+                    { name: "Cargo", type: "text", align: "center", width: "auto" },
+                    { name: "Departamento", type: "text", align: "center", width: "auto" },
                     {
                         type: "control",
                         modeSwitchButton: true,
@@ -61,12 +72,13 @@ $(function() {
                 ]
             });
             
+            
             $("#jsGrid-custom").jsGrid("fieldOption", "id", "visible", false);
 
-            var deleteEmpresa = function(item) {
+            var deleteContacto = function(item) {
                 //console.log(item);
                 $.ajax({
-                    url: 'query/delete_company.php',
+                    url: 'query/delete_contacto.php',
                     async: true,
                     data: {"id": item.id},
                     method: 'POST',
@@ -78,12 +90,12 @@ $(function() {
                 });//ajax
             };
 
-            var updateEmpresa = function(item) {
+            var updateContacto = function(client) {
                 //console.log(item);
                 $.ajax({
-                    url: 'query/update_company.php',
+                    url: 'query/update_contacto.php',
                     async: true,
-                    data: {"id":item.id, "nombre": item.Nombre, "rut": item.Rut, "giro": item.Giro, "direccion": item.Direccion, "comuna": item.Comuna, "ciudad": item.Ciudad, "razonsocial": item.RazonSocial, "mail": item.Email},
+                    data: {"id":client.id, "nombre": client.Nombre, "empresa": client.Empresa, "direccion": client.Direccion, "telefono": client.Telefono, "email": client.Email, "cargo": client.Cargo, "departamento": client.Departamento},
                     method: 'POST',
                     success: function(output) {
                         if (output === '1') {
@@ -95,27 +107,25 @@ $(function() {
 
             var showDetailsDialog = function(dialogType, client) {
                 //$("#detailsForm").reset();
-                $("#empresa_modal_accion").html("Añadir Empresa");
+                $("#contacto_modal_accion").html("Añadir Contacto");
                 
-                $("#detailsForm").find(".error").removeClass("error");
-                
+                Materialize.updateTextFields();
                 $("#detailsDialog").openModal();
 
-                $("#saveCompany").on('click', function(){
+                $("#saveContacto").on('click', function(){
                     saveClient(client);
                 });
             };
          
             var saveClient = function(client) {
                 $.extend(client, {
-                    Nombre: $("#empresa_nombre").val(),
-                    Rut: $("#empresa_rut").val(),
-                    Giro: $("#empresa_giro").val(),
-                    Direccion: $("#empresa_direccion").val(),
-                    Comuna: $("#empresa_comuna").val(),
-                    Ciudad: $("#empresa_ciudad").val(),
-                    RazonSocial: $("#empresa_razonsocial").val(),
-                    Email: $("#empresa_mail").val()
+                    Nombre: $("#contacto_nombre").val(),
+                    Email: $("#contacto_email").val(),
+                    Direccion: $("#contacto_direccion").val(),
+                    Telefono: $("#contacto_telefono").val(),
+                    Cargo: $("#contacto_cargo").val(),
+                    Departamento: $("#contacto_departamento").val(),
+                    Empresa: $("#contacto_empresa").val()
                 });
          
                 $("#jsGrid-custom").jsGrid("insertItem", client).done(function() {
@@ -123,9 +133,9 @@ $(function() {
                 });
 
                 $.ajax({
-                    url: 'query/insert_company.php',
+                    url: 'query/insert_contacto.php',
                     async: true,
-                    data: {"nombre": client.Nombre, "rut": client.Rut, "giro": client.Giro, "direccion": client.Direccion, "comuna": client.Comuna, "ciudad": client.Ciudad, "razonsocial": client.RazonSocial, "mail": client.Email},
+                    data: {"nombre": client.Nombre, "empresa": client.Empresa, "email": client.Email, "direccion": client.Direccion, "telefono": client.Telefono, "cargo": client.Cargo, "departamento": client.Departamento},
                     method: 'POST',
                     success: function(output) {
                         if (output === '1') {
@@ -134,6 +144,5 @@ $(function() {
                     }//success
                 });//ajax
             };
-
-            
-        });
+    });
+});

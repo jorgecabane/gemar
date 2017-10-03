@@ -40,7 +40,7 @@ function get_contactos($contacto_id = null, $company_id = null, $centro_id = nul
     }
 
     else {
-    	$query = "SELECT *
+    	$query = "SELECT contacto_id AS id, company_company_id AS Empresa, nombre AS Nombre, email AS Email, direccion AS Direccion, telefono AS Telefono, cargo AS Cargo, departamento AS Departamento
 				  FROM contacto
                   ORDER BY nombre ASC";
     }
@@ -53,6 +53,10 @@ function get_contactos($contacto_id = null, $company_id = null, $centro_id = nul
 	}
 	$result->close();
 	return $array;
+}
+
+if(isset($_REQUEST['ajax'])){
+	echo json_encode(get_contactos());
 }
 
 //var_dump ( get_users() );
