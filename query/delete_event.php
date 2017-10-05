@@ -13,12 +13,12 @@ function deleteEvento($idEvento) {
     $query = "DELETE FROM evento WHERE evento_id = $idEvento";
 
     if ($result = $con->query($query)) {
-    	return 1;
-        $result->close();   
+        $result->close();  
+    	return 1; 
      } 
     else {
-        return $query;
         $result->close();
+        return $query;
     }
 }
 

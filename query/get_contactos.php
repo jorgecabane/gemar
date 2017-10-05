@@ -8,6 +8,7 @@ include_once dirname(__FILE__).'/conexion.php'; // archivo de conexion local
 
 function get_contactos($contacto_id = null, $company_id = null, $centro_id = null) {
 	global $con;
+	$array = array();
 
 	if ($contacto_id != null) { // si se utilizo la funcion con un id especifico
 		$query = "SELECT *
@@ -28,8 +29,8 @@ function get_contactos($contacto_id = null, $company_id = null, $centro_id = nul
 		$sql = "SELECT * FROM centro WHERE centro_id = $centro_id";
 
     	if ($res = $con->query($sql)) {
-			$result_row = $result->fetch_object(); 
-			$companyid = $result_row ->company_company_id;
+			$rescompany = $res->fetch_object(); 
+			$companyid = $rescompany ->company_company_id;
 			$res->close();
 		}
 

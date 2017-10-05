@@ -8,12 +8,12 @@ function insertCentro($nombre, $direccion, $contacto, $telefono, $email, $compan
     $query = "INSERT INTO `gemar`.`centro`  VALUES (NULL, '$companyid', '$nombre', '$direccion', '$contacto', '$telefono', '$email')";
   
     if ($result = $con->query($query)) {
+        $result->close();
         return $con->insert_id;
-        $result->close();   
      } 
      else {
-        return $query;
         $result->close();
+        return $query;
     }
 }
 

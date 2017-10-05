@@ -23,16 +23,16 @@ function insertEvento($userid, $centroid, $start, $end, $nombreproyecto, $ordenc
     $newStart = $newStart[0] . ' 08:00:00';
     $newEnd = $newEnd[0] . ' 21:00:00';
 
-    $query = "INSERT INTO `gemar`.`evento` (`evento_id`, `users_user_id`, `centro_centro_id`, `contacto_contacto_id`, `HoraInicio`, `HoraTermino`, `Lastmodified`, `nombre_proyecto`, `descripcion`, `orden_compra`, `visitas_agendadas`, `criticidad`, `color`) VALUES (NULL, '$userid', '$centroid', '$contacto', '$newStart', '$newEnd', NOW(), '$nombreproyecto', '$descripcion', '$ordencompra', '$visitasagendadas', '$criticidad', '$color')";
+    $query = "INSERT INTO `gemar`.`evento` (`evento_id`, `users_user_id`, `centro_centro_id`, `contacto_contacto_id`, `HoraInicio`, `HoraTermino`, `Lastmodified`, `nombre_proyecto`, `descripcion`, `orden_compra`, `visitas_agendadas`, `criticidad`, `color`, `status`) VALUES (NULL, '$userid', '$centroid', '$contacto', '$newStart', '$newEnd', NOW(), '$nombreproyecto', '$descripcion', '$ordencompra', '$visitasagendadas', '$criticidad', '$color', 0)";
 
   
     if ($result = $con->query($query)) {
+        $result->close();
         return $con->insert_id;
-        $result->close();   
      } 
      else {
-        return $query;
         $result->close();
+        return $query;
     }
 }
 

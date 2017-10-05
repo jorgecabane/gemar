@@ -9,6 +9,7 @@ include_once dirname(__FILE__).'/conexion.php'; // archivo de conexion local
 function get_centrosjson($centro = null) {
 	global $con;
 	$result_row = array();
+	$array = array();
 
 	if($centro == null){
 		$query = "SELECT centro.company_company_id AS Empresa, centro.centro_id AS id, centro.nombre AS Nombre, centro.direccion AS Direccion, centro.contacto AS Contacto, centro.telefono AS Telefono, centro.email AS Email

@@ -8,12 +8,12 @@ function insertContacto($nombre, $email, $direccion, $telefono, $cargo, $departa
     $query = "INSERT INTO `gemar`.`contacto`  VALUES (NULL, '$companyid', '$nombre', '$email', '$direccion', '$telefono', '$cargo', '$departamento')";
   
     if ($result = $con->query($query)) {
+        $result->close();
         return $con->insert_id;
-        $result->close();   
      } 
      else {
-        return $query;
         $result->close();
+        return $query;
     }
 }
 

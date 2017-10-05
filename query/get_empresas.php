@@ -9,6 +9,7 @@ include_once dirname(__FILE__).'/conexion.php'; // archivo de conexion local
 function get_empresas($company = null) {
 	global $con;
 	$result_row = array();
+	$array = array();
 
 	if($company == null){
 		$query = "SELECT company_id AS id, nombre AS Nombre, rut AS Rut, giro AS Giro, direccion AS Direccion, comuna AS Comuna, ciudad AS Ciudad, razonsocial AS RazonSocial, mail AS Email

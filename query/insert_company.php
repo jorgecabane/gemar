@@ -8,12 +8,12 @@ function insertEvento($nombre, $rut, $giro, $direccion, $comuna, $ciudad, $razon
     $query = "INSERT INTO `gemar`.`company`  VALUES (NULL, '$nombre', '$rut', '$giro', '$direccion', '$comuna', '$ciudad', '$razonsocial', '$mail', '$logopath')";
   
     if ($result = $con->query($query)) {
+        $result->close();
         return $con->insert_id;
-        $result->close();   
      } 
      else {
-        return $query;
         $result->close();
+        return $query;
     }
 }
 

@@ -43,7 +43,7 @@
             <select class="browser-default" id="contacto-proyecto" name="contacto"> 
                 <option value="" disabled selected>Elegir Contacto</option>
                 <?php
-                $contactos = get_contactos();
+                $contactos = get_contactos(null, null, $idcentro);
                     
                 foreach($contactos as $contacto){
                   echo '<option value="'.$contacto->contacto_id.'" >'.$contacto->nombre.'</option>';

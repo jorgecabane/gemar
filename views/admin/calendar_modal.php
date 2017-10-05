@@ -1,3 +1,6 @@
+<?php
+	include_once dirname(__FILE__).'/../../include/lib.php'; // archivo de conexion local
+?>
 
 <div id="modal_calendario" class="modal bottom-sheet">
 	<div class="modal-content">
@@ -12,60 +15,34 @@
 			</div>
 		</div>
 		
-		<ul class="collection" id="profle-ul-filter">
-			<li class="collection-item avatar waves-effect waves-block waves-teal load-content" what="views/app_calendar.php?idcentro=1&centro=Centro1" where="content">
-				<i class="mdi-editor-insert-emoticon circle"></i>
-				<span class="title profile-name">Centro 1</span>
-				<p>
-					First Line <br> Second Line
-				</p> 
-<!--  <i class="mdi-action-open-in-browser circle green" style="position:relative; float:right; vertical-align: middle;"></i> -->
-				<a href="#!" class="secondary-content">
-					<i class="mdi-action-open-in-browser"></i>
-				</a>
-			</li>
-			<li class="collection-item avatar waves-effect waves-block waves-teal load-content" what="views/app_calendar.php?idcentro=2&centro=Centro2" where="content">
-				<i class="mdi-editor-insert-emoticon circle"></i>
-				<span class="title profile-name">Centro 2</span>
-				<p>
-					First Line <br> Second Line
-				</p> 
-				<a href="#!" class="secondary-content">
-					<i class="mdi-action-open-in-browser"></i>
-				</a>
-			</li>
-			<li class="collection-item avatar waves-effect waves-block waves-teal load-content" what="views/app_calendar.php?idcentro=3&centro=Centro3" where="content">
-				<i class="mdi-editor-insert-emoticon circle"></i>
-				<span class="title profile-name">Centro 3</span>
-				<p>
-					First Line <br> Second Line
-				</p> 
-				<a href="#!" class="secondary-content">
-					<i class="mdi-action-open-in-browser"></i>
-				</a>
-			</li>
-			<li class="collection-item avatar waves-effect waves-block waves-teal load-content" what="views/app_calendar.php?idcentro=4&centro=Centro4 where="content">
-			<i class="mdi-editor-insert-emoticon circle"></i>
-				<span class="title profile-name">Centro 4</span>
-				<p>
-					First Line <br> Second Line
-				</p> 
-				<a href="#!" class="secondary-content">
-				<i class="mdi-action-open-in-browser"></i>
-				</a>
-			</li>
+		<ul class="collection" id="centros-ul-filter">
+
+			<?php
+				$centros = get_centros("false", null, "true");
+				foreach($centros as $centro){
+					echo '<li class="collection-item avatar waves-effect waves-block waves-teal load-content" what="views/app_calendar.php?idcentro='.$centro->centro_id.'&centro='.$centro->nombre.'" where="content">
+						  	<i class="mdi-editor-insert-emoticon circle"></i>
+							<span class="title centros-name">'.$centro->nombre.'</span>
+							<p>'.$centro->empresa.'</p> 
+							<a href="#!" class="secondary-content">
+								<i class="mdi-action-open-in-browser"></i>
+							</a>
+						</li>';
+				}
+			?>
+
 		</ul>
 	</div>
 </div>
 
 <script>
 $( document ).ready(function() {
-	$( "#profile-filter" ).on('keyup', function() {
-		  $("#profle-ul-filter").find('.profile-name').parent().show();
-		  var filter = $("#profile-filter").val();
+	$( "#centros-filter" ).on('keyup', function() {
+		  $("#centros-ul-filter").find('.centros-name').parent().show();
+		  var filter = $("#centros-filter").val();
 		  if ( filter.length > 1 ){
 
-				var lis = $("#profle-ul-filter").find('.profile-name');
+				var lis = $("#centros-ul-filter").find('.centros-name');
 				$.each( lis, function( key, value ) {
 					 var here = $(this);
 					 var text = here.text().toLowerCase();

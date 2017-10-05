@@ -23,12 +23,12 @@ function updateEmpresa($id, $nombre, $rut, $giro, $direccion, $comuna, $ciudad, 
     $query = "UPDATE company SET nombre='$nombre', rut='$rut', giro= '$giro', direccion='$direccion', comuna='$comuna', ciudad='$ciudad', razonsocial='$razonsocial', mail='$mail' WHERE company_id = '$id'";
   
     if ($result = $con->query($query)) {
+        $result->close();
         return 1;
-        $result->close();   
      } 
      else {
-        return $query;
         $result->close();
+        return $query;
     }
 
 }

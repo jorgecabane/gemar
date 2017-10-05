@@ -13,12 +13,12 @@ function deleteCentro($id) {
     $query = "DELETE FROM centro WHERE centro_id = '$id'";
 
     if ($result = $con->query($query)) {
-    	return 1;
         $result->close();   
+        return 1;
      } 
     else {
-        return $query;
         $result->close();
+        return $query;
     }
 }
 

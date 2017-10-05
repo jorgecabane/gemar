@@ -6,8 +6,9 @@
  */
 include_once dirname(__FILE__).'/conexion.php'; // archivo de conexion local
 
-function get_centros($company = null, $centro_id = null) {
+function get_centros($company = null, $centro_id = null, $centroyempresa = null) {
 	global $con;
+	$array = array();
 
 	if($company == null){
 
@@ -22,6 +23,12 @@ function get_centros($company = null, $centro_id = null) {
 					  WHERE centro_id = $centro_id
 	                  ORDER BY nombre ASC";
 	    }
+	}
+	else if($centroyempresa != null){
+			$query = "SELECT centro.centro_id, centro.nombre, centro.direccion, centro.contacto, centro.telefono, centro.email, company.nombre AS empresa
+					  FROM centro
+					  INNER JOIN company on (company.company_id = centro.company_company_id)
+	                  ORDER BY centro.nombre ASC";
 	}
 	else{
 		$query = "SELECT centro_id, nombre, direccion, contacto, telefono, email
