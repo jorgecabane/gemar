@@ -21,11 +21,9 @@ function updateCentro($id, $nombre, $direccion, $contacto, $telefono, $email, $c
     $query = "UPDATE centro SET nombre='$nombre', direccion='$direccion', contacto= '$contacto', telefono='$telefono', email='$email', company_company_id='$companyid' WHERE centro_id = '$id'";
   
     if ($result = $con->query($query)) {
-        $result->close();
         return 1;  
      } 
      else {
-        $result->close();
         return $query;
     }
 

@@ -13,9 +13,10 @@ function get_eventos($iduser = null) {
         			FROM evento
         			INNER JOIN centro on (centro.centro_id = evento.centro_centro_id AND evento.users_user_id = $iduser)
         			INNER JOIN contacto on (contacto.contacto_id = evento.contacto_contacto_id)
-                    ORDER BY evento.Lastmodified DESC";
+                    ORDER BY evento.criticidad DESC, evento.HoraInicio DESC";
     }
     else {
+        //administrador
         $query = "SELECT *
             FROM evento
             LEFT OUTER JOIN reporte on (evento.evento_id = reporte.evento_evento_id)
@@ -26,7 +27,7 @@ function get_eventos($iduser = null) {
             LEFT OUTER JOIN fotografias on (reporte.reporte_id = fotografias.reporte_reporte_id)
             INNER JOIN centro on (centro.centro_id = evento.centro_centro_id)
             INNER JOIN contacto on (contacto.contacto_id = evento.contacto_contacto_id)
-            ORDER BY evento.Lastmodified DESC";
+            ORDER BY evento.criticidad DESC, evento.HoraInicio DESC";
     }
         
     if ($result = $con->query($query)) {

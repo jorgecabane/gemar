@@ -122,10 +122,6 @@ $(function() {
                     Email: $("#centro_email").val(),
                     Empresa: $("#centro_empresa").val()
                 });
-         
-                $("#jsGrid-custom").jsGrid("insertItem", client).done(function() {
-                    $("#jsGrid-custom").jsGrid("refresh");
-                });
 
                 $.ajax({
                     url: 'query/insert_centro.php',
@@ -133,8 +129,14 @@ $(function() {
                     data: {"nombre": client.Nombre, "empresa": client.Empresa, "direccion": client.Direccion, "contacto": client.Contacto, "telefono": client.Telefono, "email": client.Email},
                     method: 'POST',
                     success: function(output) {
-                        if (output === '1') {
-                            //console.log(output);
+                        if($.isNumeric(output)){
+                            client.id = output;
+                            $("#jsGrid-custom").jsGrid("insertItem", client).done(function() {
+                                $("#jsGrid-custom").jsGrid("refresh");
+                            });
+                        }
+                        else {       
+                            Materialize.toast(output, 3000);
                         }
                     }//success
                 });//ajax

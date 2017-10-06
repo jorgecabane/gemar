@@ -118,18 +118,20 @@ $(function() {
                     Email: $("#empresa_mail").val()
                 });
          
-                $("#jsGrid-custom").jsGrid("insertItem", client).done(function() {
-                    $("#jsGrid-custom").jsGrid("refresh");
-                });
-
                 $.ajax({
                     url: 'query/insert_company.php',
                     async: true,
                     data: {"nombre": client.Nombre, "rut": client.Rut, "giro": client.Giro, "direccion": client.Direccion, "comuna": client.Comuna, "ciudad": client.Ciudad, "razonsocial": client.RazonSocial, "mail": client.Email},
                     method: 'POST',
                     success: function(output) {
-                        if (output === '1') {
-                            //console.log(output);
+                        if($.isNumeric(output)){
+                            client.id = output;
+                            $("#jsGrid-custom").jsGrid("insertItem", client).done(function() {
+                                $("#jsGrid-custom").jsGrid("refresh");
+                            });
+                        }
+                        else {       
+                            Materialize.toast(output, 3000);
                         }
                     }//success
                 });//ajax

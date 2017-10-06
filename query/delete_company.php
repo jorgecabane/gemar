@@ -13,11 +13,9 @@ function deleteEmpresa($id) {
     $query = "DELETE FROM company WHERE company_id = '$id'";
 
     if ($result = $con->query($query)) {
-        $result->close();
         return 1;   
      } 
     else {
-        $result->close();
         return $query;
     }
 }

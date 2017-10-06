@@ -127,10 +127,6 @@ $(function() {
                     Departamento: $("#contacto_departamento").val(),
                     Empresa: $("#contacto_empresa").val()
                 });
-         
-                $("#jsGrid-custom").jsGrid("insertItem", client).done(function() {
-                    $("#jsGrid-custom").jsGrid("refresh");
-                });
 
                 $.ajax({
                     url: 'query/insert_contacto.php',
@@ -138,8 +134,14 @@ $(function() {
                     data: {"nombre": client.Nombre, "empresa": client.Empresa, "email": client.Email, "direccion": client.Direccion, "telefono": client.Telefono, "cargo": client.Cargo, "departamento": client.Departamento},
                     method: 'POST',
                     success: function(output) {
-                        if (output === '1') {
-                            //console.log(output);
+                        if($.isNumeric(output)){
+                            client.id = output;
+                            $("#jsGrid-custom").jsGrid("insertItem", client).done(function() {
+                                $("#jsGrid-custom").jsGrid("refresh");
+                            });
+                        }
+                        else {       
+                            Materialize.toast(output, 3000);
                         }
                     }//success
                 });//ajax

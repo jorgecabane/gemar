@@ -22,11 +22,9 @@ function updateContacto($id, $nombre, $email, $direccion, $telefono, $cargo, $de
     $query = "UPDATE contacto SET nombre='$nombre', email='$email', direccion= '$direccion', telefono='$telefono', cargo='$cargo', departamento='$departamento', company_company_id='$companyid' WHERE contacto_id = '$id'";
   
     if ($result = $con->query($query)) {
-        $result->close();
         return 1;
      } 
      else {
-        $result->close();
         return $query;
     }
 

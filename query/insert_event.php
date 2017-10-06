@@ -27,11 +27,9 @@ function insertEvento($userid, $centroid, $start, $end, $nombreproyecto, $ordenc
 
   
     if ($result = $con->query($query)) {
-        $result->close();
         return $con->insert_id;
      } 
      else {
-        $result->close();
         return $query;
     }
 }

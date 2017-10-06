@@ -22,11 +22,9 @@ function updateEvento($idEvento, $start, $end) {
     $query = "UPDATE evento SET HoraInicio='$start', HoraTermino='$end', Lastmodified=NOW() WHERE evento_id=$idEvento";
   
     if ($result = $con->query($query)) {
-        $result->close();
         return 1;  
      } 
      else {
-        $result->close();
         return $query;
     }
 
