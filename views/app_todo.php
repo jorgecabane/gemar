@@ -68,20 +68,20 @@
               </div>';
 
               //si es que tiene un reporte asociado
-              if($evento->reporte_id != null){
+//              if($evento->reporte_id != null){
                 echo '<br><br>
                       <div class="row">
                         <div class="col s4">
-                          <a class="col s10 offset-s1 waves-effect waves-light btn editreport" reportid="'.$evento->reporte_id.'"><i class="mdi-editor-mode-edit"></i>Ver/Editar Reporte</a>
+                          <a class="col s10 offset-s1 waves-effect waves-light btn editreport" reportid="'.$evento->reporte_id.'" eventoid="'. $evento->evento_id .'"><i class="mdi-editor-mode-edit"></i>Ver/Editar Reporte</a>
                         </div>
                         <div class="col s4">
-                          <a class="col s10 offset-s1 waves-effect waves-light btn generatepdf" reportid="'.$evento->reporte_id.'"><i class="mdi-editor-attach-file"></i>Generar PDF</a>
+                          <a class="col s10 offset-s1 waves-effect waves-light btn generatepdf" reportid="'.$evento->reporte_id.'" eventoid="'. $evento->evento_id .'"><i class="mdi-editor-attach-file"></i>Generar PDF</a>
                         </div>
                         <div class="col s4">
-                          <a class="col s10 offset-s1 waves-effect waves-light btn doreportagain" reportid="'.$evento->reporte_id.'"><i class="mdi-av-replay"></i>Enviar a Rehacer</a>
+                          <a class="col s10 offset-s1 waves-effect waves-light btn doreportagain" reportid="'.$evento->reporte_id.'" eventoid="'. $evento->evento_id .'"><i class="mdi-av-replay"></i>Enviar a Rehacer</a>
                         </div>
                       </div>';
-              }
+ //             }
 
               //end of evento
               echo '<br>
@@ -103,7 +103,7 @@
 <?php   
   if($admin){
     include_once dirname(__FILE__) . '/admin/reporte_modal.php';
-    //include_once dirname(__FILE__) . '/admin/generatepdf_modal.php';
+    include_once dirname(__FILE__) . '/admin/generatepdf_modal.php';
   }
 ?> 
 
@@ -115,8 +115,30 @@
   $(document).ready(function(){
     $('.collapsible').collapsible();
 
-    $('.editreport').on('click', function(){
+    $('.editreport').on('click', function(event){
+      $('#reporte_modal_accion').attr("reporteid", $(this).attr("reportid"));
+      $('#reporte_modal_accion').attr("eventoid", $(this).attr("eventoid"));
       $('#reportemodal').openModal();
+      var here = $(this);
+      $(document).on('click', '#saveReporte', function(e){
+        here.off( ".editreport" );
+      });
+      $( this ).off( event );
     });   
+
+    $('.generatepdf').on('click', function(event){
+      var idreporte = $(this).attr("reportid");
+      var idevento = $(this).attr("eventoid");
+      $('#downloadreport').attr("idreporte", idreporte);
+      $('#generatepdfmodal').find('.modal-content').html('<iframe src="ajax/generate_pdf.php?idreporte='+ idreporte +'" style="width: 100%; height: 100%; border: none; margin: 0; padding: 0; display: block;"></iframe>');
+      $('#generatepdfmodal').openModal();
+    }); 
+
+    $('#downloadreport').on('click', function(e){
+      e.preventDefault();  //stop the browser from following
+      var idreporte = $(this).attr("idreporte");
+      window.location.href = 'ajax/generate_pdf.php?idreporte='+ idreporte +'&download=true';
+    });
+
   });
 </script>

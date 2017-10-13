@@ -9,6 +9,8 @@ include_once dirname(__FILE__).'/conexion.php'; // archivo de conexion local
 function get_users($user_id = null) {
 	global $con;
 
+	$array = array();
+
 	if ($user_id == null) { // si se utilizo la funcion sin un id especifico
 		$query = "SELECT user_id, user_name, user_email, user_role, user_phone, user_region, user_title, user_discipline, user_image_path, user_color_tag, concat(user_first_name,' ', user_last_name) as nombre, user_first_name, user_last_name
 				  FROM users

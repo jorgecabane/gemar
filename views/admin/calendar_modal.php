@@ -20,7 +20,7 @@
 			<?php
 				$centros = get_centros("false", null, "true");
 				foreach($centros as $centro){
-					echo '<li class="collection-item avatar waves-effect waves-block waves-teal load-content" what="views/app_calendar.php?idcentro='.$centro->centro_id.'&centro='.$centro->nombre.'" where="content">
+					echo '<li class="collection-item avatar waves-effect waves-block waves-teal load-content" what="views/app_calendar.php?idcentro='.$centro->centro_id.'&centro='.urlencode($centro->nombre).'" where="content">
 						  	<i class="mdi-editor-insert-emoticon circle"></i>
 							<span class="title centros-name">'.$centro->nombre.'</span>
 							<p>'.$centro->empresa.'</p> 

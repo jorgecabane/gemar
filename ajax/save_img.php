@@ -11,7 +11,7 @@ if($image["pictures"]){
     $upload = $image->upload(); 
     
     if($upload){
-        echo $upload->getFullPath(); // uploads/cat.gif
+        echo $upload->getName().".".$upload->getMime(); // uploads/cat.gif
     }else{
         echo $image["error"]; 
     }
