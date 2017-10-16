@@ -5,6 +5,8 @@ require_once dirname(__FILE__) . '/conexion.php';
 function insertReporte($reporte) {
     global $con;
 
+
+    $rehacer = $reporte['rehacer'];
     $evento = $reporte['evento'];
     $resumen = $reporte['resumen'];
 	$horario = $reporte['horario'];
@@ -15,6 +17,14 @@ function insertReporte($reporte) {
     $alertas = $reporte['alertas'];
     $alcances = $reporte['alcances'];
     $conclusiones = $reporte['conclusiones'];
+
+    if($rehacer == 1){
+        $reporteid = $reporte['reporteid'];
+
+        $query = "UPDATE reporte SET status='$rehacer' WHERE reporte_id = '$reporteid'";
+
+        $result = $con->query($query);
+    }
 
     $versionsql = "SELECT max(version) AS version
               FROM reporte
@@ -29,7 +39,7 @@ function insertReporte($reporte) {
     }
     $resultversion->close();
 
-    $query = "INSERT INTO `gemar`.`reporte`  VALUES (NULL, '$evento', '$lastversion', NOW(), '$horario', '$inspeccion', '$avance', '$fechacierre', '$comentarios', '$alertas', '$alcances', '$conclusiones', '$resumen')";
+    $query = "INSERT INTO `gemar`.`reporte`  VALUES (NULL, '$evento', '$lastversion', NOW(), '$horario', '$inspeccion', '$avance', '$fechacierre', '$comentarios', '$alertas', '$alcances', '$conclusiones', '$resumen', 0)";
   
     if ($result = $con->query($query)) {
         return $con->insert_id;

@@ -129,7 +129,16 @@ $(document).ready(function (e) {
 	$('#saveReporte').click( function(e){
 		e.preventDefault();
 
+		if($('#reporte_modal_accion').attr("rehacer") == 1){
+			var ifrehacer = 1;
+		}
+		else{
+			var ifrehacer = 0;
+		}
+
 		var reporte = {
+		rehacer: ifrehacer,
+		reporteid: $('#reporte_modal_accion').attr("reporteid"),
 		evento: $('#reporte_modal_accion').attr("eventoid"),
 		resumen: $('#reporte_resumen').val(),
 		horario : $('#reporte_horario').val(),

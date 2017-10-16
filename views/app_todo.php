@@ -3,6 +3,8 @@
   require_once dirname(__FILE__) . "/../include/lib.php";
   if($_SESSION['user_role'] == 1){
     $admin = true;
+    $userid = false;
+
   }
   else{
     $admin = false;
@@ -10,90 +12,35 @@
   }
 ?>
 
+<link href="js/plugins/monthpicker/MonthPicker.css" type="text/css" rel="stylesheet"
+  media="screen,projection">
+<link href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
+
 <!--start container-->
 <div class="container">
   <div class="section">
     <div class="col s12">
       <ul id="task-card" class="collection with-header">
           <li class="collection-header cyan">
-              <h4 class="task-card-title">Reportes</h4>
-              <p class="task-card-date">Sept 20, 2017</p>
+              <div class="row">
+                <h4 class="col task-card-title">Reportes</h4>
+
+                <div class="header-search-wrapper white-text">
+                  <i class="mdi-action-today"></i>
+                  <input id="month" type="text" class="header-search-input"/>
+                </div>
+
+                <div class="header-search-wrapper white-text">
+                  <i class="mdi-action-search"></i>
+                  <input id="report-filter" placeholder="Filtro de Reportes" type="text" class="header-search-input"/>
+                </div>
+
+              </div>
           </li>
       </ul>
-      <ul class="collapsible collapsible-accordion" data-collapsible="accordion">
+      <ul class="collapsible collapsible-accordion" data-collapsible="accordion" id="appendReportes">
 
-        <?php
-          if($admin){
-            //Admin ve todos los eventos
-            $eventos = get_eventos();
-            foreach($eventos as $evento){
-              if($evento->criticidad == 1){
-                //Evento Critico
-                echo '<li>
-                    <div class="collapsible-header red white-text"><i class="mdi-device-access-alarms"></i>'.$evento->nombre_proyecto.' '.$evento->orden_compra.'</div>
-                    <div class="collapsible-body red lighten-5">';
-              }
-              else{
-                //Evento No Critico
-                echo '<li>
-                    <div class="collapsible-header"><i class="mdi-social-notifications-off"></i>'.$evento->nombre_proyecto.' '.$evento->orden_compra.'</div>
-                    <div class="collapsible-body">';
-              }
 
-              //Cuerpo del Evento
-              echo '<div class="row">
-                    <br>
-                    <div class="col s10 offset-s1 ">
-
-                    <table class="bordered responsive-table centered">
-                    <thead>
-                      <tr>
-                        <th data-field="id">Inicio</th>
-                        <th data-field="name">Término</th>
-                        <th data-field="price">Descripción</th>
-                        <th data-field="price">Visitas Agendadas</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>'.date("d/m/Y", strtotime($evento->HoraInicio)).'</td>
-                        <td>'.date("d/m/Y", strtotime($evento->HoraTermino)).'</td>
-                        <td>'.$evento->descripcion.'</td>
-                        <td>'.$evento->visitas_agendadas.'</td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                </div>
-              </div>';
-
-              //si es que tiene un reporte asociado
-//              if($evento->reporte_id != null){
-                echo '<br><br>
-                      <div class="row">
-                        <div class="col s4">
-                          <a class="col s10 offset-s1 waves-effect waves-light btn editreport" reportid="'.$evento->reporte_id.'" eventoid="'. $evento->evento_id .'"><i class="mdi-editor-mode-edit"></i>Ver/Editar Reporte</a>
-                        </div>
-                        <div class="col s4">
-                          <a class="col s10 offset-s1 waves-effect waves-light btn generatepdf" reportid="'.$evento->reporte_id.'" eventoid="'. $evento->evento_id .'"><i class="mdi-editor-attach-file"></i>Generar PDF</a>
-                        </div>
-                        <div class="col s4">
-                          <a class="col s10 offset-s1 waves-effect waves-light btn doreportagain" reportid="'.$evento->reporte_id.'" eventoid="'. $evento->evento_id .'"><i class="mdi-av-replay"></i>Enviar a Rehacer</a>
-                        </div>
-                      </div>';
- //             }
-
-              //end of evento
-              echo '<br>
-                    </div>
-                    </li>';
-            }
-          }
-          else{
-            //Ingreso desde usuario básico, solo ve sus eventos
-            $eventos = get_eventos($userid);
-          }
-        ?>
 
       </ul>
 
@@ -102,43 +49,88 @@
 </div>
 <?php   
   if($admin){
-    include_once dirname(__FILE__) . '/admin/reporte_modal.php';
     include_once dirname(__FILE__) . '/admin/generatepdf_modal.php';
   }
+
+  include_once dirname(__FILE__) . '/admin/reporte_modal.php';
 ?> 
 
 
     <script type="text/javascript" src="js/plugins/jquery-ui.js"></script> 
+    <script type="text/javascript" src="js/plugins/monthpicker/MonthPicker.js"></script>
 <!--end container-->
   
 <script>
   $(document).ready(function(){
-    $('.collapsible').collapsible();
 
-    $('.editreport').on('click', function(event){
-      $('#reporte_modal_accion').attr("reporteid", $(this).attr("reportid"));
-      $('#reporte_modal_accion').attr("eventoid", $(this).attr("eventoid"));
-      $('#reportemodal').openModal();
-      var here = $(this);
-      $(document).on('click', '#saveReporte', function(e){
-        here.off( ".editreport" );
+    var populatereportes = function (month, year){
+      jQuery.ajax({
+        method: "POST",
+        url: "ajax/populate_reportes.php",
+        data: {
+          'month': month,
+          'year': year,
+          'admin':"<?php echo $admin; ?>",
+          'userid': "<?php echo $userid; ?>"
+        },
+        error: function(response) {
+          console.log(response);
+        },
+        success: function(response)
+        {
+          $('#appendReportes').html(response);
+          $('.collapsible').collapsible();
+        }
       });
-      $( this ).off( event );
-    });   
+    };
 
-    $('.generatepdf').on('click', function(event){
-      var idreporte = $(this).attr("reportid");
-      var idevento = $(this).attr("eventoid");
-      $('#downloadreport').attr("idreporte", idreporte);
-      $('#generatepdfmodal').find('.modal-content').html('<iframe src="ajax/generate_pdf.php?idreporte='+ idreporte +'" style="width: 100%; height: 100%; border: none; margin: 0; padding: 0; display: block;"></iframe>');
-      $('#generatepdfmodal').openModal();
-    }); 
+    var month = new Date().getMonth()+1;
+    var year = new Date().getFullYear();
+    populatereportes(month, year);
 
-    $('#downloadreport').on('click', function(e){
-      e.preventDefault();  //stop the browser from following
-      var idreporte = $(this).attr("idreporte");
-      window.location.href = 'ajax/generate_pdf.php?idreporte='+ idreporte +'&download=true';
+    $('#month').MonthPicker({ 
+      Button: false,
+      SelectedMonth: (new Date().getMonth()+1) +'/' + new Date().getFullYear(),
+      OnAfterChooseMonth: function(selectedDate) {
+        //console.log((selectedDate.getMonth()+1));
+        var month = (selectedDate.getMonth()+1);
+        var year = selectedDate.getFullYear();
+        populatereportes(month, year);
+      },
+      IsRTL: true,
+      i18n: {
+         year: 'Año',
+         buttonText: 'Siguiente',
+         prevYear: "Anterior",
+         nextYear: "Siguiente",
+         next12Years: 'Siguientes 12 años',
+         prev12Years: 'Anteriores 12 años',
+         nextLabel: "siguiente",  
+         prevLabel: "previo",
+         jumpYears: "Saltar a Años",
+         backTo: "Volver al",
+         months: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sept", "Oct", "Nov", "Dic"]
+      }
     });
+
+    $( "#report-filter" ).on('keyup', function() {
+      $("#appendReportes").find('.collapsible-header').parent().show();
+      var filter = $("#report-filter").val();
+      if ( filter.length > 1 ){
+
+        var lis = $("#appendReportes").find('.collapsible-header');
+        $.each( lis, function( key, value ) {
+           var here = $(this);
+           var text = here.text().toLowerCase();
+           var index = text.indexOf(filter.toLowerCase());
+
+           if( parseFloat(index) == -1){
+             here.parent().hide();
+           }
+        });
+      }
+    });
+
 
   });
 </script>

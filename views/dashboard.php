@@ -268,21 +268,6 @@
 	<!--custom-script.js - Add your own theme custom JS-->
 	<script type="text/javascript" src="js/custom-script.js"></script>
 
-	<!-- Toast Notification -->
-	<script type="text/javascript">
-    // Toast Notification
-    $(window).load(function() {
-        setTimeout(function() {
-            Materialize.toast('<span>Hiya! I am a toast.</span>', 1500);
-        }, 1500);
-        setTimeout(function() {
-            Materialize.toast('<span>You can swipe me too!</span>', 3000);
-        }, 5000);
-        setTimeout(function() {
-            Materialize.toast('<span>You have new order.</span><a class="btn-flat yellow-text" href="#">Read<a>', 3000);
-        }, 15000);
-    });
-    </script>
     <script>
     	$( document ).ready(function() {
    	 		$( ".load-content" ).on('click', function() {
@@ -306,6 +291,12 @@
   			    	$('#'+ where +'').addClass('loaded');      
   			    }, 5000);
 			});
+
+			$(document).on('click', '#saveReporte', function(e){
+  				setTimeout(function() {
+  			    	$('#content').load('views/app_todo.php');      
+  			    }, 1000);
+		    }); 
 		});
     </script>
     <script>

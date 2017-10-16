@@ -21,7 +21,7 @@ function insertUser($username, $password, $email, $titulo, $role, $firstname, $l
     $query = "INSERT INTO `gemar`.`users`  VALUES (NULL, '$username', '$passhash', '$email', '$role', '$phone', '$region', '$titulo', '$disciplina', 'default.jpg', '$hexa', '$firstname', '$lastname')";
   
     if ($result = $con->query($query)) {
-        sendMail($email, $username, $password, $firstname, $lastname); 
+        //sendMail($email, $username, $password, $firstname, $lastname); 
         return $con->insert_id;
      } 
      else {
