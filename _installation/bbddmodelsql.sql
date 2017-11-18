@@ -133,6 +133,7 @@ CREATE TABLE IF NOT EXISTS `gemar`.`evento` (
   `color` VARCHAR(45) NULL,
   `proveedor` VARCHAR(255) NULL,
   `comprador` VARCHAR(255) NULL,
+  `componente` VARCHAR(255) NULL,
   PRIMARY KEY (`evento_id`),
   INDEX `fk_evento_users1_idx` (`users_user_id` ASC),
   INDEX `fk_evento_centro1_idx` (`centro_centro_id` ASC),
@@ -297,3 +298,13 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Data for table `gemar`.`users`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `gemar`;
+INSERT INTO `gemar`.`users` (`user_id`, `user_name`, `user_password_hash`, `user_email`, `user_role`, `user_phone`, `user_region`, `user_title`, `user_discipline`, `user_image_path`, `user_color_tag`, `user_first_name`, `user_last_name`) VALUES (1, 'admin', '$10$uab8Rwow0PpYW4r18B/kCurIFiibqorPr4bX0eKVrlgHBgez4EI5K', 'admin@admin.cl', 1, '123123', 'asd', 'ads', 'asd', 'asd.jpg', NULL, 'Admin', 'admin');
+
+COMMIT;
+
