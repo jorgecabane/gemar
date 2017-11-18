@@ -277,16 +277,16 @@
   				//console.log("what:" + what + " where: " +where);
   				$('#'+ where +'').load( ""+ what + "");
 
-  				if($('#modal_perfiles, modal_calendario').css('bottom') == "0px"){
+  				if($('#modal_perfiles, modal_calendario', 'modal_hojas').css('bottom') == "0px"){
   					setTimeout(function() {
 	  			    	$('#modal_perfiles').hide();
 	  			    	$('#modal_calendario').hide();
+	  			    	$('#modal_hojas').hide();
 	  					$('.lean-overlay').hide();
 	  					$('body').css('overflow-y', 'scroll');      
   			   		 }, 100);
   				}
-  				
-//  				$('#'+ where +'').hide().fadeIn("slow");
+
   			    setTimeout(function() {
   			    	$('#'+ where +'').addClass('loaded');      
   			    }, 5000);
@@ -300,13 +300,43 @@
 		});
     </script>
     <script>
-$( document ).ready(function() {
-	$( ".sidebarlink" ).on('click', function() {
-		$( ".sidebarlink" ).removeClass('active');
-		$(this).addClass('active');
-	});
-});				
-</script>
+	$( document ).ready(function() {
+		$( ".sidebarlink" ).on('click', function() {
+			$( ".sidebarlink" ).removeClass('active');
+			$(this).addClass('active');
+		});
+	});				
+	</script>
+    <script>
+    //update session
+	$( document ).ready(function() {
+		$(document).on("click", throttle(function (event) {
+		    jQuery.ajax({
+		      method: "POST",
+		      url: "ajax/update_session.php",
+		      data: {},
+		      error: function(response) {
+		        //console.log(response);
+		      },
+		      success: function(response)
+		      {
+		       	//console.log(response);
+		      }
+		    });
+		}, 60000));
+
+		function throttle(func, milliseconds) {
+		    var lastCall = 0;
+		    return function () {
+		        var now = Date.now();
+		        if (lastCall + milliseconds < now) {
+		            lastCall = now;
+		            return func.apply(this, arguments);
+		        }
+		    };
+		}
+	});				
+	</script>
 </body>
 
 </html>
@@ -315,5 +345,6 @@ $( document ).ready(function() {
 	if ($login->isAdminUser() == true) {
 		require_once dirname(__FILE__) . "/admin/profile_modal.php";
 		require_once dirname(__FILE__) . "/admin/calendar_modal.php";
+		require_once dirname(__FILE__) . "/admin/hojas_modal.php";
 	}
 	?>

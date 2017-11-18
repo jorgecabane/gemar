@@ -131,6 +131,8 @@ CREATE TABLE IF NOT EXISTS `gemar`.`evento` (
   `visitas_agendadas` INT(11) NULL,
   `criticidad` INT NULL,
   `color` VARCHAR(45) NULL,
+  `proveedor` VARCHAR(255) NULL,
+  `comprador` VARCHAR(255) NULL,
   PRIMARY KEY (`evento_id`),
   INDEX `fk_evento_users1_idx` (`users_user_id` ASC),
   INDEX `fk_evento_centro1_idx` (`centro_centro_id` ASC),
@@ -173,6 +175,7 @@ CREATE TABLE IF NOT EXISTS `gemar`.`reporte` (
   `conclusiones` LONGTEXT NULL,
   `resumen` VARCHAR(200) NULL,
   `status` INT NULL,
+  `subcontratista` VARCHAR(255) NULL,
   PRIMARY KEY (`reporte_id`),
   INDEX `fk_reporte_evento1_idx` (`evento_evento_id` ASC),
   CONSTRAINT `fk_reporte_evento1`

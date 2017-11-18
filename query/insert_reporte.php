@@ -17,6 +17,7 @@ function insertReporte($reporte) {
     $alertas = $reporte['alertas'];
     $alcances = $reporte['alcances'];
     $conclusiones = $reporte['conclusiones'];
+    $subcontratista = $reporte['subcontratista'];
 
     if($rehacer == 1){
         $reporteid = $reporte['reporteid'];
@@ -39,7 +40,7 @@ function insertReporte($reporte) {
     }
     $resultversion->close();
 
-    $query = "INSERT INTO `gemar`.`reporte`  VALUES (NULL, '$evento', '$lastversion', NOW(), '$horario', '$inspeccion', '$avance', '$fechacierre', '$comentarios', '$alertas', '$alcances', '$conclusiones', '$resumen', 0)";
+    $query = "INSERT INTO `gemar`.`reporte`  VALUES (NULL, '$evento', '$lastversion', NOW(), '$horario', '$inspeccion', '$avance', '$fechacierre', '$comentarios', '$alertas', '$alcances', '$conclusiones', '$resumen', 0, '$subcontratista')";
   
     if ($result = $con->query($query)) {
         return $con->insert_id;

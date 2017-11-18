@@ -13,6 +13,9 @@ var renderEvent = function (event, element) {
         var content = "<span><p><span class='yellow-text'>Proyecto:</span> "+ event.title +"</p><span>"+
                       "<p><span class='yellow-text'>Inspector:</span> "+ event.description +"</p><span>"+
                       "<p><span class='yellow-text'>Orden:</span> "+ event.ordencompra +"</p><span>"+
+                      "<p><span class='yellow-text'>Componente:</span> "+ event.componente +"</p><span>"+
+                      "<p><span class='yellow-text'>Comprador:</span> "+ event.comprador +"</p><span>"+
+                      "<p><span class='yellow-text'>Proveedor:</span> "+ event.proveedor +"</p><span>"+
                       "<p><span class='yellow-text'>Inicio:</span> "+ event.start.format("YYYY-MM-DD, HH:mm") +"</p><span>"+
                       "<p><span class='yellow-text'>Termino:</span> "+ event.end.format("YYYY-MM-DD, HH:mm") +"</p><span>"+
                       "<p><span class='yellow-text'>Centro:</span> "+ event.centro +"</p><span>"+

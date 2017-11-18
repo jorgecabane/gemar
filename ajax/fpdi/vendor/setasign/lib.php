@@ -76,12 +76,62 @@ function fill_pendientes($pdf, $data){
 		return $pdf;
 	}
 	else{
-		$headers = array("Nº", "Nº  de Documento", "Descripción", "Pendientes- NCR- Deficiencias", "Comentarios");
+		$headers = array("Nº", "Nº de Doc.", "Descripción", "Pendientes- NCR- Deficiencias", "Comentarios");
 		$title = utf8_decode("6.   LISTADO DE PENDIENTES, DEFICIENCIAS NOTADAS – NO CONFORMIDADES.");
-	    $w = array(15, 40, 30, 60, 45);
+	    $w = array(12, 30, 43, 60, 45);
 		$pdf = generic_table($pdf, $headers, $data, $w, $title, true);
 		return $pdf;
 	}
+}
+
+
+function fill_fotografias($pdf, $data, $pdftitle, $pdfsubtitle, $imgempresa){
+	if(check_empty($data)){
+		return $pdf;
+	}
+	else{
+		$title = utf8_decode("8.   REGISTRO FOTOGRAFICO");
+		$pdf = fotografias_table($pdf, $data, $title, $pdftitle, $pdfsubtitle, $imgempresa);
+		return $pdf;
+	}
+}
+
+function fotografias_table($pdf, $data, $title, $pdftitle, $pdfsubtitle, $imgempresa){
+	//Bold
+	$pdf->SetFont('Arial', 'B', 11);
+	//titulo
+	$y=$pdf->GetY();
+	$pdf->SetXY(10, $y + 20);
+    $pdf->MultiCell(190,7, $title, 0, 'L', false);
+
+    // Colors, line width and bold font
+	$pdf->SetXY(10, $y + 35);
+    $pdf->SetDrawColor(191,189,189);
+    $pdf->SetLineWidth(.2);
+	$pdf->SetFillColor(224,235,255);
+    $pdf->SetTextColor(0);
+ 	$pdf->SetFont('Arial','', 9);
+
+ 	//print_r($data);
+ 	$actual = 1;
+ 	$count = 1;
+ 	foreach($data as $row){
+ 		if($actual == 1){
+			$pdf->Image('../images/reportes/'.$row->imagen_path,10,$y,40);	
+			$actual++;
+ 		}
+ 		else{
+ 			$pdf->Image('../images/reportes/'.$row->imagen_path,80,$y,40);	
+ 			$actual = 1;
+ 		}
+
+ 		$count++;
+ 		if($count%4 == 0){
+			add_page($pdf, 2, $title, $subtitle, $imgempresa);
+		}
+	}
+ 	return $pdf;
+
 }
 
 function generic_table($pdf, $header, $data, $w, $title, $firstnumeric)
@@ -95,17 +145,17 @@ function generic_table($pdf, $header, $data, $w, $title, $firstnumeric)
 
     // Colors, line width and bold font
 	$pdf->SetXY(10, $y + 35);
-    $pdf->SetFillColor(255,0,0);
+    $pdf->SetFillColor(46, 116, 181);
     $pdf->SetTextColor(255);
-    $pdf->SetDrawColor(128,0,0);
-    $pdf->SetLineWidth(.3);
-    $pdf->SetFont('','B');
+    $pdf->SetDrawColor(191,189,189);
+    $pdf->SetLineWidth(.2);
+    $pdf->SetFont('Arial','B', 11);
 
     // Header
     for($i=0;$i<count($header);$i++){
     	$x=$pdf->GetX();
         $y=$pdf->GetY();
-        $pdf->MultiCell($w[$i],10,utf8_decode($header[$i]), 1, 'C', true);
+        $pdf->MultiCell($w[$i],7,utf8_decode($header[$i]), 1, 'C', true);
         $pdf->SetXY($x+$w[$i],$y);
     }
     $pdf->Ln();
@@ -113,8 +163,7 @@ function generic_table($pdf, $header, $data, $w, $title, $firstnumeric)
     // Color and font restoration
     $pdf->SetFillColor(224,235,255);
     $pdf->SetTextColor(0);
-    $pdf->SetFont('');
-
+ 	$pdf->SetFont('Arial','', 9);
     // Data
     $fill = false;
     $num = 1;
@@ -127,7 +176,7 @@ function generic_table($pdf, $header, $data, $w, $title, $firstnumeric)
     	if($firstnumeric){
 	    	$x=$pdf->GetX();
 	        $y=$pdf->GetY();
-	        $pdf->MultiCell($w[0],10,$num,1,'C',$fill);
+	        $pdf->MultiCell($w[0],20,$num,1,'C',$fill);
 	        $pdf->SetXY($x+$w[0],$y);
 
 	        $count = 1;
@@ -139,7 +188,7 @@ function generic_table($pdf, $header, $data, $w, $title, $firstnumeric)
         for ($i = 1; $i < $objects -1; $i++){        
 	    	$x=$pdf->GetX();
 	        $y=$pdf->GetY();
-	        $pdf->MultiCell($w[$count],10, $row[$i],1,'C',$fill);
+	        $pdf->Cell($w[$count],20, $row[$i],1,2,'C',$fill);
 	        $pdf->SetXY($x+$w[$count],$y);
 	    	$count++; 
     	}
@@ -184,11 +233,13 @@ function get_reporte($reporteid){
 	$fotografias = array();		
 
 	//get reporte
-	$query = "SELECT *
+	$query = "SELECT evento.orden_compra, evento.nombre_proyecto, evento.HoraInicio, evento.HoraTermino, evento.proveedor, evento.comprador, evento.componente, reporte.subcontratista, reporte.version, reporte.fecha, reporte.horario_trabajado, reporte.tipo_inspeccion, reporte.resumen, contacto.nombre, contacto.telefono, contacto.cargo, users.user_first_name, users.user_last_name, company.nombre AS empresa, company.logopath AS imgempresa, centro.direccion AS lugar, reporte.avance, reporte.fecha_estimada_cierre, reporte.comentarios, reporte.alertas, reporte.alcances
 			  FROM reporte
 			  INNER JOIN evento on (evento.evento_id = reporte.evento_evento_id AND reporte.reporte_id = $reporteid)
 			  INNER JOIN contacto on (contacto.contacto_id = evento.contacto_contacto_id)
-			  INNER JOIN users on (users.user_id = evento.users_user_id)";
+			  INNER JOIN users on (users.user_id = evento.users_user_id)
+			  INNER JOIN centro on (centro.centro_id = evento.centro_centro_id)
+			  INNER JOIN company on (centro.company_company_id = company.company_id)";
 
     if ($result = $con->query($query)) {
 		while ( $result_row = $result->fetch_object() ) {
@@ -273,9 +324,9 @@ function resumen_table($pdf, $header, $data)
 
     // Colors, line width and bold font
 	$pdf->SetXY(10, 60);
-    $pdf->SetFillColor(255,0,0);
+    $pdf->SetFillColor(46, 116, 181);
     $pdf->SetTextColor(255);
-    $pdf->SetDrawColor(128,0,0);
+    $pdf->SetDrawColor(191,189,189);
     $pdf->SetLineWidth(.3);
     $pdf->SetFont('','B');
     // Header
@@ -416,7 +467,7 @@ function fill_form ($pdf, $comprador, $cliente, $orden, $direccion, $contacto, $
 	$pdf->Write(0, utf8_decode($resumen));
 }
 
-function add_page($pdf, $page, $title, $subtitle){
+function add_page($pdf, $page, $title, $subtitle, $imgempresa){
 	// add a page
 	$pdf->AddPage();
 	// set the source file
@@ -427,6 +478,8 @@ function add_page($pdf, $page, $title, $subtitle){
 	$pdf->useTemplate($tplIdx, -3, 0);
 
 	draw_header($pdf, $title, $subtitle);
+
+	$pdf->Image('../images/empresas/'.$imgempresa,159,20, 40);
 }
 
 function draw_header($pdf, $title, $subtitle) {

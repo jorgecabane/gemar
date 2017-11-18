@@ -22,6 +22,13 @@
             </div>
         </div>
 
+         <!-- Orden de Compra -->
+        <div class="input-field row">
+            <i class="mdi-action-shopping-cart prefix"></i>
+            <input id="orden-compra" type="text">
+            <label for="orden-compra">Orden de Compra</label>
+        </div>
+
         <!-- Nombre Proyecto -->
         <div class="input-field row">
             <i class="mdi-action-info-outline prefix"></i>
@@ -29,11 +36,25 @@
             <label for="nombre-proyecto">Nombre Proyecto</label>
         </div>
 
-         <!-- Orden de Compra -->
+        <!-- Comprador - Activador -->
         <div class="input-field row">
-            <i class="mdi-action-shopping-cart prefix"></i>
-            <input id="orden-compra" type="text">
-            <label for="orden-compra">Orden de Compra</label>
+            <i class="mdi-action-info-outline prefix"></i>
+            <input id="comprador-proyecto" type="text">
+            <label for="comprador-proyecto">Comprador - Activador</label>
+        </div>
+
+        <!-- Proveedor -->
+        <div class="input-field row">
+            <i class="mdi-action-info-outline prefix"></i>
+            <input id="proveedor-proyecto" type="text">
+            <label for="proveedor-proyecto">Proveedor</label>
+        </div>
+
+        <!-- Componente -->
+        <div class="input-field row">
+            <i class="mdi-action-info-outline prefix"></i>
+            <input id="componente-proyecto" type="text">
+            <label for="componente-proyecto">Componente</label>
         </div>
 
          <!-- Select de Contactos -->
@@ -95,7 +116,10 @@
             var start = moment($('#fecha-inicio').val());
             var end = moment($('#fecha-fin').val());
             var nombreproyecto = $('#nombre-proyecto').val();
+            var proveedor = $('#proveedor-proyecto').val();
+            var comprador = $('#comprador-proyecto').val();
             var ordencompra = $('#orden-compra').val();
+            var componente = $('#componente-proyecto').val();
             var contactoproyecto = $('#contacto-proyecto option:selected').val();
             var descripcionproyecto = $('#descripcion-proyecto').val();
             var visitasagendadas = $('#visitas-agendadas').val();
@@ -119,15 +143,18 @@
                 "start": start,
                 "end": end,
                 "nombre_proyecto": nombreproyecto,
+                "proveedor": proveedor,
+                "comprador": comprador,
                 "orden_compra": ordencompra,
                 "contacto_proyecto": contactoproyecto,
                 "descripcion_proyecto": descripcionproyecto,
                 "visitas_agendadas": visitasagendadas,
                 "criticidad": criticidadevento,
-                "color": color
+                "color": color,
+                "componente": componente
                  
             };
-            //se renderea el evento en la bbdd
+            //se renderea el evento y se guarda en la bbdd
             $('#calendar').fullCalendar('renderEvent', event);
             saveBD(event);
             //$('#modalEvento').modal('hide');

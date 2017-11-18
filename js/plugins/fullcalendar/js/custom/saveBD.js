@@ -15,6 +15,9 @@ var saveBD = function(event) {
     visitasagendadas = event.visitas_agendadas;
     criticidad = event.criticidad;
     color = event.color;
+    proveedor = event.proveedor;
+    comprador = event.comprador;
+    componente = event.componente
 
     //verifyEvent(event);
     if (event.fromBD === 0) {
@@ -35,7 +38,10 @@ var saveBD = function(event) {
                     "descripcionproyecto": descripcionproyecto,
                     "visitasagendadas": visitasagendadas,
                     "criticidad": criticidad,
-                    "color": color
+                    "color": color,
+                    "proveedor": proveedor,
+                    "comprador": comprador,
+                    "componente": componente
                 },
                 method: 'POST',
                 beforeSend: function() {

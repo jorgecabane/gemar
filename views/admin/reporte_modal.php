@@ -29,10 +29,16 @@
             <select class="browser-default active" id="reporte_inspeccion">
                 <option value="" disabled selected>Elegir inspeccion</option>
                 <option value="1">Visita Semanal</option>
-                <option value="0.5">Visita Spot</option>
-				<option value="0">Inspección Residente</option>
-				<option value="0">Inspección Final y Despacho</option>
+                <option value="2">Visita Spot</option>
+				<option value="3">Inspección Residente</option>
+				<option value="4">Inspección Final y Despacho</option>
             </select>
+        </div>
+
+        <!-- Subcontratista -->
+        <div class="input-field row">
+            <input id="reporte_subcontratista" type="text">
+            <label for="reporte_subcontratista">Subcontratista</label>
         </div>
 
         <!-- Avance Proyecto -->
@@ -148,7 +154,8 @@ $(document).ready(function (e) {
 		comentarios : $('#reporte_comentarios').val(),
 		alertas : $('#reporte_alertas').val(),
 		alcances : $('#reporte_alcances').val(),
-		conclusiones : $('#reporte_conclusiones').val()
+		conclusiones : $('#reporte_conclusiones').val(),
+		subcontratista: $('#reporte_subcontratista').val()
 		};
 
 		$.ajax({

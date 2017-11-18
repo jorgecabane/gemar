@@ -18,7 +18,12 @@
 				Reportes
 			</a>
 		</li>
-			
+		<li class="bold sidebarlink">
+			<a class="waves-effect waves-light modal-trigger modal-profile-trigger" href="#modal_hojas">
+				<i class="mdi-content-content-paste"></i>
+				Hojas de Tiempo
+			</a>
+		</li>	
 		<li class="bold sidebarlink">
 			<a class="collapsible-header  waves-effect waves-cyan">
 				<i class="mdi-action-account-circle"></i>

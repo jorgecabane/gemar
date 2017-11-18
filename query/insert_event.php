@@ -11,7 +11,7 @@
  */
 require_once dirname(__FILE__) . '/conexion.php';
 
-function insertEvento($userid, $centroid, $start, $end, $nombreproyecto, $ordencompra, $contacto, $descripcion, $visitasagendadas, $criticidad, $color) {
+function insertEvento($userid, $centroid, $start, $end, $nombreproyecto, $ordencompra, $contacto, $descripcion, $visitasagendadas, $criticidad, $color, $proveedor, $comprador, $componente) {
     global $con;
 
     $newStart = explode('T', $start);
@@ -23,7 +23,7 @@ function insertEvento($userid, $centroid, $start, $end, $nombreproyecto, $ordenc
     $newStart = $newStart[0] . ' 08:00:00';
     $newEnd = $newEnd[0] . ' 21:00:00';
 
-    $query = "INSERT INTO `gemar`.`evento` (`evento_id`, `users_user_id`, `centro_centro_id`, `contacto_contacto_id`, `HoraInicio`, `HoraTermino`, `Lastmodified`, `nombre_proyecto`, `descripcion`, `orden_compra`, `visitas_agendadas`, `criticidad`, `color`) VALUES (NULL, '$userid', '$centroid', '$contacto', '$newStart', '$newEnd', NOW(), '$nombreproyecto', '$descripcion', '$ordencompra', '$visitasagendadas', '$criticidad', '$color')";
+    $query = "INSERT INTO `gemar`.`evento` (`evento_id`, `users_user_id`, `centro_centro_id`, `contacto_contacto_id`, `HoraInicio`, `HoraTermino`, `Lastmodified`, `nombre_proyecto`, `descripcion`, `orden_compra`, `visitas_agendadas`, `criticidad`, `color`,`proveedor`,`comprador`,`componente`) VALUES (NULL, '$userid', '$centroid', '$contacto', '$newStart', '$newEnd', NOW(), '$nombreproyecto', '$descripcion', '$ordencompra', '$visitasagendadas', '$criticidad', '$color', '$proveedor', '$comprador', '$componente')";
 
   
     if ($result = $con->query($query)) {
@@ -34,5 +34,5 @@ function insertEvento($userid, $centroid, $start, $end, $nombreproyecto, $ordenc
     }
 }
 
-echo insertEvento($_REQUEST['userid'], $_REQUEST['centroid'], $_REQUEST['start'], $_REQUEST['end'], $_REQUEST['nombreproyecto'], $_REQUEST['ordencompra'] , $_REQUEST['contactoproyecto'], $_REQUEST['descripcionproyecto'], $_REQUEST['visitasagendadas'], $_REQUEST['criticidad'], $_REQUEST['color'] );
+echo insertEvento($_REQUEST['userid'], $_REQUEST['centroid'], $_REQUEST['start'], $_REQUEST['end'], $_REQUEST['nombreproyecto'], $_REQUEST['ordencompra'] , $_REQUEST['contactoproyecto'], $_REQUEST['descripcionproyecto'], $_REQUEST['visitasagendadas'], $_REQUEST['criticidad'], $_REQUEST['color'], $_REQUEST['proveedor'], $_REQUEST['comprador'], $_REQUEST['componente'] );
 ?>
