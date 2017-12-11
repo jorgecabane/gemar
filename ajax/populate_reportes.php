@@ -61,7 +61,7 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
         echo '<br><br>
               <div class="row">
                 <div class="col s4">
-                  <a class="col s10 offset-s1 waves-effect waves-light btn editreport" reportid="'.$evento->reporte_id.'" eventoid="'. $evento->evento_id .'"><i class="mdi-editor-mode-edit"></i>Ver/Editar Reporte</a>
+                  <a class="col s10 offset-s1 waves-effect waves-light btn editreport" rehacer="1" reportid="'.$evento->reporte_id.'" eventoid="'. $evento->evento_id .'"><i class="mdi-editor-mode-edit"></i>Ver/Editar Reporte</a>
                 </div>
                 <div class="col s4">
                   <a class="col s10 offset-s1 waves-effect waves-light btn generatepdf" reportid="'.$evento->reporte_id.'" eventoid="'. $evento->evento_id .'"><i class="mdi-editor-attach-file"></i>Generar PDF</a>
@@ -146,7 +146,7 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
 	        echo '<br><br>
 	              <div class="row">
 	                <div class="col s6 offset-s3">
-	                  <a class="col s10 offset-s1 waves-effect waves-light btn editreport" reportid="" eventoid="'. $evento->evento_id .'" rehacer="'. $evento->status .'"><i class="mdi-editor-mode-edit"></i>Entregar Reporte</a>
+	                  <a class="col s10 offset-s1 waves-effect waves-light btn editreport" reportid="null" eventoid="'. $evento->evento_id .'" rehacer="0"><i class="mdi-editor-mode-edit"></i>Entregar Reporte</a>
 	                </div>
 	              </div>';
 		}
@@ -154,7 +154,7 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
 	        echo '<br><br>
 	              <div class="row">
 	                <div class="col s6 offset-s3">
-	                  <a class="col s10 offset-s1 waves-effect waves-light btn editreport" reportid="" eventoid="'. $evento->evento_id .'" rehacer="'. $evento->status .'"><i class="mdi-editor-mode-edit"></i>Actualizar Reporte</a>
+	                  <a class="col s10 offset-s1 waves-effect waves-light btn editreport" reportid="'.$evento->reporte_id.'" eventoid="'. $evento->evento_id .'" rehacer="'. $evento->status .'"><i class="mdi-editor-mode-edit"></i>Actualizar Reporte</a>
 	                </div>
 	              </div>';
 		}
@@ -175,7 +175,7 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
       $('#reporte_modal_accion').attr("eventoid", $(this).attr("eventoid"));
       $('#reporte_modal_accion').attr("rehacer", $(this).attr("rehacer"));
       $('#reportemodal').openModal();
-      filldata(1);
+      filldata($(this).attr("reportid"));
       //$( this ).off( event );
     });  
 
