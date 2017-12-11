@@ -7,7 +7,7 @@
         <!-- Accion -->
         <div id="card-alert" class="card cyan">
             <div class="card-content white-text">
-                <p id="reporte_modal_accion" reporteid="" eventoid="">Editar Reporte</p>
+                <p id="reporte_modal_accion" rehacer="" reporteid="" eventoid="">Editar Reporte</p>
             </div>
         </div>
         <br>

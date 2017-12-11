@@ -90,12 +90,17 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
       else {
       	$status = "Reporte Inicial";
       }
-
+	 
       if($evento->criticidad == 1){
         //Evento Critico
         echo '<li>
             <div class="collapsible-header red white-text"><i class="mdi-device-access-alarms"></i>'.$evento->nombre_proyecto.' ('.$evento->orden_compra.')</div>
             <div class="collapsible-body red lighten-5">';
+      }
+      elseif($evento->status == 1){
+      	echo '<li>
+            <div class="collapsible-header yellow lighten-1 white-text"><i class="mdi-av-replay"></i>'.$evento->nombre_proyecto.' ('.$evento->orden_compra.')</div>
+            <div class="collapsible-body yellow lighten-4">';
       }
       else{
         //Evento No Critico
@@ -137,12 +142,22 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
 
       //si es que tiene un reporte asociado
 //              if($evento->reporte_id != null){
-        echo '<br><br>
-              <div class="row">
-                <div class="col s6 offset-s3">
-                  <a class="col s10 offset-s1 waves-effect waves-light btn editreport" reportid="" eventoid="'. $evento->evento_id .'" rehacer="'. $evento->status .'"><i class="mdi-editor-mode-edit"></i>Entregar Reporte</a>
-                </div>
-              </div>';
+		if($evento->status == null){
+	        echo '<br><br>
+	              <div class="row">
+	                <div class="col s6 offset-s3">
+	                  <a class="col s10 offset-s1 waves-effect waves-light btn editreport" reportid="" eventoid="'. $evento->evento_id .'" rehacer="'. $evento->status .'"><i class="mdi-editor-mode-edit"></i>Entregar Reporte</a>
+	                </div>
+	              </div>';
+		}
+		elseif($evento->status == 1){
+	        echo '<br><br>
+	              <div class="row">
+	                <div class="col s6 offset-s3">
+	                  <a class="col s10 offset-s1 waves-effect waves-light btn editreport" reportid="" eventoid="'. $evento->evento_id .'" rehacer="'. $evento->status .'"><i class="mdi-editor-mode-edit"></i>Actualizar Reporte</a>
+	                </div>
+	              </div>';
+		}
 //             }
 
       //end of evento
@@ -160,9 +175,46 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
       $('#reporte_modal_accion').attr("eventoid", $(this).attr("eventoid"));
       $('#reporte_modal_accion').attr("rehacer", $(this).attr("rehacer"));
       $('#reportemodal').openModal();
+      filldata(1);
       //$( this ).off( event );
     });  
 
+	//fill data if report is going to be updated
+	function filldata(idreporte){
+			if($('#reporte_modal_accion').attr("rehacer") == "1"){
+				$.ajax({
+					url: "query/get_reporte.php", 
+					type: "POST",            
+					data: {"idreporte": idreporte},
+					success: function(response)   
+					{
+						response = JSON.parse(response);
+						$("#reporte_horario").val(response[0]["horario_trabajado"]);
+						$("#reporte_inspeccion").val(response[0]["tipo_inspeccion"]);
+						$('#reporte_subcontratista').val(response[0]["subcontratista"]);
+						$('#reporte_avance').val(response[0]["avance"]); 
+						$('#reporte_resumen').val(response[0]["resumen"]);
+						$('#reporte_fechacierre').val(response[0]["fecha_estimada_cierre"]);
+						$('#reporte_comentarios').val(response[0]["comentarios"]);	
+						$('#reporte_alertas').val(response[0]["alertas"]);
+						$('#reporte_alcances').val(response[0]["alcances"]);
+						$('#reporte_conclusiones').val(response[0]["conclusiones"]);						
+						$("label[for='reporte_subcontratista']").addClass('active');
+						$("label[for='reporte_avance']").addClass('active');
+						$("label[for='reporte_resumen']").addClass('active');
+						$("label[for='fecha_cierre active']").addClass('active');
+						$("label[for='reporte_comentarios']").addClass('active');
+						$("label[for='reporte_alertas']").addClass('active');
+						$("label[for='reporte_alcances']").addClass('active');
+						$("label[for='reporte_conclusiones']").addClass('active');
+					},
+					error: function(e){
+						alert("error");
+					}
+				});
+			}
+	};
+		
     $('.generatepdf').on('click', function(event){
       var idreporte = $(this).attr("reportid");
       var idevento = $(this).attr("eventoid");

@@ -92,7 +92,7 @@
       Button: false,
       SelectedMonth: (new Date().getMonth()+1) +'/' + new Date().getFullYear(),
       OnAfterChooseMonth: function(selectedDate) {
-        //console.log((selectedDate.getMonth()+1));
+        console.log((selectedDate.getMonth()+1));
         var month = (selectedDate.getMonth()+1);
         var year = selectedDate.getFullYear();
         populatereportes(month, year);
@@ -131,6 +131,25 @@
       }
     });
 
+    function filldata(idreporte){
+		$.ajax({
+			url: "query/get_reporte.php", 
+			type: "POST",            
+			data: {"idreporte": idreporte},
+			success: function(response)   
+			{
+				alert("ok");
+				console.log(response);
+				//$('#reporte_subcontratista').val(response[0]["subcontratista"]); 
+				//$("label[for='reporte_subcontratista']").addClass('active');
+			},
+			error: function(e){
+				alert("error");
+			}
+		});
+	};
+	//filldata(1);
+	console.log("Hola");
 
   });
 </script>

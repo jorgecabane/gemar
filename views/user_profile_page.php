@@ -1,63 +1,49 @@
 <?php
 session_start();
-if(isset($_REQUIERE['id'])) {
-  $userid = $_REQUIERE['id'];
+if(isset($_REQUEST['id'])) {
+  $userid = $_REQUEST['id'];
 }
 else {
   $userid = $_SESSION['user_id'];
 }
+include_once dirname(__FILE__).'/../include/lib.php'; // archivo de conexion local
 ?>
         <!--start container-->
         <div class="container">
-
           <div id="profile-page" class="section">
             <!-- profile-page-header -->
-            <div id="profile-page-header" class="card">
-                <div class="card-image waves-effect waves-block waves-light">
-                    <img class="activator" src="images/user-profile-bg.jpg" alt="user background">                    
-                </div>
-                <figure class="card-profile-image">
-                    <img src="images/avatar.jpg" alt="profile image" class="circle z-depth-2 responsive-img activator">
-                </figure>
-                <div class="card-content">
-                  <div class="row">                    
-                    <div class="col s3 offset-s2">                        
-                        <h4 class="card-title grey-text text-darken-4">Roger Waters</h4>
-                        <p class="medium-small grey-text">Project Manager</p>                        
-                    </div>
-                    <div class="col s2 center-align">
-                        <h4 class="card-title grey-text text-darken-4">10+</h4>
-                        <p class="medium-small grey-text">Work Experience</p>                        
-                    </div>
-                    <div class="col s2 center-align">
-                        <h4 class="card-title grey-text text-darken-4">6</h4>
-                        <p class="medium-small grey-text">Completed Projects</p>                        
-                    </div>                    
-                    <div class="col s2 center-align">
-                        <h4 class="card-title grey-text text-darken-4">$ 1,253,000</h4>
-                        <p class="medium-small grey-text">Busness Profit</p>                        
-                    </div>                    
-                    <div class="col s1 right-align">
-                      <a class="btn-floating activator waves-effect waves-light darken-2 right">
-                          <i class="mdi-action-perm-identity"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-reveal">
-                    <p>
-                      <span class="card-title grey-text text-darken-4">Roger Waters <i class="mdi-navigation-close right"></i></span>
-                      <span><i class="mdi-action-perm-identity cyan-text text-darken-2"></i> Project Manager</span>
-                    </p>
-
-                    <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-                    
-                    <p><i class="mdi-action-perm-phone-msg cyan-text text-darken-2"></i> +1 (612) 222 8989</p>
-                    <p><i class="mdi-communication-email cyan-text text-darken-2"></i> mail@domain.com</p>
-                    <p><i class="mdi-social-cake cyan-text text-darken-2"></i> 18th June 1990</p>
-                    <p><i class="mdi-device-airplanemode-on cyan-text text-darken-2"></i> BAR - AUS</p>
-                </div>
-            </div>
+            <?php 
+            	$user = get_users($userid);
+            echo '<div id="profile-page-header" class="card">
+	                <div class="card-image waves-effect waves-block waves-light">
+	                    <img class="background" src="images/user-profile-bg.jpg" alt="user background">                    
+	                </div>
+	                <figure class="card-profile-image">
+	                    <img src="images/avatar.jpg" alt="profile image" class="circle z-depth-2 responsive-img activator">
+	                </figure>
+	  				<div class="card-content">
+	                  <div class="row">                    
+	                    <div class="col s3 offset-s2">                        
+	                        <h4 class="card-title grey-text text-darken-4">'.$user[0]->nombre.'</h4>
+	                        <p class="medium-small grey-text">'.$user[0]->user_title.'</p>                        
+	                    </div>
+	                    <div class="col s2 center-align">
+	                    	<h4 class="card-title grey-text text-darken-4">Teléfono</h4>
+	                    	<p class="medium-small grey-text"><i class="mdi-action-perm-phone-msg cyan-text text-darken-2"></i>  '.$user[0]->user_phone.'</p>
+	                    </div>
+                        <div class="col s2 center-align">
+	                        <h4 class="card-title grey-text text-darken-4">Email</h4>
+	                    	<p class="medium-small grey-text"><i class="mdi-communication-email cyan-text text-darken-2"></i>  '.$user[0]->user_email.'</p>	                  
+	                    </div>
+	                     <div class="col s1 right-align offset-s2">
+	                      <a class="btn-floating waves-effect waves-light darken-2 right">
+	                          <i class="mdi-editor-mode-edit"></i>
+	                      </a>
+	                    </div>
+	                  </div>
+	                </div>
+	            </div>';
+            ?>
             <!--/ profile-page-header -->
 
             <!-- profile-page-content -->
@@ -71,83 +57,8 @@ else {
                     <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
                   </div>                  
                 </div>
-                <!-- Profile About  -->
-
-                <!-- Profile About Details  -->
-                <ul id="profile-page-about-details" class="collection z-depth-1">
-                  <li class="collection-item">
-                    <div class="row">
-                      <div class="col s5 grey-text darken-1"><i class="mdi-action-wallet-travel"></i> Project</div>
-                      <div class="col s7 grey-text text-darken-4 right-align">ABC Name</div>
-                    </div>
-                  </li>
-                  <li class="collection-item">
-                    <div class="row">
-                      <div class="col s5 grey-text darken-1"><i class="mdi-social-poll"></i> Skills</div>
-                      <div class="col s7 grey-text text-darken-4 right-align">HTML, CSS</div>
-                    </div>
-                  </li>
-                  <li class="collection-item">
-                    <div class="row">
-                      <div class="col s5 grey-text darken-1"><i class="mdi-social-domain"></i> Lives in</div>
-                      <div class="col s7 grey-text text-darken-4 right-align">NY, USA</div>
-                    </div>
-                  </li>
-                  <li class="collection-item">
-                    <div class="row">
-                      <div class="col s5 grey-text darken-1"><i class="mdi-social-cake"></i> Birth date</div>
-                      <div class="col s7 grey-text text-darken-4 right-align">18th June, 1991</div>
-                    </div>
-                  </li>
-                </ul>
-                <!--/ Profile About Details  -->
-
-                <!-- Profile About  -->
-                <div class="card amber darken-2">
-                  <div class="card-content white-text center-align">
-                    <p class="card-title"><i class="mdi-social-group-add"></i> 3685</p>
-                    <p>Followers</p>
-                  </div>                  
-                </div>
-                <!-- Profile About  -->
-
-                <!-- Profile feed  -->
-                <ul id="profile-page-about-feed" class="collection z-depth-1">
-                  <li class="collection-item avatar">
-                    <img src="images/avatar.jpg" alt="" class="circle">
-                    <span class="title">Project Title</span>
-                    <p>Task assigned to new changes.
-                      <br> <span class="ultra-small">Second Line</span>
-                    </p>
-                    <a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
-                  </li>
-                  <li class="collection-item avatar">
-                    <i class="mdi-file-folder circle"></i>
-                    <span class="title">New Project</span>
-                    <p>First Line of Project Work 
-                      <br> <span class="ultra-small">Second Line</span>
-                    </p>
-                    <a href="#!" class="secondary-content"><i class="mdi-social-domain"></i></a>
-                  </li>
-                  <li class="collection-item avatar">
-                    <i class="mdi-action-assessment circle green"></i>
-                    <span class="title">New Payment</span>
-                    <p>Last UK Project Payment
-                      <br> <span class="ultra-small">$ 3,684.00</span>
-                    </p>
-                    <a href="#!" class="secondary-content"><i class="mdi-editor-attach-money"></i></a>
-                  </li>
-                  <li class="collection-item avatar">
-                    <i class="mdi-av-play-arrow circle red"></i>
-                    <span class="title">Latest News</span>
-                    <p>company management news
-                      <br> <span class="ultra-small">Second Line</span>
-                    </p>
-                    <a href="#!" class="secondary-content"><i class="mdi-action-track-changes"></i></a>
-                  </li>
-                </ul>
-                <!-- Profile feed  -->
-
+                <!-- Profile About  -->            
+                                
                 <!-- task-card -->
                 <ul id="task-card" class="collection with-header">
                   <li class="collection-header cyan">
@@ -179,93 +90,6 @@ else {
                   </li>
                 </ul>
                 <!-- task-card -->
-
-                <!-- Profile Total sell -->
-                <div class="card center-align">
-                  <div class="card-content purple white-text">
-                      <p class="card-stats-title"><i class="mdi-editor-attach-money"></i>Your Profit</p>
-                      <h4 class="card-stats-number">$8990.63</h4>
-                      <p class="card-stats-compare"><i class="mdi-hardware-keyboard-arrow-up"></i> 70% <span class="purple-text text-lighten-5">last month</span>
-                      </p>
-                  </div>
-                  <div class="card-action purple darken-2">
-                      <div id="sales-compositebar"></div>
-                  </div>
-                </div>
-
-                <!-- flight-card -->
-                <div id="flight-card" class="card">
-                    <div class="card-header amber darken-2">
-                        <div class="card-title">
-                            <h4 class="flight-card-title">Your Next Flight</h4>
-                            <p class="flight-card-date">June 18, Thu 04:50</p>
-                        </div>
-                    </div>
-                    <div class="card-content-bg white-text">
-                        <div class="card-content">
-                            <div class="row flight-state-wrapper">
-                                <div class="col s5 m5 l5 center-align">
-                                    <div class="flight-state">
-                                        <h4 class="margin">LDN</h4>
-                                        <p class="ultra-small">London</p>
-                                    </div>
-                                </div>
-                                <div class="col s2 m2 l2 center-align">
-                                    <i class="mdi-device-airplanemode-on flight-icon"></i>
-                                </div>
-                                <div class="col s5 m5 l5 center-align">
-                                    <div class="flight-state">
-                                        <h4 class="margin">SFO</h4>
-                                        <p class="ultra-small">San Francisco</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col s6 m6 l6 center-align">
-                                    <div class="flight-info">
-                                        <p class="small"><span class="grey-text text-lighten-4">Depart:</span> 04.50</p>
-                                        <p class="small"><span class="grey-text text-lighten-4">Flight:</span> IB 5786</p>
-                                        <p class="small"><span class="grey-text text-lighten-4">Terminal:</span> B</p>
-                                    </div>
-                                </div>
-                                <div class="col s6 m6 l6 center-align flight-state-two">
-                                    <div class="flight-info">
-                                        <p class="small"><span class="grey-text text-lighten-4">Arrive:</span> 08.50</p>
-                                        <p class="small"><span class="grey-text text-lighten-4">Flight:</span> IB 5786</p>
-                                        <p class="small"><span class="grey-text text-lighten-4">Terminal:</span> C</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- flight-card -->
-
-                <!-- Map Card -->
-                <div class="map-card">
-                    <div class="card">
-                        <div class="card-image waves-effect waves-block waves-light">
-                            <div id="map-canvas" data-lat="40.747688" data-lng="-74.004142"></div>
-                        </div>
-                        <div class="card-content">                    
-                            <a class="btn-floating activator btn-move-up waves-effect waves-light darken-2 right">
-                                <i class="mdi-maps-pin-drop"></i>
-                            </a>
-                            <h4 class="card-title grey-text text-darken-4"><a href="#" class="grey-text text-darken-4">Company Name LLC</a>
-                            </h4>
-                            <p class="blog-post-content">Some more information about this company.</p>
-                        </div>
-                        <div class="card-reveal">
-                            <span class="card-title grey-text text-darken-4">Company Name LLC <i class="mdi-navigation-close right"></i></span>                   
-                            <p>Here is some more information about this company. As a creative studio we believe no client is too big nor too small to work with us to obtain good advantage.By combining the creativity of artists with the precision of engineers we develop custom solutions that achieve results.Some more information about this company.</p>
-                            <p><i class="mdi-action-perm-identity cyan-text text-darken-2"></i> Manager Name</p>
-                            <p><i class="mdi-communication-business cyan-text text-darken-2"></i> 125, ABC Street, New Yourk, USA</p>
-                            <p><i class="mdi-action-perm-phone-msg cyan-text text-darken-2"></i> +1 (612) 222 8989</p>
-                            <p><i class="mdi-communication-email cyan-text text-darken-2"></i> support@geekslabs.com</p>                    
-                        </div>
-                    </div>
-                </div>
-                <!-- Map Card -->
 
               </div>
               <!-- profile-page-sidebar-->
@@ -385,179 +209,6 @@ else {
                   </div>
                 </div>
                 <!--/ profile-page-wall-share -->
-
-                <!-- profile-page-wall-posts -->
-                <div id="profile-page-wall-posts"class="row">
-                  <div class="col s12">
-                      <!-- medium -->
-                      <div id="profile-page-wall-post" class="card">
-                        <div class="card-profile-title">
-                          <div class="row">
-                            <div class="col s1">
-                              <img src="images/avatar.jpg" alt="" class="circle responsive-img valign profile-post-uer-image">                        
-                            </div>
-                            <div class="col s10">
-                              <p class="grey-text text-darken-4 margin">John Doe</p>
-                              <span class="grey-text text-darken-1 ultra-small">Shared publicly  -  26 Jun 2015</span>
-                            </div>
-                            <div class="col s1 right-align">
-                              <i class="mdi-navigation-expand-more"></i>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col s12">
-                              <p>I am a very simple wall post. I am good at containing <a href="#">#small</a> bits of <a href="#">#information</a>.  I require little more information to use effectively.</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="card-image profile-medium">                          
-                          <img src="images/gallary/2.jpg" alt="sample" class="responsive-img profile-post-image profile-medium">                        
-                          <span class="card-title">Card Title</span>
-                        </div>
-                        <div class="card-content">
-                          <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-                        </div>
-                        <div class="card-action row">
-                          <div class="col s4 card-action-share">
-                            <a href="#">Like</a>                          
-                            <a href="#">Share</a>
-                          </div>
-                          
-                          <div class="input-field col s8 margin">
-                            <input id="profile-comments" type="text" class="validate margin">
-                            <label for="profile-comments" class="">Comments</label>
-                          </div>                        
-                        </div>                        
-                      </div>
-
-                      <!-- medium video -->
-                      <div id="profile-page-wall-post" class="card">
-                        <div class="card-profile-title">
-                          <div class="row">
-                            <div class="col s1">
-                              <img src="images/avatar.jpg" alt="" class="circle responsive-img valign profile-post-uer-image">                        
-                            </div>
-                            <div class="col s10">
-                              <p class="grey-text text-darken-4 margin">John Doe</p>
-                              <span class="grey-text text-darken-1 ultra-small">Shared publicly  -  26 Jun 2015</span>
-                            </div>
-                            <div class="col s1 right-align">
-                              <i class="mdi-navigation-expand-more"></i>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col s12">
-                              <p>I am a very simple wall post. I am good at containing <a href="#">#small</a> bits of <a href="#">#information</a>.  I require little more information to use effectively.</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="card-image profile-medium">
-                          <div class="video-container no-controls">
-                            <iframe width="640" height="360" src="https://www.youtube.com/embed/10r9ozshGVE" frameborder="0" allowfullscreen></iframe>
-                          </div>                          
-                          <span class="card-title">Card Title</span>
-                        </div>
-                        <div class="card-content">
-                          <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-                        </div>
-                        <div class="card-action row">
-                          <div class="col s4 card-action-share">
-                            <a href="#">Like</a>                          
-                            <a href="#">Share</a>
-                          </div>
-                          
-                          <div class="input-field col s8 margin">
-                            <input id="profile-comments" type="text" class="validate margin">
-                            <label for="profile-comments" class="">Comments</label>
-                          </div>                        
-                        </div>                        
-                      </div>                      
-
-                      <!-- small -->
-                      <div id="profile-page-wall-post" class="card">
-                        <div class="card-profile-title">
-                          <div class="row">
-                            <div class="col s1">
-                              <img src="images/avatar.jpg" alt="" class="circle responsive-img valign profile-post-uer-image">                        
-                            </div>
-                            <div class="col s10">
-                              <p class="grey-text text-darken-4 margin">John Doe</p>
-                              <span class="grey-text text-darken-1 ultra-small">Shared publicly  -  26 Jun 2015</span>
-                            </div>
-                            <div class="col s1 right-align">
-                              <i class="mdi-navigation-expand-more"></i>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col s12">
-                              <p>I am a very simple wall post. I am good at containing <a href="#">#small</a> bits of <a href="#">#information</a>.  I require little more information to use effectively.</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="card-image profile-small">
-                          <img src="images/gallary/1.jpg" alt="sample" class="responsive-img profile-post-image">                        
-                          <span class="card-title">Card Title</span>
-                        </div>
-                        <div class="card-content">
-                          <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-                        </div>
-                        <div class="card-action row">
-                          <div class="col s4 card-action-share">
-                            <a href="#">Like</a>                          
-                            <a href="#">Share</a>
-                          </div>
-                          
-                          <div class="input-field col s8 margin">
-                            <input id="profile-comments" type="text" class="validate">
-                            <label for="profile-comments" class="">Comments</label>
-                          </div>                        
-                        </div>                        
-                      </div>
-
-                      <!-- small -->
-                      <div id="profile-page-wall-post" class="card">
-                        <div class="card-profile-title">
-                          <div class="row">
-                            <div class="col s1">
-                              <img src="images/avatar.jpg" alt="" class="circle responsive-img valign profile-post-uer-image">                        
-                            </div>
-                            <div class="col s10">
-                              <p class="grey-text text-darken-4 margin">John Doe</p>
-                              <span class="grey-text text-darken-1 ultra-small">Shared publicly  -  26 Jun 2015</span>
-                            </div>
-                            <div class="col s1 right-align">
-                              <i class="mdi-navigation-expand-more"></i>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col s12">
-                              <p>I am a very simple wall post. I am good at containing <a href="#">#small</a> bits of <a href="#">#information</a>.  I require little more information to use effectively.</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="card-image profile-large">
-                          <img src="images/gallary/3.jpg" alt="sample" class="responsive-img profile-post-image">                        
-                          <span class="card-title">Card Title</span>
-                        </div>
-                        <div class="card-content">
-                          <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-                        </div>
-                        <div class="card-action row">
-                          <div class="col s4 card-action-share">
-                            <a href="#">Like</a>                          
-                            <a href="#">Share</a>
-                          </div>
-                          
-                          <div class="input-field col s8 margin">
-                            <input id="profile-comments" type="text" class="validate">
-                            <label for="profile-comments" class="">Comments</label>
-                          </div>                        
-                        </div>                        
-                      </div>
-                  </div>                  
-                </div>
-                <!--/ profile-page-wall-posts -->
-
               </div>
               <!--/ profile-page-wall -->
 
