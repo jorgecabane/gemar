@@ -240,8 +240,8 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
 	        method: "POST",
 	        url: "query/rehacer_reporte.php",
 	        data: {
-	          'reporte': idreporte,
-	          'evento': idevento
+	          'idreporte': idreporte,
+	          'idevento': idevento
 	        },
 	        error: function(response) {
 	          console.log(response);
