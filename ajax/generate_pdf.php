@@ -9,8 +9,10 @@ use setasign\Fpdi;
 require_once dirname(__FILE__) . "/fpdi/src/autoload.php";
 require_once dirname(__FILE__) . "/fpdf/fpdf.php";
 require_once dirname(dirname(__FILE__)) . "/query/get_pdfdata.php";
+require_once dirname(dirname(__FILE__)) . "/query/get_extras.php";
 
 $data = getPdfData($idreporte)[0]; //$data[0]->resumen
+$extras = getExtras($idreporte);
 $fechaInicio = explode("-",explode(" ",$data->HoraInicio)[0]);
 $fechaTermino = explode("-", explode(" ",$data->HoraTermino)[0]);
 $horarioTrabajado = (($data->horario_trabajado == 1) ? "Jornada Completa" : ($data->horario_trabajado == 0.5 ? "Media jornada" : "Residente"));
@@ -19,6 +21,7 @@ $tipoVisita[$data->tipo_inspeccion-1] = "X";
 $fechaEstimadaCierre = explode("-", explode(" ",$data->fecha_estimada_cierre)[0]);
 $logo = dirname(dirname(__FILE__)) . "/images/login-logo.png";
 $logo2 = dirname(dirname(__FILE__)) . "/images/empresas/Collahuasi.jpg";
+$fotos_path = dirname(dirname(__FILE__)) . "/images/reportes/";
 
 $pdf = new Fpdi\Fpdi();
 
@@ -158,6 +161,241 @@ $pdf->SetXY(20,120);
 $pdf->MultiCell($width-40,10,utf8_decode($data->alertas),0,"J");
 $pdf->SetXY(20,160);
 $pdf->MultiCell($width-40,10,utf8_decode($data->alcances),0,"J");
+
+//Pagina 3
+newPage($pdf, $data, $logo, $logo2);
+$pdf->SetFont('Arial','B',12);
+$pdf->SetTextColor(0);
+$pdf->SetXY(20,50);
+$pdf->MultiCell(($width-40),5,utf8_decode("2.1.- SUMINISTRO INTEGRACIÓN EQUIPO / AVANCE DE FABRICACIÓN: DE ACUERDO AL ITEMNIZADO DE LA,PO"),0,"L");
+$pdf->SetFillColor(60,135,200);
+$pdf->SetTextColor(255);
+$pdf->SetFont('Arial','B',10);
+$pdf->SetXY(20,70);
+$pdf->MultiCell(($width-40),10,utf8_decode("Listado de equipos"),1,"C", 1);
+$pdf->SetXY(20,80);
+$pdf->MultiCell(($width-40)/15,10,utf8_decode("Nº"),1,"C", 1);
+$pdf->SetXY(20+($width-40)/15,80);
+$pdf->MultiCell(($width-40)*2/15,10,utf8_decode("Tag"),1,"C", 1);
+$pdf->SetXY(20+($width-40)*3/15,80);
+$pdf->MultiCell(($width-40)*4/15,10,utf8_decode("Descripción"),1,"C", 1);
+$pdf->SetXY(20+($width-40)*7/15,80);
+$pdf->MultiCell(($width-40)*3/15,10,utf8_decode("Proveedor"),1,"C", 1);
+$pdf->SetXY(20+($width-40)*10/15,80);
+$pdf->MultiCell(($width-40)*5/15,10,utf8_decode("Comentarios"),1,"C", 1);
+$pdf->SetFont('Arial','',10);
+$pdf->SetTextColor(0);
+$x = 20;
+$y = 90;
+$count = 1;
+foreach($extras["equipos"] as $equipo){
+	if($y>$heigth-50){
+		newPage($pdf, $data, $logo, $logo2);
+		$pdf->SetFont('Arial','',10);
+		$pdf->SetTextColor(0);
+		$y = 50;
+	}
+	$pdf->SetXY(20,$y);
+	$pdf->MultiCell(($width-40)/15,10,utf8_decode($count),1,"C");
+	$pdf->SetXY(20+($width-40)/15,$y);
+	$pdf->MultiCell(($width-40)*2/15,10,utf8_decode($equipo->tag),1,"C");
+	$pdf->SetXY(20+($width-40)*3/15,$y);
+	$pdf->MultiCell(($width-40)*4/15,10,utf8_decode($equipo->descripcion),1,"C");
+	$pdf->SetXY(20+($width-40)*7/15,$y);
+	$pdf->MultiCell(($width-40)*3/15,10,utf8_decode($equipo->proveedor),1,"C");
+	$pdf->SetXY(20+($width-40)*10/15,$y);
+	$pdf->MultiCell(($width-40)*5/15,10,utf8_decode($equipo->comentario),1,"C");
+	$y+=10;
+	$count++;
+}
+//Asistente
+if($y>$heigth-50){
+	newPage($pdf, $data, $logo, $logo2);
+	$y=40;
+}
+$pdf->SetFont('Arial','B',12);
+$pdf->SetTextColor(0);
+$y+=10;
+$pdf->SetXY(20,$y);
+$pdf->MultiCell(($width-40),5,utf8_decode("4. Asistentes"),0,"L");
+$pdf->SetFillColor(60,135,200);
+$pdf->SetTextColor(255);
+$pdf->SetFont('Arial','B',10);
+$y+=10;
+$pdf->SetXY(20,$y);
+$pdf->MultiCell(($width-40)/3,5,utf8_decode("Nombre"),1,"C", 1);
+$pdf->SetXY(20+($width-40)/3,$y);
+$pdf->MultiCell(($width-40)/3,5,utf8_decode("Compañia"),1,"C", 1);
+$pdf->SetXY(20+($width-40)*2/3,$y);
+$pdf->MultiCell(($width-40)/3,5,utf8_decode("Cargo"),1,"C", 1);
+$pdf->SetFont('Arial','',10);
+$pdf->SetTextColor(0);
+$y+=5;
+foreach($extras["asistentes"] as $asistente){
+	if($y>$heigth-50){
+		newPage($pdf, $data, $logo, $logo2);
+		$pdf->SetFont('Arial','',10);
+		$pdf->SetTextColor(0);
+		$y = 50;
+	}
+	$pdf->SetXY(20,$y);
+	$pdf->MultiCell(($width-40)/3,10,utf8_decode($asistente->nombre),1,"C");
+	$pdf->SetXY(20+($width-40)/3,$y);
+	$pdf->MultiCell(($width-40)/3,10,utf8_decode($asistente->compa),1,"C");
+	$pdf->SetXY(20+($width-40)*2/3,$y);
+	$pdf->MultiCell(($width-40)/3,10,utf8_decode($asistente->cargo),1,"C");
+	$y+=10;
+	$count++;
+}
+//Documentos utilizados
+if($y>$heigth-50){
+	newPage($pdf, $data, $logo, $logo2);
+	$y=40;
+}
+$pdf->SetFont('Arial','B',12);
+$pdf->SetTextColor(0);
+$y+=10;
+$pdf->SetXY(20,$y);
+$pdf->MultiCell(($width-40),5,utf8_decode("5. Documentos utilizados"),0,"L");
+$pdf->SetFillColor(60,135,200);
+$pdf->SetTextColor(255);
+$pdf->SetFont('Arial','B',10);
+$y+=10;
+$pdf->SetXY(20,$y);
+$pdf->MultiCell(($width-40)*3/10,10,utf8_decode("Nº de documento"),1,"C", 1);
+$pdf->SetXY(20+($width-40)*3/10,$y);
+$pdf->MultiCell(($width-40)/10,10,utf8_decode("Revisión"),1,"C", 1);
+$pdf->SetXY(20+($width-40)*4/10,$y);
+$pdf->MultiCell(($width-40)*4/10,10,utf8_decode("Nombre del documento"),1,"C", 1);
+$pdf->SetXY(20+($width-40)*8/10,$y);
+$pdf->MultiCell(($width-40)*2/10,5,utf8_decode("Status de aprobación"),1,"C", 1);
+$pdf->SetFont('Arial','',10);
+$pdf->SetTextColor(0);
+$y+=10;
+foreach($extras["documentos"] as $documento){
+	if($y>$heigth-50){
+		newPage($pdf, $data, $logo, $logo2);
+		$pdf->SetFont('Arial','',10);
+		$pdf->SetTextColor(0);
+		$y = 50;
+	}
+	$pdf->SetXY(20,$y);
+	$pdf->MultiCell(($width-40)*3/10,10,utf8_decode($documento->numero),1,"C");
+	$pdf->SetXY(20+($width-40)*3/10,$y);
+	$pdf->MultiCell(($width-40)/10,10,utf8_decode($documento->revision),1,"C");
+	$pdf->SetXY(20+($width-40)*4/10,$y);
+	$pdf->MultiCell(($width-40)*4/10,10,utf8_decode($documento->nombre),1,"C");
+	$pdf->SetXY(20+($width-40)*8/10,$y);
+	$pdf->MultiCell(($width-40)*2/10,10,utf8_decode($documento->status),1,"C");
+	$y+=10;
+	$count++;
+}
+//Listado de pendientes
+if($y>$heigth-50){
+	newPage($pdf, $data, $logo, $logo2);
+	$y=40;
+}
+$pdf->SetFont('Arial','B',12);
+$pdf->SetTextColor(0);
+$y+=10;
+$pdf->SetXY(20,$y);
+$pdf->MultiCell(($width-40),5,utf8_decode("6. Listado de pendientes"),0,"L");
+$pdf->SetFillColor(60,135,200);
+$pdf->SetTextColor(255);
+$pdf->SetFont('Arial','B',10);
+$y+=10;
+$pdf->SetXY(20,$y);
+$pdf->MultiCell(($width-40)/15,10,utf8_decode("Nº"),1,"C", 1);
+$pdf->SetXY(20+($width-40)/15,$y);
+$pdf->MultiCell(($width-40)*2/15,5,utf8_decode("Nº documento"),1,"C", 1);
+$pdf->SetXY(20+($width-40)*3/15,$y);
+$pdf->MultiCell(($width-40)*4/15,10,utf8_decode("Descripción"),1,"C", 1);
+$pdf->SetXY(20+($width-40)*7/15,$y);
+$pdf->MultiCell(($width-40)*3/15,5,utf8_decode("Pendientes\nNCR-Deficiencias"),1,"C", 1);
+$pdf->SetXY(20+($width-40)*10/15,$y);
+$pdf->MultiCell(($width-40)*5/15,10,utf8_decode("Comentarios/status/fechas"),1,"C", 1);
+$pdf->SetFont('Arial','',10);
+$pdf->SetTextColor(0);
+$y+=10;
+$count = 1;
+foreach($extras["pendientes"] as $pendiente){
+	if($y>$heigth-50){
+		newPage($pdf, $data, $logo, $logo2);
+		$pdf->SetFont('Arial','',10);
+		$pdf->SetTextColor(0);
+		$y = 50;
+	}
+	$pdf->SetXY(20,$y);
+	$pdf->MultiCell(($width-40)/15,10,utf8_decode($count),1,"C");
+	$pdf->SetXY(20+($width-40)/15,$y);
+	$pdf->MultiCell(($width-40)*2/15,5,utf8_decode($pendiente->numero),1,"C");
+	$pdf->SetXY(20+($width-40)*3/15,$y);
+	$pdf->MultiCell(($width-40)*4/15,10,utf8_decode($pendiente->descripcion),1,"C");
+	$pdf->SetXY(20+($width-40)*7/15,$y);
+	$pdf->MultiCell(($width-40)*3/15,5,utf8_decode($pendiente->pendientes),1,"C");
+	$pdf->SetXY(20+($width-40)*10/15,$y);
+	$pdf->MultiCell(($width-40)*5/15,10,utf8_decode($pendiente->comentarios),1,"C");
+	$y+=10;
+	$count++;
+}
+$y+=10;
+//Resultados finales y conclusiones
+if($y>$heigth-70){
+	newPage($pdf, $data, $logo, $logo2);
+	$y=40;
+}
+$pdf->SetFont('Arial','B',12);
+$pdf->SetTextColor(0);
+$y+=10;
+$pdf->SetXY(20,$y);
+$pdf->MultiCell(($width-40),5,utf8_decode("7. Resultados finales y conclusiones"),0,"L");
+$y+=10;
+$pdf->SetFont('Arial','',10);
+$pdf->SetXY(20,$y);
+$pdf->MultiCell($width-40,10,utf8_decode($data->conclusiones),0,"J");
+//Registro fotografico
+if($y>$heigth-70){
+	newPage($pdf, $data, $logo, $logo2);
+	$y=40;
+}
+$pdf->SetFont('Arial','B',12);
+$pdf->SetTextColor(0);
+$y+=20;
+$pdf->SetXY(20,$y);
+$pdf->MultiCell(($width-40),5,utf8_decode("8. Registro fotográfico"),0,"L");
+$y+=15;
+$count=1;
+foreach($extras["fotografias"] as $foto){
+	list($foto_width, $foto_height) = getimagesize($fotos_path.$foto->imagen_path);
+	$h=round(($foto_height*($width-80)/2)/$foto_width);
+	$h = $h>=80 ? 80 : $h;
+	if($y+$h>$heigth-100){
+		newPage($pdf, $data, $logo, $logo2);
+		$y = 50;
+	}
+	$pdf->SetFont('Arial','',10);
+	$pdf->SetTextColor(0);
+	$pdf->SetXY(20,$y);
+	$align = ($count%2 == 0) ? 1 : 0;
+	$pdf->Rect(20+$align*((20+($width-40)/2)-15),$y,(20+($width-40)/2)-25, 80);
+	$pdf->Image($fotos_path.$foto->imagen_path, (27+$align*((20+($width-40)/2)-15)),$y+5, ($width-80)/2, $h);
+	$y+=80;
+	$pdf->SetXY(20+$align*((20+($width-40)/2)-15),$y);
+	$pdf->MultiCell(((20+($width-40)/2)-25)/3,10,utf8_decode("Elemento"),1,"C");
+	$pdf->SetXY(20+$align*((20+($width-40)/2)-15)+((20+($width-40)/2)-25)/3,$y);
+	$pdf->MultiCell(((20+($width-40)/2)-25)*2/3,10,utf8_decode($foto->elemento),1,"C");
+	$y+=10;
+	$pdf->SetXY(20+$align*((20+($width-40)/2)-15),$y);
+	$pdf->MultiCell(((20+($width-40)/2)-25)/3,10,utf8_decode("Observaciones"),1,"C");
+	$pdf->SetXY(20+$align*((20+($width-40)/2)-15)+((20+($width-40)/2)-25)/3,$y);
+	$pdf->MultiCell(((20+($width-40)/2)-25)*2/3,10,utf8_decode($foto->observaciones),1,"C");
+	$y=$y-90;
+	if($align == 1){
+		$y+=100;
+	}
+	$count++;
+}
+
 $pdf->Output();
 
 function newPage($pdf, $data, $logo, $logo2){
@@ -182,4 +420,5 @@ function newPage($pdf, $data, $logo, $logo2){
 	$pdf->SetTextColor(0,0,110);
 	$pdf->SetXY(20,$heigth-23);
 	$pdf->MultiCell(0,2,utf8_decode("GEMAR Ingeniería y asesorías técnicas. Vespucio Sur 1117 Las Condes Celular: +56 989210647 www.gemaringenieria.cl"),0,"C");
+	$pdf->SetTextColor(0);
 }

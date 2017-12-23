@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__) . "/bulletproof/src/bulletproof.php";
 
+	
 $image = new Bulletproof\Image($_FILES);
 
 

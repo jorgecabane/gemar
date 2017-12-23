@@ -1,3 +1,5 @@
+<link href="js/plugins/dropify/css/dropify.min.css" type="text/css" rel="stylesheet" media="screen,projection">
+
 <div id="detailsDialog" class="modal modal-fixed-footer">
     <div class="modal-content">
 
@@ -55,8 +57,13 @@
             <input id="empresa_mail" type="text">
             <label for="empresa_mail">Email Empresa</label>
         </div>
-
-    </div>
+        
+        <!--  Foto Empresa -->
+		<div class="insertFotos">
+		 	<div class="row"><h6 class="left-align">Fotografía</h6></div>
+			<input type="file" name="pictures" accept="image/*" id="file" class="dropify"/>
+		</div>
+ 	</div>
 
     <!-- Footer -->
     <div class="modal-footer">
@@ -66,3 +73,9 @@
     </div>
 
 </div>
+<!-- dropify -->
+<script type="text/javascript" src="js/plugins/dropify/js/dropify.js"></script>
+<script type="text/javascript">
+	$('.dropify').dropify();
+</script>
+
