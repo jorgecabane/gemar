@@ -2,6 +2,8 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 $idreporte = $_REQUEST["idreporte"];
+if(isset($_REQUEST["borrar"]))
+	$borrar = $_REQUEST["borrar"];
 
 use setasign\Fpdi;
 
@@ -10,6 +12,7 @@ require_once dirname(__FILE__) . "/fpdi/src/autoload.php";
 require_once dirname(__FILE__) . "/fpdf/fpdf.php";
 require_once dirname(dirname(__FILE__)) . "/query/get_pdfdata.php";
 require_once dirname(dirname(__FILE__)) . "/query/get_extras.php";
+require_once dirname(dirname(__FILE__)) . "/query/delete_vista_previa.php";
 
 $data = getPdfData($idreporte)[0]; //$data[0]->resumen
 $extras = getExtras($idreporte);
@@ -397,6 +400,10 @@ foreach($extras["fotografias"] as $foto){
 }
 
 $pdf->Output();
+
+if($borrar == 1){
+	deleteVistaPrevia($idreporte);
+}
 
 function newPage($pdf, $data, $logo, $logo2){
 	$heigth = $pdf->GetPageHeight();

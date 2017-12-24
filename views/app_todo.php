@@ -48,9 +48,7 @@
   </div>
 </div>
 <?php   
-  if($admin){
-    include_once dirname(__FILE__) . '/admin/generatepdf_modal.php';
-  }
+  include_once dirname(__FILE__) . '/admin/generatepdf_modal.php';
 
   include_once dirname(__FILE__) . '/admin/reporte_modal.php';
 ?> 
