@@ -212,6 +212,30 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
 						alert("error");
 					}
 				});
+				$.ajax({
+					url: "query/get_extrasjson.php", 
+					type: "POST",            
+					data: {"idreporte": idreporte},
+					success: function(response)   
+					{
+						response = JSON.parse(response);
+						response["equipos"].forEach(function(element){
+							fillEquipos(element);
+						});
+						response["asistentes"].forEach(function(element){
+							fillAsistente(element);
+						});
+						response["documentos"].forEach(function(element){
+							fillDocumento(element);
+						});
+						response["pendientes"].forEach(function(element){
+							fillPendiente(element);
+						});
+						response["fotografias"].forEach(function(element){
+							fillFotos(element);
+						});
+					}
+				});
 			}
 	};
 		
@@ -254,6 +278,149 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
         });
 	  }
     }); 
+
+ // ADD EXTRA DATA
+	function fillEquipos(equipo){
+		var html =  '<div class="insertEquipo" updateEquipo="1" equipoId="'+equipo.equipos_id+'">' +
+					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Listado de Equipos</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
+					'<div class="input-field row">' +
+            			'<input class="equipo_tag" type="text" value="'+equipo.tag+'">' +
+            			'<label class="active">Tag</label>' +
+       				'</div>' +
+       				'<div class="input-field row">' +
+            			'<input class="equipo_descripcion" type="text" value="'+equipo.descripcion+'">' +
+            			'<label class="active">Descripción</label>' +
+       				'</div>' +
+       				'<div class="input-field row">' +
+            			'<input class="equipo_proveedor" type="text" value="'+equipo.proveedor+'">' +
+            			'<label class="active">Proveedor</label>' +
+       				'</div>' +
+       				'<div class="input-field row">' +
+			            '<textarea class="materialize-textarea equipo_comentario">'+equipo.comentario+'</textarea>' +
+			            '<label class="active">Comentarios</label>'+
+			        '</div>' +
+			        '</div>';
+
+		
+		$.when($('#reportemodal').find('.modal-content').append(html)).then(function( value ) {
+    		$('#reportemodal').find('.modal-content').animate({scrollTop: $('#reportemodal').find('.modal-content').prop("scrollHeight")}, 'slow');
+    	});
+
+
+	}
+	function fillAsistente(asistente){
+
+		var html = 	'<div class="insertAsistente" updateAsistente="1" asistenteId="'+asistente.asistentes_id+'">' +
+					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Asistentes</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
+					'<div class="input-field row">' +
+            			'<input class="asistente_nombre" type="text" value="'+asistente.nombre+'">' +
+            			'<label class="active">Nombre</label>' +
+       				'</div>' +
+       				'<div class="input-field row">' +
+            			'<input class="asistente_company" type="text" value="'+asistente.compa+'">' +
+            			'<label class="active">Compañía</label>' +
+       				'</div>' +
+       				'<div class="input-field row">' +
+            			'<input class="asistente_cargo" type="text" value="'+asistente.cargo+'">' +
+            			'<label class="active">Cargo</label>' +
+       				'</div>' + 
+       				'</div>';
+
+		
+		$.when($('#reportemodal').find('.modal-content').append(html)).then(function( value ) {
+    		$('#reportemodal').find('.modal-content').animate({scrollTop: $('#reportemodal').find('.modal-content').prop("scrollHeight")}, 'slow');
+    	});
+
+	}
+	function fillDocumento(documento){
+
+		var html = 	'<div class="insertDocumento" updateDocumento="1" documentoId="'+documento.documentos_id+'">' +
+					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Documentos Utilizados</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
+					'<div class="input-field row">' +
+            			'<input class="documento_numero" type="text" value="'+documento.numero+'">' +
+            			'<label class="active">N° del documento</label>' +
+       				'</div>' +
+       				'<div class="input-field row">' +
+            			'<input class="documento_revision" type="text" value="'+documento.revision+'">' +
+            			'<label class="active">Revisión</label>' +
+       				'</div>' +
+					'<div class="input-field row">' +
+            			'<input class="documento_nombre" type="text" value="'+documento.nombre+'">' +
+            			'<label class="active">Nombre</label>' +
+       				'</div>' +
+       				'<div class="input-field row">' +
+            			'<input class="documento_status" type="text" value="'+documento.status+'">' +
+            			'<label class="active">Status de aprobación</label>' +
+       				'</div>' +
+       				'</div>';
+
+		
+		$.when($('#reportemodal').find('.modal-content').append(html)).then(function( value ) {
+    		$('#reportemodal').find('.modal-content').animate({scrollTop: $('#reportemodal').find('.modal-content').prop("scrollHeight")}, 'slow');
+    	});
+
+	}
+	function fillPendiente(pendiente){
+
+		var html = 	'<div class="insertPendiente" updatePendiente="1" pendienteId="'+pendiente.pendientes_id+'">' +
+					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Listado de Pendientes</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
+					'<div class="input-field row">' +
+            			'<input class="pendiente_numero" type="text" value="'+pendiente.numero+'">' +
+            			'<label class="active">N° de documento</label>' +
+       				'</div>' +
+       				'<div class="input-field row">' +
+            			'<input class="pendiente_descripcion" type="text" value="'+pendiente.descripcion+'">' +
+            			'<label class="active">Descripción</label>' +
+       				'</div>' +
+       				'<div class="input-field row">' +
+            			'<input class="pendiente_pendiente" type="text" value="'+pendiente.pendientes+'">' +
+            			'<label class="active">Pendientes</label>' +
+       				'</div>'+
+       				'<div class="input-field row">' +
+            			'<input class="pendiente_comentarios" type="text" value="'+pendiente.comentarios+'">' +
+            			'<label class="active">Comentarios</label>' +
+       				'</div>' +
+       				'</div>';
+
+		
+		$.when($('#reportemodal').find('.modal-content').append(html)).then(function( value ) {
+    		$('#reportemodal').find('.modal-content').animate({scrollTop: $('#reportemodal').find('.modal-content').prop("scrollHeight")}, 'slow');
+    	});
+
+	}
+	function fillFotos(foto){
+		var path =  "/gemar/images/reportes/";
+		console.log(path);
+		var html = 	'<div class="insertFotos">' +
+					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Registro Fotográfico</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
+					'<form action="" method="post" enctype="multipart/form-data" class="imagesubmitform center">'+
+        			'<div class="progress loadingbarform" style="display:none">' +
+      				'<div class="indeterminate"></div>' +
+  					'</div>' +
+		    		'<input type="file" name="pictures" accept="image/*" id="file" class="dropify" data-default-file="'+path+foto.imagen_path+'"/>' +
+		    		'<button class="center btn waves-effect waves-light submitpicture" type="submit" name="action" style="display:none">' +
+		    		'Guardar' +
+    				'<i class="mdi-file-cloud-upload right"></i>' +
+  					'</button>' +
+					'</form>' +
+					'<div class="input-field row">' +
+            			'<input class="fotografias_elemento" type="text" value="'+foto.elemento+'">' +
+            			'<label class="active">Elemento</label>' +
+       				'</div>' +
+       				'<div class="input-field row">' +
+            			'<input class="fotografias_observaciones" type="text" value="'+foto.observaciones+'">' +
+            			'<label class="active">Observaciones</label>' +
+       				'</div>' +
+       				'</div>';
+
+		
+		$.when($('#reportemodal').find('.modal-content').append(html)).then(function( value ) {
+			$('.dropify').dropify();
+    		$('#reportemodal').find('.modal-content').animate({scrollTop: $('#reportemodal').find('.modal-content').prop("scrollHeight")}, 'slow');
+    		//refreshfunctions();
+    	});
+
+	}
 
   });
 </script>

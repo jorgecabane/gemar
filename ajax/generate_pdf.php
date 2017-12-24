@@ -411,7 +411,7 @@ function newPage($pdf, $data, $logo, $logo2){
 	$pdf->Rect(20,10, 30, 30, "DF");
 	$pdf->Image($logo, 22, 12, 26);
 	$pdf->Rect($width-50,10, 30, 30, "DF");
-	$pdf->Image($logo2, $width-48, 12, 26);
+	$pdf->Image($logo2, $width-48, 12, 26, 26);
 	//Footer
 	$pdf->SetFont('Arial','',7);
 	$pdf->SetXY(20,$heigth-30);

@@ -46,7 +46,12 @@ function insertReporte($reporte) {
 		        resumen='$resumen'
 		        WHERE reporte_id = '$reporteid'";
 
-        $result = $con->query($query);
+        if ($result = $con->query($query)) {
+        	return $reporteid;
+        }
+        else {
+        	return $query;
+        }
     }
 	else{
     	$query = "INSERT INTO `gemar`.`reporte`  VALUES (NULL, '$evento', '$lastversion', NOW(), '$horario', '$inspeccion', '$avance', '$fechacierre', '$comentarios', '$alertas', '$alcances', '$conclusiones', '$resumen', 0, '$subcontratista')";
