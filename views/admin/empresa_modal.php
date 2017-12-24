@@ -59,8 +59,8 @@
         </div>
         
         <!--  Foto Empresa -->
-		<div class="insertFotos">
-		 	<div class="row"><h6 class="left-align">Fotografía</h6></div>
+		<div class="fotoEmpresa">
+		 	<div class="row"><h6 class="left-align">Logo empresa</h6></div>
 			<input type="file" name="pictures" accept="image/*" id="file" class="dropify"/>
 		</div>
  	</div>

@@ -10,6 +10,8 @@ function updateUser($user) {
 	$last_name = $user['user_last_name'];
 	$email = $user['user_email'];
 	$phone = $user['user_phone'];
+	$title = $user['user_title'];
+	$discipline = $user['user_discipline'];
 	$path = $user['user_image_path'];
 
 	$query = "UPDATE users SET
@@ -17,6 +19,8 @@ function updateUser($user) {
 			user_last_name ='$last_name',
 			user_email='$email',
 			user_phone='$phone',
+			user_title='$title',
+			user_discipline='$discipline',
 			user_image_path='$path'
 			WHERE user_id = '$userid'";
 

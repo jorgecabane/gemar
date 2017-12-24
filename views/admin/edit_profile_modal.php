@@ -16,22 +16,34 @@
             <label for="usuario_nombre">Nombre</label>
         </div>
 
-        <!-- Apellido Empresa -->
+        <!-- Apellido usuario -->
         <div class="input-field row">
             <input id="usuario_apellido" type="text">
             <label for="usuario_apellido">Apellido</label>
         </div>
 
-        <!-- Giro Empresa -->
+        <!-- Email usuario -->
         <div class="input-field row">
             <input id="usuario_email" type="text">
             <label for="usuario_email">Email</label>
         </div>
 
-        <!-- Direccion Empresa -->
+        <!-- Telefono usuario -->
         <div class="input-field row">
             <input id="usuario_telefono" type="text">
             <label for="usuario_telefono">Teléfono</label>
+        </div>
+        
+        <!-- Titulo usuario -->
+        <div class="input-field row">
+            <input id="usuario_titulo" type="text">
+            <label for="usuario_titulo">Título</label>
+        </div>
+        
+        <!-- disciplina usuario -->
+        <div class="input-field row">
+            <input id="usuario_disciplina" type="text">
+            <label for="usuario_disciplina">Disciplina</label>
         </div>
  	</div>
 
@@ -48,6 +60,9 @@
 <script type="text/javascript">
 $( document ).ready(function() {
 	$('.dropify').dropify();
+	$('#cancelUser').click( function(e){
+		$('.userFoto').remove();
+	});
 	$('#saveUser').click( function(e){
 		e.preventDefault();
 
@@ -75,6 +90,8 @@ $( document ).ready(function() {
 							user_last_name: $('#usuario_apellido').val(),
 							user_email: $('#usuario_email').val(),
 							user_phone: $('#usuario_telefono').val(),
+							user_title: $('#usuario_titulo').val(),
+							user_discipline: $('#usuario_disciplina').val(),
 							user_image_path: imgpath
 						};
 					
@@ -97,6 +114,8 @@ $( document ).ready(function() {
 					user_last_name: $('#usuario_apellido').val(),
 					user_email: $('#usuario_email').val(),
 					user_phone: $('#usuario_telefono').val(),
+					user_title: $('#usuario_titulo').val(),
+					user_discipline: $('#usuario_disciplina').val(),
 					user_image_path: "default.jpg"
 				};
 			

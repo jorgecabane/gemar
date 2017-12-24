@@ -15,8 +15,8 @@ function insertCompany($nombre, $rut, $giro, $direccion, $comuna, $ciudad, $razo
     }
 }
 
-if(isset($_REQUEST['logopath'])){
-    $logopath = $_REQUEST['logopath'];
+if(!is_null($_REQUEST['logo'])){
+    $logopath = $_REQUEST['logo'];
 }
 else {
     $logopath = null;

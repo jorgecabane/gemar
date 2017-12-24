@@ -24,29 +24,35 @@ include_once dirname(__FILE__).'/../include/lib.php'; // archivo de conexion loc
 							    </figure>   
 			  					<div class="col s6 offset-s3 center-align">                        
 					            	<h1 class="card-title title-text text-darken-4" style="font-size:250%">'.$user[0]->nombre.'</h1>
-					                <p class="medium grey-text">'.$user[0]->user_title.'</p>                        
+					                <p class="medium grey-text">'.$user[0]->user_discipline.'</p>                        
 				            	</div>
 				                <div class="col s1 right-align offset-s2">
 				                	<a class="btn-floating waves-effect waves-light darken-2 right modal-trigger" href="#editUserModal">
-				                    	<i class="mdi-editor-mode-edit edit_user" userid="'.$userid.'"></i>
+				                    	<i class="mdi-editor-mode-edit edit_user" userid="'.$user[0]->user_id.'"></i>
 				                   	</a>
 				             	</div>
 							</div>
 				 		</div>
 					</div>
 				</div>
-				<div class="col s12">
-				    <div class="card white">
-				    	<div class="card-content black-text">
-				            <div class="col s3 offset-s2 center-align">
-				            	<h4 class="card-title grey-text text-darken-4" style="font-size:150%">Teléfono</h4>
-				               	<p class="medium-small grey-text"><i class="mdi-action-perm-phone-msg cyan-text text-darken-2"></i>  '.$user[0]->user_phone.'</p>
-				            </div>
-			           		<div class="col s3 offset-s2 center-align">
-				              	<h4 class="card-title grey-text text-darken-4" style="font-size:150%">Email</h4>
-				             	<p class="medium-small grey-text"><i class="mdi-communication-email cyan-text text-darken-2"></i>  '.$user[0]->user_email.'</p>	                  
-				            </div>
-				        </div>
+				<div class="row">
+					<div class="col s12 ">
+					    <div class="card white">
+					    	<div class="card-content black-text valign-wrapper">
+					            <div class="col s2 offset-s2 center-align">
+					            	<h4 class="card-title grey-text text-darken-4" style="font-size:150%">Teléfono</h4>
+					               	<p class="medium-small grey-text"><i class="mdi-action-perm-phone-msg cyan-text text-darken-2"></i>  '.$user[0]->user_phone.'</p>
+					            </div>
+				           		<div class="col s2 offset-s1 center-align">
+					              	<h4 class="card-title grey-text text-darken-4" style="font-size:150%">Email</h4>
+					             	<p class="medium-small grey-text"><i class="mdi-communication-email cyan-text text-darken-2"></i>  '.$user[0]->user_email.'</p>	                  
+					            </div>
+					            <div class="col s2 offset-s1 center-align">
+					              	<h4 class="card-title grey-text text-darken-4" style="font-size:150%">Título</h4>
+					             	<p class="medium-small grey-text"><i class="mdi-action-work cyan-text text-darken-2"></i>  '.$user[0]->user_title.'</p>	                  
+					            </div>
+					        </div>
+             			</div>
 				  	</div>
 				</div>';
 			    include_once dirname(__FILE__).'/admin/edit_profile_modal.php';
@@ -76,11 +82,15 @@ $( document ).ready(function() {
 				$('#usuario_apellido').val(response["user_last_name"]);
 				$('#usuario_email').val(response["user_email"]);
 				$('#usuario_telefono').val(response["user_phone"]);
+				$('#usuario_titulo').val(response["user_title"]);
+				$('#usuario_disciplina').val(response["user_discipline"]);
 				fillFotos(response["user_image_path"]);
 				$("label[for='usuario_nombre']").addClass('active');
 				$("label[for='usuario_apellido']").addClass('active');
 				$("label[for='usuario_email']").addClass('active');
 				$("label[for='usuario_telefono']").addClass('active');
+				$("label[for='usuario_titulo']").addClass('active');
+				$("label[for='usuario_disciplina']").addClass('active');
 			},
 			error: function(e){
 				alert("error");
