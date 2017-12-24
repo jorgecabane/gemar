@@ -7,8 +7,19 @@
         <!-- Accion -->
         <div id="card-alert" class="card cyan">
             <div class="card-content white-text">
-                <p id="reporte_modal_accion" reporteid="" eventoid="">Editar Reporte</p>
+                <p id="reporte_modal_accion" rehacer="" reporteid="" eventoid="">Editar Reporte</p>
             </div>
+            <?php
+	        require_once dirname(dirname(__FILE__))."/../classes/Login.php";
+	        
+	        $login = new Login();
+  			if ($login->isAdminUser() == false) {
+	  			echo '<button class="center btn waves-effect waves-light left pink lighten-1" id="vistaPrevia">
+						<i class="mdi-image-remove-red-eye left"></i>			  	
+						Vista Previa
+			  		  </button>';
+  			}
+  			?>
         </div>
         <br>
 
@@ -81,7 +92,7 @@
         <div class="input-field row">
             <textarea id="reporte_conclusiones" class="materialize-textarea"></textarea>
             <label for="reporte_conclusiones">Conclusiones del Proyecto</label>
-        </div>
+        </div>       
 
     </div>
 
@@ -132,6 +143,19 @@ $(document).ready(function (e) {
 		$(this).parent().parent().remove();
 	});
 
+	$(document).on('click', '#cancelReporte', function(){
+		$('.insertEquipo').remove();
+		$('.insertAsistente').remove();
+		$('.insertDocumento').remove();
+		$('.insertPendiente').remove();
+		$('.insertFotos').remove();
+	});
+
+	$('#vistaPrevia').click( function(e){
+		e.preventDefault();
+		vistaPrevia();
+	});
+
 	$('#saveReporte').click( function(e){
 		e.preventDefault();
 
@@ -169,14 +193,16 @@ $(document).ready(function (e) {
 
 			// save insert Equipo
 			$.each( $('.insertEquipo') , function( key, value ) {
-			  	var equipo = {
-				  	reporte: reporteid,
-				  	tag: $(this).find('.equipo_tag').val(),
-				  	descripcion: $(this).find('.equipo_descripcion').val(),
-				  	proveedor: $(this).find('.equipo_proveedor').val(),
-				  	comentario: $(this).find('.equipo_comentario').val()
-			  	};
-
+			  	
+		  		var equipo = {
+					  	reporte: reporteid,
+					  	equipoid: $(this).attr('equipoId'),
+					  	tag: $(this).find('.equipo_tag').val(),
+					  	descripcion: $(this).find('.equipo_descripcion').val(),
+					  	proveedor: $(this).find('.equipo_proveedor').val(),
+					  	comentario: $(this).find('.equipo_comentario').val()
+				  	};
+				
 				$.ajax({
 					url: "query/insert_equipo.php", 
 					type: "POST",            
@@ -192,6 +218,7 @@ $(document).ready(function (e) {
 			$.each( $('.insertAsistente') , function( key, value ) {
 			  	var asistente = {
 				  	reporte: reporteid,
+				  	asistenteid: $(this).attr('asistenteId'),
 			  		nombre: $(this).find('.asistente_nombre').val(),
 				  	company: $(this).find('.asistente_company').val(),
 				  	cargo: $(this).find('.asistente_cargo').val()
@@ -212,6 +239,7 @@ $(document).ready(function (e) {
 			$.each( $('.insertDocumento') , function( key, value ) {
 			  	var documento = {
 				  	reporte: reporteid,
+				  	documentoid: $(this).attr('documentoId'),
 			  		numero: $(this).find('.documento_numero').val(),
 			  		nombre: $(this).find('.documento_nombre').val(),
 				  	revision: $(this).find('.documento_revision').val(),
@@ -233,6 +261,7 @@ $(document).ready(function (e) {
 			$.each( $('.insertPendiente') , function( key, value ) {
 			  	var pendiente = {
 				  	reporte: reporteid,
+				  	pendienteid: $(this).attr('pendienteId'),
 			  		numero: $(this).find('.pendiente_numero').val(),
 			  		descripcion: $(this).find('.pendiente_descripcion').val(),
 				  	pendiente: $(this).find('.pendiente_pendiente').val(),
@@ -258,36 +287,39 @@ $(document).ready(function (e) {
 				//save img first, so you can save the full path to db too
 				send = new FormData();
 				send.append( 'pictures', $( this ).find('.dropify')[0].files[0] );
+				send.append( 'folder', "reportes" );
 
-				$.ajax({
-					url: "ajax/save_img.php", // Url to which the request is send
-					type: "POST",             // Type of request to be send, called as method
-					data: send, 			  // Data sent to server, a set of key/value pairs (i.e. form fields and values)
-					contentType: false,       // The content type used when sending data to the server.
-					cache: false,             // To unable request pages to be cached
-					processData:false,        // To send DOMDocument or non processed data file it is set to false
-					success: function(imgpath)   // A function to be called if request succeeds
-					{
-
-						var foto = {
-				  			reporte: reporteid,
-				  			imagenpath: imgpath,
-					  		elemento: herefoto.find('.fotografias_elemento').val(),
-					  		observaciones: herefoto.find('.fotografias_observaciones').val()
-				  		};
-
-						$.ajax({
-							url: "query/insert_fotos.php", 
-							type: "POST",            
-							data: {"foto": foto},       
-							success: function(fotoid)   
-							{
-								console.log(fotoid);
-							}
-						});
-
-					}
-				});
+				if(ifrehacer == 0){
+					$.ajax({
+						url: "ajax/save_img.php", // Url to which the request is send
+						type: "POST",             // Type of request to be send, called as method
+						data: send, 			  // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+						contentType: false,       // The content type used when sending data to the server.
+						cache: false,             // To unable request pages to be cached
+						processData:false,        // To send DOMDocument or non processed data file it is set to false
+						success: function(imgpath)   // A function to be called if request succeeds
+						{
+	
+							var foto = {
+					  			reporte: reporteid,
+					  			imagenpath: imgpath,
+						  		elemento: herefoto.find('.fotografias_elemento').val(),
+						  		observaciones: herefoto.find('.fotografias_observaciones').val()
+					  		};
+	
+							$.ajax({
+								url: "query/insert_fotos.php", 
+								type: "POST",            
+								data: {"foto": foto},       
+								success: function(fotoid)   
+								{
+									console.log(fotoid);
+								}
+							});
+	
+						}
+					});
+				}
 
 			});
 
@@ -311,7 +343,8 @@ $(document).ready(function (e) {
 
 		send = new FormData();
 		send.append( 'pictures', $( this ).find('.dropify')[0].files[0] );
-
+		send.append( 'folder', "reportes" );
+		
 		$.ajax({
 			url: "ajax/save_img.php", // Url to which the request is send
 			type: "POST",             // Type of request to be send, called as method
@@ -490,6 +523,179 @@ $(document).ready(function (e) {
 		    case 5:
 		        appendFotos();
 		}
+	};
+
+	function vistaPrevia(){
+		
+		var reporte = {
+		rehacer: 0,
+		reporteid: $('#reporte_modal_accion').attr("reporteid"),
+		evento: $('#reporte_modal_accion').attr("eventoid"),
+		resumen: $('#reporte_resumen').val(),
+		horario : $('#reporte_horario').val(),
+		inspeccion : $('#reporte_inspeccion').val(),
+		avance : $('#reporte_avance').val(),
+		fechacierre : new Date($('#reporte_fechacierre').val()).toISOString().slice(0, 10),
+		comentarios : $('#reporte_comentarios').val(),
+		alertas : $('#reporte_alertas').val(),
+		alcances : $('#reporte_alcances').val(),
+		conclusiones : $('#reporte_conclusiones').val(),
+		subcontratista: $('#reporte_subcontratista').val()
+		};
+
+		$.ajax({
+			url: "query/insert_reporte.php", // Url to which the request is send
+			type: "POST",             // Type of request to be send, called as method
+			data: {"reporte": reporte},       // To send DOMDocument or non processed data file it is set to false
+
+		}).done(function( reporteid ) {
+			//data has the recent inserted report id
+			var reporteid = reporteid;
+
+			// save insert Equipo
+			$.each( $('.insertEquipo') , function( key, value ) {
+			  	
+		  		var equipo = {
+					  	reporte: reporteid,
+					  	equipoid: $(this).attr('equipoId'),
+					  	tag: $(this).find('.equipo_tag').val(),
+					  	descripcion: $(this).find('.equipo_descripcion').val(),
+					  	proveedor: $(this).find('.equipo_proveedor').val(),
+					  	comentario: $(this).find('.equipo_comentario').val()
+				  	};
+				
+				$.ajax({
+					url: "query/insert_equipo.php", 
+					type: "POST",            
+					data: {"equipo": equipo},       
+					success: function(equipoid)   
+					{
+						console.log(equipoid);
+					}
+				});
+			});
+
+			// save insert Asistente
+			$.each( $('.insertAsistente') , function( key, value ) {
+			  	var asistente = {
+				  	reporte: reporteid,
+				  	asistenteid: $(this).attr('asistenteId'),
+			  		nombre: $(this).find('.asistente_nombre').val(),
+				  	company: $(this).find('.asistente_company').val(),
+				  	cargo: $(this).find('.asistente_cargo').val()
+			  	};
+
+				$.ajax({
+					url: "query/insert_asistente.php", 
+					type: "POST",            
+					data: {"asistentes": asistente},       
+					success: function(asistenteid)   
+					{
+						console.log(asistenteid);
+					}
+				});
+			});
+
+			// save insert Documento
+			$.each( $('.insertDocumento') , function( key, value ) {
+			  	var documento = {
+				  	reporte: reporteid,
+				  	documentoid: $(this).attr('documentoId'),
+			  		numero: $(this).find('.documento_numero').val(),
+			  		nombre: $(this).find('.documento_nombre').val(),
+				  	revision: $(this).find('.documento_revision').val(),
+				  	status: $(this).find('.documento_status').val()
+			  	};
+
+				$.ajax({
+					url: "query/insert_documento.php", 
+					type: "POST",            
+					data: {"documento": documento},       
+					success: function(documentoid)   
+					{
+						console.log(documentoid);
+					}
+				});
+			});
+
+			// save insert Pendiente
+			$.each( $('.insertPendiente') , function( key, value ) {
+			  	var pendiente = {
+				  	reporte: reporteid,
+				  	pendienteid: $(this).attr('pendienteId'),
+			  		numero: $(this).find('.pendiente_numero').val(),
+			  		descripcion: $(this).find('.pendiente_descripcion').val(),
+				  	pendiente: $(this).find('.pendiente_pendiente').val(),
+				  	comentarios: $(this).find('.pendiente_comentarios').val()
+			  	};
+
+				$.ajax({
+					url: "query/insert_pendiente.php", 
+					type: "POST",            
+					data: {"pendientes":pendiente},       
+					success: function(pendienteid)   
+					{
+						console.log(pendienteid);
+					}
+				});
+			});
+
+			// save insert Fotos
+			$.each( $('.insertFotos') , function( key, value ) {
+
+
+				var herefoto = $(this);
+				//save img first, so you can save the full path to db too
+				send = new FormData();
+				send.append( 'pictures', $( this ).find('.dropify')[0].files[0] );
+				send.append( 'folder', "reportes" );
+
+				if(ifrehacer == 0){
+					$.ajax({
+						url: "ajax/save_img.php", // Url to which the request is send
+						type: "POST",             // Type of request to be send, called as method
+						data: send, 			  // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+						contentType: false,       // The content type used when sending data to the server.
+						cache: false,             // To unable request pages to be cached
+						processData:false,        // To send DOMDocument or non processed data file it is set to false
+						success: function(imgpath)   // A function to be called if request succeeds
+						{
+	
+							var foto = {
+					  			reporte: reporteid,
+					  			imagenpath: imgpath,
+						  		elemento: herefoto.find('.fotografias_elemento').val(),
+						  		observaciones: herefoto.find('.fotografias_observaciones').val()
+					  		};
+	
+							$.ajax({
+								url: "query/insert_fotos.php", 
+								type: "POST",            
+								data: {"foto": foto},       
+								success: function(fotoid)   
+								{
+									console.log(fotoid);
+								}
+							});
+	
+						}
+					});
+				}
+
+			});
+
+		$('#reportemodal').closeModal();
+		Materialize.toast("Generando vista previa", 3000);
+		//end the add extra (ajax done)
+
+	    $('#downloadreport').attr("idreporte", reporteid);
+	    $('#generatepdfmodal').find('.modal-content').html('<iframe src="ajax/generate_pdf.php?idreporte='+ reporteid +'&borrar=1" style="width: 100%; height: 100%; border: none; margin: 0; padding: 0; display: block;"></iframe>');
+	    $('#generatepdfmodal').openModal();
+	    
+	  	});
+		
+		
+		
 	};
 
 

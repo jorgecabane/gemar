@@ -2,10 +2,11 @@
 
 require_once dirname(__FILE__) . "/bulletproof/src/bulletproof.php";
 
+	
 $image = new Bulletproof\Image($_FILES);
 
-
-$image->setLocation(__DIR__ . "/../images/reportes");
+$path = $_REQUEST["folder"];
+$image->setLocation(__DIR__ . "/../images/".$path);
 
 if($image["pictures"]){
     $upload = $image->upload(); 

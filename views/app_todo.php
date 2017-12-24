@@ -48,9 +48,7 @@
   </div>
 </div>
 <?php   
-  if($admin){
-    include_once dirname(__FILE__) . '/admin/generatepdf_modal.php';
-  }
+  include_once dirname(__FILE__) . '/admin/generatepdf_modal.php';
 
   include_once dirname(__FILE__) . '/admin/reporte_modal.php';
 ?> 
@@ -92,7 +90,7 @@
       Button: false,
       SelectedMonth: (new Date().getMonth()+1) +'/' + new Date().getFullYear(),
       OnAfterChooseMonth: function(selectedDate) {
-        //console.log((selectedDate.getMonth()+1));
+        console.log((selectedDate.getMonth()+1));
         var month = (selectedDate.getMonth()+1);
         var year = selectedDate.getFullYear();
         populatereportes(month, year);
@@ -130,7 +128,6 @@
         });
       }
     });
-
 
   });
 </script>

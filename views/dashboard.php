@@ -18,7 +18,7 @@
 	content="Materialize is a Material Design Admin Template,It's modern, responsive and based on Material Design by Google. ">
 <meta name="keywords"
 	content="materialize, admin template, dashboard template, flat admin template, responsive admin template,">
-<title>Gemar Admin</title>
+<title>Gemar</title>
 
 <!-- Favicons-->
 <link rel="icon" href="images/favicon/favicon-32x32.png" sizes="32x32">
@@ -68,18 +68,27 @@
 		<div class="navbar-fixed">
 			<nav class="navbar-color">
 				<div class="nav-wrapper">
-					<ul class="left">
-						<li><h1 class="logo-wrapper">
+					<ul class="left col s2">
+						<li><h1 class="logo-wrapper" >
 								<a href="index.php" class="brand-logo darken-1"><img
-									src="images/materialize-logo.png" alt="materialize logo"></a> <span
-									class="logo-text">Materialize</span>
-							</h1></li>
+									src="images/materialize-logo.png" alt="logo"></a> <span
+									class="logo-text">Gemar Ingeniería</span>
+							</h1>
 					</ul>
 					<div class="header-search-wrapper hide-on-med-and-down">
 						<i class="mdi-action-search"></i> <input type="text" name="Search"
 							class="header-search-input z-depth-2"
 							placeholder="Explorar" />
 					</div>
+					<?php
+						include_once dirname(__FILE__).'/../query/get_notifications.php'; // archivo de conexion local
+						if ($login->isAdminUser() == true) {
+							$notifications = getNotifications();
+						}
+						else{
+							$notifications = getNotifications($_SESSION['user_id']);
+						}
+					?>
 					<ul class="right hide-on-med-and-down">
 						<li><a href="javascript:void(0);"
 							class="waves-effect waves-block waves-light toggle-fullscreen"><i
@@ -88,35 +97,36 @@
 							class="waves-effect waves-block waves-light notification-button"
 							data-activates="notifications-dropdown"><i
 								class="mdi-social-notifications"><small
-									class="notification-badge">5</small></i> </a></li>
+									class="notification-badge"><?php echo count($notifications); ?></small></i> </a></li>
 						<li><a href="index.php?logout"
 							class="waves-effect waves-block waves-light"><i
 								class="mdi-action-settings-power"></i></a></li>
 					</ul>
-
+			
 					<!-- notifications-dropdown -->
 					<ul id="notifications-dropdown" class="dropdown-content">
 						<li>
 							<h5>
-								NOTIFICATIONS <span class="new badge">5</span>
+								NOTIFICATIONS <span class="new badge"><?php echo count($notifications); ?></span>
 							</h5>
 						</li>
 						<li class="divider"></li>
-						<li><a href="#!"><i class="mdi-action-add-shopping-cart"></i> A
-								new order has been placed!</a> <time class="media-meta"
-								datetime="2015-06-12T20:50:48+08:00">2 hours ago</time></li>
-						<li><a href="#!"><i class="mdi-action-stars"></i> Completed the
-								task</a> <time class="media-meta"
-								datetime="2015-06-12T20:50:48+08:00">3 days ago</time></li>
-						<li><a href="#!"><i class="mdi-action-settings"></i> Settings
-								updated</a> <time class="media-meta"
-								datetime="2015-06-12T20:50:48+08:00">4 days ago</time></li>
-						<li><a href="#!"><i class="mdi-editor-insert-invitation"></i>
-								Director meeting started</a> <time class="media-meta"
-								datetime="2015-06-12T20:50:48+08:00">6 days ago</time></li>
-						<li><a href="#!"><i class="mdi-action-trending-up"></i> Generate
-								monthly report</a> <time class="media-meta"
-								datetime="2015-06-12T20:50:48+08:00">1 week ago</time></li>
+						<?php
+					
+						foreach($notifications as $notification){
+							if ($login->isAdminUser() == true){
+								$time = time-strtotime($notification->fecha);
+								echo '<li>'.$notification->user_first_name.' '.$notification->user_last_name.
+								' entregó un reporte para '.$notification->nombre_proyecto.
+								'</br><time class="media-meta">'.$notification->fecha.'</time></li>';
+							}
+							else{
+								$fecha = explode(" ",$notification->HoraTermino)[0];
+								echo '<li>Se te ha asignado el evento '.$notification->nombre_proyecto.' con fecha para:'.
+								'</br><time class="media-meta">'.$fecha.'</time></li>';
+							}
+						}						
+						?>
 					</ul>
 				</div>
 			</nav>

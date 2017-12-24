@@ -4,15 +4,26 @@ require_once dirname(__FILE__) . '/conexion.php';
 
 function insertDocumento($documento) {
     global $con;
-
+	
+    $documentoid = $documento['documentoid'];
     $numero = $documento['numero'];
     $revision = $documento['revision'];
     $nombre = $documento['nombre'];
     $status = $documento['status'];
     $reporte = $documento['reporte'];
 
-    $query = "INSERT INTO `gemar`.`documentos`  VALUES (NULL, '$numero', '$revision', '$nombre', '$status', '$reporte')";
-  
+    if(is_null($documentoid)){
+    	$query = "INSERT INTO `gemar`.`documentos`  VALUES (NULL, '$numero', '$revision', '$nombre', '$status', '$reporte')";
+    }
+    else{
+    	$query = "UPDATE documentos SET
+		    	numero='$numero',
+		    	revision='$revision',
+		    	nombre='$nombre',
+		    	status='$status'
+		    	WHERE documentos_id = '$documentoid'";
+    }
+    
     if ($result = $con->query($query)) {
         return $con->insert_id;
      } 
