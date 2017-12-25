@@ -12,17 +12,29 @@ function updateUser($user) {
 	$phone = $user['user_phone'];
 	$title = $user['user_title'];
 	$discipline = $user['user_discipline'];
-	$path = $user['user_image_path'];
+	if(isset($user['user_image_path'])){
+		$path = $user['user_image_path'];
 
-	$query = "UPDATE users SET
-			user_first_name ='$first_name',
-			user_last_name ='$last_name',
-			user_email='$email',
-			user_phone='$phone',
-			user_title='$title',
-			user_discipline='$discipline',
-			user_image_path='$path'
-			WHERE user_id = '$userid'";
+		$query = "UPDATE users SET
+				user_first_name ='$first_name',
+				user_last_name ='$last_name',
+				user_email='$email',
+				user_phone='$phone',
+				user_title='$title',
+				user_discipline='$discipline',
+				user_image_path='$path'
+				WHERE user_id = '$userid'";
+	}
+	else{
+		$query = "UPDATE users SET
+		user_first_name ='$first_name',
+		user_last_name ='$last_name',
+		user_email='$email',
+		user_phone='$phone',
+		user_title='$title',
+		user_discipline='$discipline'
+		WHERE user_id = '$userid'";
+	}
 
 	if ($result = $con->query($query)) {
 		return $reporteid;
