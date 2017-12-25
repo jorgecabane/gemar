@@ -20,8 +20,14 @@
 		</li>
 		<li class="bold sidebarlink">
 			<a class="waves-effect waves-light modal-trigger modal-profile-trigger" href="#modal_hojas">
-				<i class="mdi-content-content-paste"></i>
+				<i class="material-icons">timer</i>
 				Hojas de Tiempo
+			</a>
+		</li>		
+		<li class="bold sidebarlink">
+			<a href="#" what="views/admin/logs.php" where="content" class="load-content">
+				<i class="material-icons">timeline</i>
+				Logs
 			</a>
 		</li>	
 		<li class="bold sidebarlink">

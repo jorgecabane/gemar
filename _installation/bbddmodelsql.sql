@@ -295,6 +295,77 @@ CREATE TABLE IF NOT EXISTS `gemar`.`fotografias` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `gemar`.`enviado`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `gemar`.`enviado` ;
+
+CREATE TABLE IF NOT EXISTS `gemar`.`enviado` (
+  `enviado_id` INT NOT NULL,
+  `users_user_id` INT(11) NOT NULL,
+  `fecha` DATETIME NULL,
+  `reporte_reporte_id` INT NOT NULL,
+  PRIMARY KEY (`enviado_id`, `users_user_id`),
+  INDEX `fk_enviado_reporte1_idx` (`reporte_reporte_id` ASC),
+  INDEX `fk_enviado_users1_idx` (`users_user_id` ASC),
+  CONSTRAINT `fk_enviado_reporte1`
+    FOREIGN KEY (`reporte_reporte_id`)
+    REFERENCES `gemar`.`reporte` (`reporte_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_enviado_users1`
+    FOREIGN KEY (`users_user_id`)
+    REFERENCES `gemar`.`users` (`user_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `gemar`.`inspeccion`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `gemar`.`inspeccion` ;
+
+CREATE TABLE IF NOT EXISTS `gemar`.`inspeccion` (
+  `inspeccion_id` INT NOT NULL,
+  `fecha` DATETIME NULL,
+  `reporte_reporte_id` INT NOT NULL,
+  PRIMARY KEY (`inspeccion_id`, `reporte_reporte_id`),
+  INDEX `fk_inspeccion_reporte1_idx` (`reporte_reporte_id` ASC),
+  CONSTRAINT `fk_inspeccion_reporte1`
+    FOREIGN KEY (`reporte_reporte_id`)
+    REFERENCES `gemar`.`reporte` (`reporte_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `gemar`.`logs`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `gemar`.`logs` ;
+
+CREATE TABLE IF NOT EXISTS `gemar`.`logs` (
+  `logs_id` INT NOT NULL,
+  `activador` VARCHAR(255) NULL,
+  `informe` VARCHAR(255) NULL,
+  `inspector` VARCHAR(255) NULL,
+  `comprador` VARCHAR(255) NULL,
+  `proyecto` VARCHAR(255) NULL,
+  `po` VARCHAR(255) NULL,
+  `descripcion` VARCHAR(255) NULL,
+  `proveedor` VARCHAR(255) NULL,
+  `inicio` TIMESTAMP NULL,
+  `dias` INT NULL,
+  `termino` TIMESTAMP NULL,
+  `nivel` INT NULL,
+  `avance` VARCHAR(45) NULL,
+  `fecha` TIMESTAMP NULL,
+  `comentaroi` LONGTEXT NULL,
+  PRIMARY KEY (`logs_id`))
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
@@ -304,7 +375,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `gemar`;
-INSERT INTO `gemar`.`users` (`user_id`, `user_name`, `user_password_hash`, `user_email`, `user_role`, `user_phone`, `user_region`, `user_title`, `user_discipline`, `user_image_path`, `user_color_tag`, `user_first_name`, `user_last_name`) VALUES (1, 'admin', '$10$uab8Rwow0PpYW4r18B/kCurIFiibqorPr4bX0eKVrlgHBgez4EI5K', 'admin@admin.cl', 1, '123123', 'asd', 'ads', 'asd', 'asd.jpg', NULL, 'Admin', 'admin');
+INSERT INTO `gemar`.`users` (`user_id`, `user_name`, `user_password_hash`, `user_email`, `user_role`, `user_phone`, `user_region`, `user_title`, `user_discipline`, `user_image_path`, `user_color_tag`, `user_first_name`, `user_last_name`) VALUES (1, 'admin', '$2y$10$uab8Rwow0PpYW4r18B/kCurIFiibqorPr4bX0eKVrlgHBgez4EI5K', 'admin@admin.cl', 1, '123123', 'asd', 'ads', 'asd', 'asd.jpg', NULL, 'Admin', 'admin');
 
 COMMIT;
 
