@@ -67,45 +67,65 @@ $( document ).ready(function() {
 		e.preventDefault();
 
 		//save img first, so you can save the full path to db too
-		
-		if($('.userFoto').find('.dropify')[0].files[0] != null){
-			send = new FormData();
-			send.append( 'pictures', $('.userFoto').find('.dropify')[0].files[0] );
-			send.append( 'folder', "users" );
-			
-			$.ajax({
-				url: "ajax/save_img.php", // Url to which the request is send
-				type: "POST",             // Type of request to be send, called as method
-				data: send, 			  // Data sent to server, a set of key/value pairs (i.e. form fields and values)
-				contentType: false,       // The content type used when sending data to the server.
-				cache: false,             // To unable request pages to be cached
-				processData:false,        // To send DOMDocument or non processed data file it is set to false
-				success: function(imgpath)   // A function to be called if request succeeds
-				{
-			  		imagenpath: imgpath
-
-			  		var user = {
-							userid: $('#editUserModal').attr("userid"),
-							user_first_name: $('#usuario_nombre').val(),
-							user_last_name: $('#usuario_apellido').val(),
-							user_email: $('#usuario_email').val(),
-							user_phone: $('#usuario_telefono').val(),
-							user_title: $('#usuario_titulo').val(),
-							user_discipline: $('#usuario_disciplina').val(),
-							user_image_path: imgpath
-						};
-					
-					$.ajax({
-						url: "query/update_user.php", 
-						type: "POST",            
-						data: {"user": user}
-					}).done(function() {
-						$('#content').load('views/user_profile_page.php?id="'+user["userid"]+'"');
-					});
-
-				}
-			});
-			
+		if($('.dropify-render').is(':empty') == false){
+			if($('.userFoto').find('.dropify')[0].files[0] != null){
+				send = new FormData();
+				send.append( 'pictures', $('.userFoto').find('.dropify')[0].files[0] );
+				send.append( 'folder', "users" );
+				
+				$.ajax({
+					url: "ajax/save_img.php", // Url to which the request is send
+					type: "POST",             // Type of request to be send, called as method
+					data: send, 			  // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+					contentType: false,       // The content type used when sending data to the server.
+					cache: false,             // To unable request pages to be cached
+					processData:false,        // To send DOMDocument or non processed data file it is set to false
+					success: function(imgpath)   // A function to be called if request succeeds
+					{
+				  		imagenpath: imgpath
+	
+				  		var user = {
+								userid: $('#editUserModal').attr("userid"),
+								user_first_name: $('#usuario_nombre').val(),
+								user_last_name: $('#usuario_apellido').val(),
+								user_email: $('#usuario_email').val(),
+								user_phone: $('#usuario_telefono').val(),
+								user_title: $('#usuario_titulo').val(),
+								user_discipline: $('#usuario_disciplina').val(),
+								user_image_path: imgpath
+							};
+						
+						$.ajax({
+							url: "query/update_user.php", 
+							type: "POST",            
+							data: {"user": user}
+						}).done(function() {
+							$('#content').load('views/user_profile_page.php?id="'+user["userid"]+'"');
+						});
+	
+					}
+				});
+				
+			}
+			else{
+				var user = {
+						userid: $('#editUserModal').attr("userid"),
+						user_first_name: $('#usuario_nombre').val(),
+						user_last_name: $('#usuario_apellido').val(),
+						user_email: $('#usuario_email').val(),
+						user_phone: $('#usuario_telefono').val(),
+						user_title: $('#usuario_titulo').val(),
+						user_discipline: $('#usuario_disciplina').val()
+					};
+				
+				$.ajax({
+					url: "query/update_user.php", 
+					type: "POST",            
+					data: {"user": user}
+				}).done(function() {
+					$('#content').load('views/user_profile_page.php?id="'+user["userid"]+'"');
+				});
+			}
 		}
 		else{
 			var user = {
