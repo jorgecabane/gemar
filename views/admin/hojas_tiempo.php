@@ -1,10 +1,9 @@
 <?php
   session_start();
   require_once dirname(__FILE__) . "/../../include/lib.php";
-  if($_SESSION['user_role'] == 1){
-    $userid = $_REQUEST['id'];
-    $name = $_REQUEST['name'];
-    $lastname = $_REQUEST['lastname'];
+  $userid = $_REQUEST['id'];
+  $name = $_REQUEST['name'];
+  $lastname = $_REQUEST['lastname'];
 ?>
 
 <link href="js/plugins/monthpicker/MonthPicker.css" type="text/css" rel="stylesheet"
@@ -45,9 +44,6 @@
     </div>
   </div>
 </div>
-<?php   
-  }
-?> 
 
 
 <script type="text/javascript" src="js/plugins/jquery-ui.js"></script> 
@@ -92,9 +88,6 @@ $( document ).ready(function() {
   var fecha = $('#weekPicker').val();
   weekchange(fecha, userid);
 
-  $('#displayDate').on("change", function(){
-	console.log("cambio");
-	});
  
 });
 </script>

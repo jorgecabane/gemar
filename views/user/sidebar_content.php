@@ -26,3 +26,12 @@
 	</a>
 </li>
 
+<?php
+	$user = get_users($_SESSION['userid'])[0];
+	echo '<li class="bold sidebarlink">
+			<a class="waves-effect waves-light load-content" what="views/admin/hojas_tiempo.php?id='.$user->user_id.'&name='.$user->user_first_name.'&lastname='.$user->user_last_name.'" where="content">
+				<i class="material-icons">timer</i>
+					Hojas de Tiempo
+			</a>
+		</li>';
+?>

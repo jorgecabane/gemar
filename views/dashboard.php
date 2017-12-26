@@ -181,6 +181,7 @@
 					    include("admin/sidebar_content.php");
 					    
 					} else {
+						include_once dirname(__FILE__).'/../query/get_users.php';
 					    include("user/sidebar_content.php");
 					}
 					?>
