@@ -18,8 +18,12 @@
       <ul id="task-card" class="collection with-header">
           <li class="collection-header cyan">
               <div class="row">
-                <h4 class="col task-card-title">Hoja de Tiempo - <?php echo $name.' '.$lastname;?></h4>
-
+	          	<div class="col s12 left-align">
+	                <h4 class="col task-card-title">Hoja de Tiempo - <?php echo $name.' '.$lastname;?></h4>
+                </div>
+                <div class="col s2 left-align">
+					<h5 class="col task-card-title">Semana</h5>
+				</div>
                 <div class="header-search-wrapper white-text">
                   <i class="mdi-action-today"></i>
                   <input id="weekPicker" type="text" class="header-search-input"/>
@@ -28,6 +32,10 @@
               </div>
           </li>
       </ul>
+      <div class="row">
+      	<div class="col s12">
+      	</div>
+      </div>
       <div id="appendHojas">
 
 
@@ -46,13 +54,17 @@
 <script type="text/javascript" src="js/plugins/weekpicker/src/weekPicker.js"></script>
 <script>
 $( document ).ready(function() {
-  function weekchange(startDate, endDate){
+
+  var userid = <?php echo $userid;?>;
+  
+  function weekchange(fecha, userid){
+	
     jQuery.ajax({
       method: "POST",
       url: "ajax/populate_hojas.php",
       data: {
-        'start': startDate,
-        'end': endDate
+        'fecha': fecha,
+        'userid': userid
       },
       error: function(response) {
         //console.log(response);
@@ -77,11 +89,12 @@ $( document ).ready(function() {
   var result = getWeekNumber(new Date());
 
   $('#weekPicker').val(result[0]+'-'+result[1]);
+  var fecha = $('#weekPicker').val();
+  weekchange(fecha, userid);
 
-  //populate hojas de tiempo
-  var datepickerValue = new Date();
-  startDate = new Date(datepickerValue.getFullYear(), datepickerValue.getMonth(), datepickerValue.getDate() - datepickerValue.getDay());
-  endDate = new Date(datepickerValue.getFullYear(), datepickerValue.getMonth(), datepickerValue.getDate() - datepickerValue.getDay() + 6);
-  weekchange(startDate, endDate);
+  $('#displayDate').on("change", function(){
+	console.log("cambio");
+	});
+ 
 });
 </script>

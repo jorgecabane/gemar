@@ -289,7 +289,7 @@ $(document).ready(function (e) {
 				send.append( 'pictures', $( this ).find('.dropify')[0].files[0] );
 				send.append( 'folder', "reportes" );
 
-				if(ifrehacer == 0){
+				if($(this).attr("rehacer") == 0){
 					$.ajax({
 						url: "ajax/save_img.php", // Url to which the request is send
 						type: "POST",             // Type of request to be send, called as method
@@ -475,7 +475,7 @@ $(document).ready(function (e) {
 	}
 	function appendFotos(){
 
-		var html = 	'<div class="insertFotos">' +
+		var html = 	'<div class="insertFotos" rehacer="0">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Registro Fotográfico</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<form action="" method="post" enctype="multipart/form-data" class="imagesubmitform center">'+
         			'<div class="progress loadingbarform" style="display:none">' +
@@ -650,37 +650,35 @@ $(document).ready(function (e) {
 				send.append( 'pictures', $( this ).find('.dropify')[0].files[0] );
 				send.append( 'folder', "reportes" );
 
-				if(ifrehacer == 0){
-					$.ajax({
-						url: "ajax/save_img.php", // Url to which the request is send
-						type: "POST",             // Type of request to be send, called as method
-						data: send, 			  // Data sent to server, a set of key/value pairs (i.e. form fields and values)
-						contentType: false,       // The content type used when sending data to the server.
-						cache: false,             // To unable request pages to be cached
-						processData:false,        // To send DOMDocument or non processed data file it is set to false
-						success: function(imgpath)   // A function to be called if request succeeds
-						{
-	
-							var foto = {
-					  			reporte: reporteid,
-					  			imagenpath: imgpath,
-						  		elemento: herefoto.find('.fotografias_elemento').val(),
-						  		observaciones: herefoto.find('.fotografias_observaciones').val()
-					  		};
-	
-							$.ajax({
-								url: "query/insert_fotos.php", 
-								type: "POST",            
-								data: {"foto": foto},       
-								success: function(fotoid)   
-								{
-									console.log(fotoid);
-								}
-							});
-	
-						}
-					});
-				}
+				$.ajax({
+					url: "ajax/save_img.php", // Url to which the request is send
+					type: "POST",             // Type of request to be send, called as method
+					data: send, 			  // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+					contentType: false,       // The content type used when sending data to the server.
+					cache: false,             // To unable request pages to be cached
+					processData:false,        // To send DOMDocument or non processed data file it is set to false
+					success: function(imgpath)   // A function to be called if request succeeds
+					{
+
+						var foto = {
+				  			reporte: reporteid,
+				  			imagenpath: imgpath,
+					  		elemento: herefoto.find('.fotografias_elemento').val(),
+					  		observaciones: herefoto.find('.fotografias_observaciones').val()
+				  		};
+
+						$.ajax({
+							url: "query/insert_fotos.php", 
+							type: "POST",            
+							data: {"foto": foto},       
+							success: function(fotoid)   
+							{
+								console.log(fotoid);
+							}
+						});
+
+					}
+				});
 
 			});
 
