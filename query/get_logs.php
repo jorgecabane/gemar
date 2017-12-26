@@ -7,13 +7,9 @@ function get_logs($start, $end) {
 	$array = array();
 
   
-        $query = "SELECT *
-            FROM evento
-            INNER JOIN users on (users.user_id = evento.users_user_id) 
-            INNER JOIN reporte on (evento.evento_id = reporte.evento_evento_id )
-            INNER JOIN centro on (centro.centro_id = evento.centro_centro_id)
-            WHERE reporte.status IN (0,2) AND MONTH(reporte.fecha) = $month AND YEAR(reporte.fecha) = $year 
-            ORDER BY evento.criticidad DESC, evento.HoraInicio DESC, reporte.version DESC";
+        $query = "SELECT * FROM logs
+                    WHERE inicio >= $start AND termino <= $end
+                    ORDER BY fecha DESC";
 
     if ($result = $con->query($query)) {
 		while ( $result_row = $result->fetch_object() ) {

@@ -361,7 +361,7 @@ CREATE TABLE IF NOT EXISTS `gemar`.`logs` (
   `nivel` INT NULL,
   `avance` VARCHAR(45) NULL,
   `fecha` TIMESTAMP NULL,
-  `comentaroi` LONGTEXT NULL,
+  `comentario` LONGTEXT NULL,
   PRIMARY KEY (`logs_id`))
 ENGINE = InnoDB;
 
