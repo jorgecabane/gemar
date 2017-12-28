@@ -92,6 +92,12 @@
         <div class="input-field row">
             <textarea id="reporte_conclusiones" class="materialize-textarea"></textarea>
             <label for="reporte_conclusiones">Conclusiones del Proyecto</label>
+        </div>
+        
+        <!-- Fecha de la inspección -->
+        <div class="input-field row">
+            <input type="text" class="datepicker active" id="reporte_fechainspeccion">
+            <label for="fecha_inspeccion active">Fecha de inspección</label>
         </div>       
 
     </div>
@@ -106,6 +112,7 @@
 				<option value="3">Documento Utilizado</option>
 		        <option value="4">Pendiente</option>
 		        <option value="5">Registro Fotográfico</option>
+		        <option value="6">Fecha de inspección</option>
 		    </select>
 
 	       	<button class="center btn waves-effect waves-light left" id="addextra">
@@ -149,6 +156,7 @@ $(document).ready(function (e) {
 		$('.insertDocumento').remove();
 		$('.insertPendiente').remove();
 		$('.insertFotos').remove();
+		$('.insertFecha').remove();
 	});
 
 	$('#vistaPrevia').click( function(e){
@@ -275,6 +283,25 @@ $(document).ready(function (e) {
 					success: function(pendienteid)   
 					{
 						console.log(pendienteid);
+					}
+				});
+			});
+
+			// save fecha inspeccion
+			$.each( $('#reporte_fechainspeccion') , function( key, value ) {
+			  	var inspeccion = {
+				  	reporte: reporteid,
+				  	inspeccionid: $(this).attr('inspeccionId'),
+				  	fecha: new Date($(this).val()).toISOString().slice(0, 10)
+			  	};
+
+				$.ajax({
+					url: "query/insert_fecha.php", 
+					type: "POST",            
+					data: {"inspeccion": inspeccion},       
+					success: function(inspeccionid)   
+					{
+						console.log(inspeccionid);
 					}
 				});
 			});
@@ -473,6 +500,22 @@ $(document).ready(function (e) {
     	});
 
 	}
+	function appendFecha(){
+
+		var html = 	'<div class="insertFecha">' +
+					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Fecha de inspección</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
+					'<div class="input-field row">'+
+            			'<input type="text" class="datepicker active" id="reporte_fechainspeccion">'+
+            			'<label for="fecha_inspeccion active">Fecha de inspección</label>'+
+        			'</div>'+
+       				'</div>';
+
+		
+		$.when($('#reportemodal').find('.modal-content').append(html)).then(function( value ) {
+    		$('#reportemodal').find('.modal-content').animate({scrollTop: $('#reportemodal').find('.modal-content').prop("scrollHeight")}, 'slow');
+    	});
+
+	}
 	function appendFotos(){
 
 		var html = 	'<div class="insertFotos" rehacer="0">' +
@@ -522,6 +565,8 @@ $(document).ready(function (e) {
 		        break;
 		    case 5:
 		        appendFotos();
+		    case 6:
+			    appendFecha();
 		}
 	};
 
