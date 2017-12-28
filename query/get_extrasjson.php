@@ -22,6 +22,10 @@ function getExtras($idreporte = null) {
 	FROM reporte r
 	INNER JOIN pendientes p ON (r.reporte_id = p.reporte_reporte_id)
 	WHERE r.reporte_id = $idreporte";
+	$query_inspeccion = "SELECT r.reporte_id, i.*
+	FROM reporte r
+	INNER JOIN inspeccion i ON (r.reporte_id = i.reporte_reporte_id)
+	WHERE r.reporte_id = $idreporte";
 	$query_fotografias = "SELECT r.reporte_id, f.*
 	FROM reporte r
 	INNER JOIN fotografias f ON (r.reporte_id = f.reporte_reporte_id)
@@ -45,6 +49,11 @@ function getExtras($idreporte = null) {
 	if ($result = $con->query($query_pendientes)) {
 		while ( $result_row = $result->fetch_object() ) {
 			$array["pendientes"][] = $result_row;
+		}
+	}
+	if ($result = $con->query($query_inspeccion)) {
+		while ( $result_row = $result->fetch_object() ) {
+			$array["inspeccion"][] = $result_row;
 		}
 	}
 	if ($result = $con->query($query_fotografias)) {
