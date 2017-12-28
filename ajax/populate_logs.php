@@ -10,7 +10,7 @@ include_once dirname(__FILE__) . '/../query/get_logs.php';
 
       echo '<div class="row">
             <br>
-            <div class="col s10 offset-s1 ">';
+            <div class="col s10">';
 
     $logs = get_logs($start, $end);
     if (count($logs) >= 1){
@@ -47,12 +47,12 @@ include_once dirname(__FILE__) . '/../query/get_logs.php';
                     <td>'.$log->po.'</td>
                     <td>'.$log->descripcion.'</td>
                     <td>'.$log->proveedor.'</td>
-                    <td>'.date("d/m/Y", strtotime($log->inicio)).'</td>
-                    <td>'.date("d/m/Y", strtotime($log->termino)).'</td>
+                    <td>'.date("d/m/Y", (int)$log->inicio).'</td>
+                    <td>'.date("d/m/Y", (int)$log->termino).'</td>
                     <td>'.$log->dias.'</td>
                     <td>'.$log->nivel.'</td>
-                    <td>'.$log->avancw.'</td>
-                    <td>'.date("d/m/Y", strtotime($log->entrega)).'</td>
+                    <td>'.$log->avance.'</td>
+                    <td>'.date("d/m/Y", strtotime($log->fecha)).'</td>
                     <td>'.$log->comentario.'</td>
                   </tr>
                 </tbody>

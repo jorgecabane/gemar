@@ -130,8 +130,8 @@ var setWeekCalendar = function(settingElement) {
             var ywString = datepickerValue.getFullYear() + '-' + weekNum;
             $(this).val(ywString);
             $(this).prev().html(ywString);
-            startDate = new Date(datepickerValue.getFullYear(), datepickerValue.getMonth(), datepickerValue.getDate() - datepickerValue.getDay());
-            endDate = new Date(datepickerValue.getFullYear(), datepickerValue.getMonth(), datepickerValue.getDate() - datepickerValue.getDay() + 6);
+            startDate = new Date(datepickerValue.getFullYear(), datepickerValue.getMonth(), datepickerValue.getDate() - datepickerValue.getDay() +1).getTime();
+            endDate = new Date(datepickerValue.getFullYear(), datepickerValue.getMonth(), datepickerValue.getDate() - datepickerValue.getDay() + 7).getTime();
             selectCurrentWeek();
             $(this).data('datepicker').inline = true;
             globalAdditionalFunction(globalTriggeringElement);
@@ -192,9 +192,16 @@ var convertToWeekPicker = function(targetElement) {
   $('#weekPicker').val(result[0]+'-'+result[1]);
 
   //populate hojas de tiempo
-  var datepickerValue = new Date();
-  startDate = new Date(datepickerValue.getFullYear(), datepickerValue.getMonth(), datepickerValue.getDate() - datepickerValue.getDay()).getTime();
-  endDate = new Date(datepickerValue.getFullYear(), datepickerValue.getMonth(), datepickerValue.getDate() - datepickerValue.getDay() + 6).getTime();
+  var curr = new Date; // get current date
+  var first = curr.getDate() - curr.getDay() +1; // First day is the day of the month - the day of the week
+  var last = first + 6; // last day is the first day + 6
+
+
+  var startDate = new Date(curr.setDate(first)).getTime();
+  var endDate = new Date(curr.setDate(last)).getTime();
+
+console.log(startDate);
+console.log(endDate);
   weekchange(startDate, endDate);
 
 });

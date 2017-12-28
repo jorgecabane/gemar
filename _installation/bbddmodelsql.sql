@@ -355,12 +355,12 @@ CREATE TABLE IF NOT EXISTS `gemar`.`logs` (
   `po` VARCHAR(255) NULL,
   `descripcion` VARCHAR(255) NULL,
   `proveedor` VARCHAR(255) NULL,
-  `inicio` TIMESTAMP NULL,
+  `inicio` BIGINT NULL,
   `dias` INT NULL,
-  `termino` TIMESTAMP NULL,
+  `termino` BIGINT NULL,
   `nivel` INT NULL,
   `avance` VARCHAR(45) NULL,
-  `fecha` TIMESTAMP NULL,
+  `fecha` BIGINT NULL,
   `comentario` LONGTEXT NULL,
   PRIMARY KEY (`logs_id`))
 ENGINE = InnoDB;
