@@ -207,6 +207,7 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
 						$("label[for='reporte_alertas']").addClass('active');
 						$("label[for='reporte_alcances']").addClass('active');
 						$("label[for='reporte_conclusiones']").addClass('active');
+						$("label[for='fecha_inspeccion active']").addClass('active');
 					},
 					error: function(e){
 						alert("error");
@@ -230,6 +231,16 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
 						});
 						response["pendientes"].forEach(function(element){
 							fillPendiente(element);
+						});
+						var countInsp = 0;
+						response["inspeccion"].forEach(function(element){
+							if(countInsp == 0){
+								$('#reporte_fechainspeccion').val(element.fecha);
+								$('#reporte_fechainspeccion').attr("inspeccionId",element.inspeccion_id);
+							}
+							else
+								fillFecha(element);
+							countInsp++;
 						});
 						response["fotografias"].forEach(function(element){
 							fillFotos(element);
@@ -380,6 +391,22 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
             			'<input class="pendiente_comentarios" type="text" value="'+pendiente.comentarios+'">' +
             			'<label class="active">Comentarios</label>' +
        				'</div>' +
+       				'</div>';
+
+		
+		$.when($('#reportemodal').find('.modal-content').append(html)).then(function( value ) {
+    		$('#reportemodal').find('.modal-content').animate({scrollTop: $('#reportemodal').find('.modal-content').prop("scrollHeight")}, 'slow');
+    	});
+
+	}
+	function fillFecha(inspeccion){
+
+		var html = 	'<div class="insertFecha" inspeccionId="'+inspeccion.inspeccion_id+'">' +
+					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Fecha de inspección</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
+					'<div class="input-field row">'+
+            			'<input type="text" class="datepicker active" id="reporte_fechainspeccion" value="'+inspeccion.fecha+'">'+
+            			'<label class="active" for="fecha_inspeccion active">Fecha de inspección</label>'+
+        			'</div>'+
        				'</div>';
 
 		

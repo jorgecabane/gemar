@@ -150,28 +150,26 @@
 					<li class="user-details cyan darken-1">
 						<div class="row">
 							<div class="col col s4 m4 l4">
-								<img src="images/avatar.jpg" alt=""
-									class="circle responsive-img valign profile-image">
+							<?php 
+								include_once dirname(__FILE__).'/../query/get_users.php';
+								if ($login->isAdminUser() == true) {
+									$photo = "default.jpg";
+									$title = "Administrador";
+								}
+								else{
+									$user = get_users($_SESSION['user_id'])[0];
+									$photo = $user->user_image_path;
+									$title =$user->user_title;
+								}
+								echo '<img src="images/users/'.$photo.'" alt=""
+									class="circle responsive-img valign profile-image">';
+							?>
 							</div>
 							<div class="col col s8 m8 l8">
-								<ul id="profile-dropdown" class="dropdown-content">
-									<li><a href="#"><i class="mdi-action-face-unlock"></i> Profile</a>
-									</li>
-									<li><a href="#"><i class="mdi-action-settings"></i> Settings</a>
-									</li>
-									<li><a href="#"><i class="mdi-communication-live-help"></i>
-											Help</a></li>
-									<li class="divider"></li>
-									<li><a href="#"><i class="mdi-action-lock-outline"></i> Lock</a>
-									</li>
-									<li><a href="#"><i class="mdi-hardware-keyboard-tab"></i>
-											Logout</a></li>
-								</ul>
 								<a
 									class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn"
-									href="#" data-activates="profile-dropdown"> <?php echo $_SESSION['user_name']; ?> <i
-									class="mdi-navigation-arrow-drop-down right"></i></a>
-								<p class="user-roal">Administrator</p>
+									href="#"> <?php echo $_SESSION['user_name']; ?></a>
+								<p class="user-roal"><?php echo $title; ?></p>
 							</div>
 						</div>
 					</li>
@@ -181,7 +179,6 @@
 					    include("admin/sidebar_content.php");
 					    
 					} else {
-						include_once dirname(__FILE__).'/../query/get_users.php';
 					    include("user/sidebar_content.php");
 					}
 					?>
