@@ -413,7 +413,7 @@ function newPage($pdf, $data, $logo, $logo2){
 	$pdf->SetFont('Arial','B',12);
 	$pdf->SetFillColor(204,204,255);
 	$pdf->SetXY(20,10);
-	$pdf->MultiCell($width-40,15,utf8_decode("Reporte de inspección RI-XX \n"."Orden de compra ".$data->orden_compra." ".$data->componente." - ".$data->proveedor),1,"C",true);
+	$pdf->MultiCell($width-40,15,utf8_decode("Reporte de inspección RI-".sprintf('%02d', $data->numero_reporte)."\n"."Orden de compra ".$data->orden_compra." ".$data->componente." - ".$data->proveedor),1,"C",true);
 	$pdf->SetFillColor(255,255,255);
 	$pdf->Rect(20,10, 30, 30, "DF");
 	$pdf->Image($logo, 22, 12, 26);
