@@ -17,6 +17,13 @@ function insertReporte($reporte) {
     $alcances = $reporte['alcances'];
     $conclusiones = $reporte['conclusiones'];
     $subcontratista = $reporte['subcontratista'];
+    
+    $number = 1;
+    $numbersql = "SELECT max(numero_reporte) AS num
+    			FROM reporte";
+    if($numresult = $con->query($numbersql)){
+    	$number = ($numresult->fetch_object()->num)+1;
+    }
 
     if($rehacer == 1){
         $reporteid = $reporte['reporteid'];
@@ -43,7 +50,8 @@ function insertReporte($reporte) {
 		        alertas='$alertas',
 		        alcances='$alcances',
 		        conclusiones='$conclusiones',
-		        resumen='$resumen'
+		        resumen='$resumen',
+		        numero_reporte='$number'
 		        WHERE reporte_id = '$reporteid'";
 
         if ($result = $con->query($query)) {
@@ -54,7 +62,7 @@ function insertReporte($reporte) {
         }
     }
 	else{
-    	$query = "INSERT INTO `gemar`.`reporte`  VALUES (NULL, '$evento', '$lastversion', NOW(), '$horario', '$inspeccion', '$avance', '$fechacierre', '$comentarios', '$alertas', '$alcances', '$conclusiones', '$resumen', 0, '$subcontratista')";
+    	$query = "INSERT INTO `gemar`.`reporte`  VALUES (NULL, '$evento', '$lastversion', NOW(), '$horario', '$inspeccion', '$avance', '$fechacierre', '$comentarios', '$alertas', '$alcances', '$conclusiones', '$resumen', 0, '$subcontratista', '$number')";
     	if ($result = $con->query($query)) {
     		return $con->insert_id;
     	}
