@@ -234,8 +234,10 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
 						});
 						var countInsp = 0;
 						response["inspeccion"].forEach(function(element){
-							if(countInsp == 0)
+							if(countInsp == 0){
 								$('#reporte_fechainspeccion').val(element.fecha);
+								$('#reporte_fechainspeccion').attr("inspeccionId",element.inspeccion_id);
+							}
 							else
 								fillFecha(element);
 							countInsp++;
@@ -403,7 +405,7 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Fecha de inspección</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">'+
             			'<input type="text" class="datepicker active" id="reporte_fechainspeccion" value="'+inspeccion.fecha+'">'+
-            			'<label for="fecha_inspeccion active">Fecha de inspección</label>'+
+            			'<label class="active" for="fecha_inspeccion active">Fecha de inspección</label>'+
         			'</div>'+
        				'</div>';
 

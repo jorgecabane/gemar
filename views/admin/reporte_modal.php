@@ -565,8 +565,10 @@ $(document).ready(function (e) {
 		        break;
 		    case 5:
 		        appendFotos();
+		        break;
 		    case 6:
 			    appendFecha();
+			    break;
 		}
 	};
 
