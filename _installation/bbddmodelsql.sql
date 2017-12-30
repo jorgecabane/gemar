@@ -177,6 +177,7 @@ CREATE TABLE IF NOT EXISTS `gemar`.`reporte` (
   `resumen` VARCHAR(200) NULL,
   `status` INT NULL,
   `subcontratista` VARCHAR(255) NULL,
+  `numero_reporte` INT NULL,
   PRIMARY KEY (`reporte_id`),
   INDEX `fk_reporte_evento1_idx` (`evento_evento_id` ASC),
   CONSTRAINT `fk_reporte_evento1`
@@ -355,12 +356,12 @@ CREATE TABLE IF NOT EXISTS `gemar`.`logs` (
   `po` VARCHAR(255) NULL,
   `descripcion` VARCHAR(255) NULL,
   `proveedor` VARCHAR(255) NULL,
-  `inicio` BIGINT NULL,
+  `inicio` TIMESTAMP NULL,
   `dias` INT NULL,
-  `termino` BIGINT NULL,
+  `termino` TIMESTAMP NULL,
   `nivel` INT NULL,
   `avance` VARCHAR(45) NULL,
-  `fecha` BIGINT NULL,
+  `fecha` TIMESTAMP NULL,
   `comentario` LONGTEXT NULL,
   PRIMARY KEY (`logs_id`))
 ENGINE = InnoDB;
