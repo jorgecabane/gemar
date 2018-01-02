@@ -36,7 +36,7 @@ $row = array();
 newPage($pdf, $data, $logo, $logo2);
 
 //Tabla inicial - cabeceras
-$row[1] = array("Comprador Activador", $data->comprador, "Fecha", "12-12-2017");
+$row[1] = array("Comprador Activador", $data->comprador, "Fecha", "12-12-2017"); //Aca va la fecha de la inspección
 $row[2] = array("Cliente Final", $data->nombre, "Proveedor", $data->proveedor);
 $row[3] = array("Orden de Compra", $data->orden_compra,"Proyecto", $data->nombre_proyecto, "Tipo de inspección");
 $row[4] = array("Dirección", $data->direccion.", ".$data->comuna.", ".$data->ciudad, "Visita Semanal", $tipoVisita[0]);
@@ -135,7 +135,7 @@ foreach($extras["equipos"] as $equipo){
 //Asistente
 if($y>$heigth-50){
 	newPage($pdf, $data, $logo, $logo2);
-	$y=50;
+	$y=40;
 }
 $pdf->SetFont('Arial','B',12);
 $pdf->SetTextColor(0);
@@ -160,7 +160,7 @@ foreach($extras["asistentes"] as $asistente){
 //Documentos utilizados
 if($y>$heigth-50){
 	newPage($pdf, $data, $logo, $logo2);
-	$y=50;
+	$y=40;
 }
 $pdf->SetFont('Arial','B',12);
 $pdf->SetTextColor(0);
@@ -185,7 +185,7 @@ foreach($extras["documentos"] as $documento){
 //Listado de pendientes
 if($y>$heigth-50){
 	newPage($pdf, $data, $logo, $logo2);
-	$y=50;
+	$y=40;
 }
 $pdf->SetFont('Arial','B',12);
 $pdf->SetTextColor(0);
@@ -227,7 +227,7 @@ $pdf->MultiCell($width-40,10,utf8_decode($data->conclusiones),0,"J");
 //Registro fotografico
 if($y>$heigth-70){
 	newPage($pdf, $data, $logo, $logo2);
-	$y=50;
+	$y=40;
 }
 $pdf->SetFont('Arial','B',12);
 $pdf->SetTextColor(0);

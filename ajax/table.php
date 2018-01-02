@@ -21,10 +21,10 @@ class PDF_MC_Table extends FPDF
 				$this->MultiCell($w*$prop[$i],$c,utf8_decode($data[$i]),1,"C", true);
 			}
 			else
-				$this->MultiCell($w*$prop[$i],5*$h,utf8_decode($data[$i]),1,"C", true);
+				$this->MultiCell($w*$prop[$i],7*$h,utf8_decode($data[$i]),1,"C", true);
 			$x=$x+($w*$prop[$i]);
 		}
-		return $y+5*$nb;
+		return $y+7*$nb;
 	}
 	
 	function summaryCell($y, $w, $data, $h, $prop){
