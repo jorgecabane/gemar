@@ -197,6 +197,7 @@ $pdf->SetTextColor(255);
 $y+=10;
 $dat = array("Nº", "Nº documento", "Descripción", "Pendientes NCR-Deficiencias", "Comentarios/status/fechas");
 $y = $pdf->tableRow(20, $y, ($width-40), $dat, array(0.1,0.2,0.2,0.2,0.3), array("B","B","B","B", "B"), 10);
+$pdf->SetFillColor(235);
 $pdf->SetTextColor(0);
 $count = 1;
 foreach($extras["pendientes"] as $pendiente){

@@ -4,27 +4,6 @@ require_once dirname(__FILE__) . "/fpdi/src/autoload.php";
 
 class PDF_MC_Table extends FPDF
 {
-	var $widths;
-	var $aligns;
-
-	function SetWidths($w)
-	{
-		//Set the array of column widths
-		$this->widths=$w;
-	}
-
-	function SetAligns($a)
-	{
-		//Set the array of column alignments
-		$this->aligns=$a;
-	}
-
-	function CheckPageBreak($h)
-	{
-		//If the height h would cause an overflow, add a new page immediately
-		if($this->GetY()+$h>$this->PageBreakTrigger)
-			$this->AddPage($this->CurOrientation);
-	}
 	
 	function tableRow($x, $y, $w, $data, $prop, $bold, $fontSize, $header=false){
 		$nb=0;
