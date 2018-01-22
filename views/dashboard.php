@@ -280,6 +280,18 @@
 
     <script>
     	$( document ).ready(function() {
+
+			<?php
+			if ($login->isAdminUser() == true) {
+			    
+			    
+			} else {
+				?>
+			    $('#content').load("views/app_todo.php");
+			    <?php
+			}
+			?>
+
    	 		$( ".load-content" ).on('click', function() {
   				var load = $(this);
   				var what = load.attr('what');

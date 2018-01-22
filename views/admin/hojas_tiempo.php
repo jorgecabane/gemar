@@ -1,9 +1,17 @@
 <?php
   session_start();
   require_once dirname(__FILE__) . "/../../include/lib.php";
-  $userid = $_REQUEST['id'];
-  $name = $_REQUEST['name'];
-  $lastname = $_REQUEST['lastname'];
+  if(isset($_REQUEST['id'])){
+    $userid = $_REQUEST['id'];
+    $name = $_REQUEST['name'];
+    $lastname = $_REQUEST['lastname'];
+  }
+  else{
+    $userid = $_SESSION['user_id'];
+    $name = $_SESSION['user_name'];
+    $lastname = $_SESSION['user_lastname'];
+  }
+
 ?>
 
 <link href="js/plugins/monthpicker/MonthPicker.css" type="text/css" rel="stylesheet"

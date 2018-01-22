@@ -10,10 +10,8 @@
                 <p id="reporte_modal_accion" rehacer="" reporteid="" eventoid="">Editar Reporte</p>
             </div>
             <?php
-	        require_once dirname(dirname(__FILE__))."/../classes/Login.php";
-	        
-	        $login = new Login();
-  			if ($login->isAdminUser() == false) {
+
+  			if ($_SESSION['user_role'] == 0) {
 	  			echo '<button class="center btn waves-effect waves-light left pink lighten-1" id="vistaPrevia">
 						<i class="mdi-image-remove-red-eye left"></i>			  	
 						Vista Previa

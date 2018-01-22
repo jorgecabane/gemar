@@ -25,20 +25,22 @@ function insertReporte($reporte) {
     	$number = ($numresult->fetch_object()->num)+1;
     }
 
-    if($rehacer == 1){
-        $reporteid = $reporte['reporteid'];
-        $versionsql = "SELECT max(version) AS version
+    $versionsql = "SELECT max(version) AS version
         FROM reporte
         WHERE evento_evento_id = $evento";
         
         // if returns something
+        $lastversion = 1;
         if ($resultversion = $con->query($versionsql)) {
-        	$lastversion = ($resultversion->fetch_object()->version) + 1;
+            $lastversion = ($resultversion->fetch_object()->version)+1;
         }
         else{
-        	$lastversion = 1;
+            $lastversion = 1;
         }
         $resultversion->close();
+
+    if($rehacer == 1){
+        $reporteid = $reporte['reporteid'];
         
         $query = "UPDATE reporte SET status='0', 
         		version='$lastversion', 
@@ -70,6 +72,17 @@ function insertReporte($reporte) {
     		return $query;
     	}
 	}
+
+        $eventosql =  "SELECT e.*, u.* FROM evento e INNER JOIN users u ON (users.user_id = evento.users_user_id) INNER JOIN reporte ON (reporte.evento_evento_id = evento.evento_id AND reporte.reporte_id = $reporteid)";
+        if ($evento = $con->query($eventosql)) {
+            $nombre = $evento->fetch_object()->user_first_name." ".$evento->fetch_object()->user_last_name;
+             $logssql = "INSERT INTO `gemar`.`logs`  VALUES (NULL, '-', '-', '$nombre', '$evento->fetch_object()->comprador', '$evento->fetch_object()->nombre_proyecto', '$evento->fetch_object()->orden_compra', '$evento->fetch_object()->descripcion', '$evento->fetch_object()->proveedor', '$evento->fetch_object()->HoraInicio', '0', '$evento->fetch_object()->HoraTermino', '$avance', NOW(), '$comentarios')";
+            $con->query($logssql);
+        }
+        else{
+            
+        }
+
 }
 
 echo insertReporte($_REQUEST['reporte']);
