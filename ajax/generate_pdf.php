@@ -1,9 +1,14 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-$idreporte = $_REQUEST["idreporte"];
-if(isset($_REQUEST["borrar"]))
-	$borrar = $_REQUEST["borrar"];
+if(isset($_REQUEST["vista_previa"])){
+	$vp = $_REQUEST["vista_previa"];
+	$reporte = $_REQUEST["reporte"];
+}
+else{
+	$idreporte = $_REQUEST["idreporte"];
+	$vp = 0;
+}
 
 use setasign\Fpdi;
 
@@ -15,9 +20,19 @@ require_once dirname(dirname(__FILE__)) . "/query/get_extras.php";
 require_once dirname(dirname(__FILE__)) . "/query/delete_vista_previa.php";
 require_once dirname(__FILE__) . "/table.php";
 
-
-$data = getPdfData($idreporte)[0]; //$data[0]->resumen
-$extras = getExtras($idreporte);
+if($vp == 0){
+	$data = getPdfData($idreporte)[0]; //$data[0]->resumen
+	$extras = getExtras($idreporte);
+}
+else{
+	$rawdata = json_decode($reporte);
+	$data1 = $rawdata->data;
+	$data2 = getPdfData(null, $data1->evento)[0];
+	$data = (object) array_merge((array) $data1, (array) $data2);
+	$extras = (array) $rawdata->extras;
+	//var_dump($extras);
+	//die();
+}
 $fechaInicio = explode("-",explode(" ",$data->HoraInicio)[0]);
 $fechaTermino = explode("-", explode(" ",$data->HoraTermino)[0]);
 $horarioTrabajado = (($data->horario_trabajado == 1) ? "Jornada Completa" : ($data->horario_trabajado == 0.5 ? "Media jornada" : "Residente"));
@@ -33,10 +48,10 @@ $heigth = $pdf->GetPageHeight();
 $width = $pdf->GetPageWidth();
 $row = array();
 //Page 1
-newPage($pdf, $data, $logo, $logo2);
+newPage($pdf, $data, $logo, $logo2, $vp);
 
 //Tabla inicial - cabeceras
-$row[1] = array("Comprador Activador", $data->comprador, "Fecha", "12-12-2017"); //Aca va la fecha de la inspección
+$row[1] = array("Comprador Activador", $data->comprador, "Fecha", "Fecha inspeccion"); //Aca va la fecha de la inspección
 $row[2] = array("Cliente Final", $data->nombre, "Proveedor", $data->proveedor);
 $row[3] = array("Orden de Compra", $data->orden_compra,"Proyecto", $data->nombre_proyecto, "Tipo de inspección");
 $row[4] = array("Dirección", $data->direccion.", ".$data->comuna.", ".$data->ciudad, "Visita Semanal", $tipoVisita[0]);
@@ -75,7 +90,7 @@ $pdf->MultiCell(($width-40)/6,10,utf8_decode("1\n2\n3\n4\n5\n6\n7\n8"),0,"L");
 
 //Pagina 2
 $y = 0;
-newPage($pdf, $data, $logo, $logo2);
+newPage($pdf, $data, $logo, $logo2, $vp);
 $pdf->SetFont('Arial','B',12);
 $pdf->SetTextColor(0);
 $y=50;
@@ -108,7 +123,7 @@ $pdf->SetFont('Arial','',10);
 $pdf->MultiCell($width-40,10,utf8_decode($data->alcances),0,"J");
 
 //Pagina 3
-newPage($pdf, $data, $logo, $logo2);
+newPage($pdf, $data, $logo, $logo2, $vp);
 $pdf->SetFont('Arial','B',12);
 $pdf->SetTextColor(0);
 $y=50;
@@ -125,7 +140,7 @@ $pdf->SetFillColor(235);
 $pdf->SetTextColor(0);
 foreach($extras["equipos"] as $equipo){
 	if($y>$heigth-50){
-		newPage($pdf, $data, $logo, $logo2);
+		newPage($pdf, $data, $logo, $logo2, $vp);
 		$y = 50;
 	}
 	$dat = array($count, $equipo->tag, $equipo->descripcion, $equipo->proveedor, $equipo->comentario);
@@ -134,7 +149,7 @@ foreach($extras["equipos"] as $equipo){
 }
 //Asistente
 if($y>$heigth-50){
-	newPage($pdf, $data, $logo, $logo2);
+	newPage($pdf, $data, $logo, $logo2, $vp);
 	$y=40;
 }
 $pdf->SetFont('Arial','B',12);
@@ -151,7 +166,7 @@ $pdf->SetFillColor(235);
 $pdf->SetTextColor(0);
 foreach($extras["asistentes"] as $asistente){
 	if($y>$heigth-50){
-		newPage($pdf, $data, $logo, $logo2);
+		newPage($pdf, $data, $logo, $logo2, $vp);
 		$y = 50;
 	}
 	$dat = array($asistente->nombre, $asistente->compa, $asistente->cargo);
@@ -159,7 +174,7 @@ foreach($extras["asistentes"] as $asistente){
 }
 //Documentos utilizados
 if($y>$heigth-50){
-	newPage($pdf, $data, $logo, $logo2);
+	newPage($pdf, $data, $logo, $logo2, $vp);
 	$y=40;
 }
 $pdf->SetFont('Arial','B',12);
@@ -176,7 +191,7 @@ $pdf->SetFillColor(235);
 $pdf->SetTextColor(0);
 foreach($extras["documentos"] as $documento){
 	if($y>$heigth-50){
-		newPage($pdf, $data, $logo, $logo2);
+		newPage($pdf, $data, $logo, $logo2, $vp);
 		$y = 50;
 	}
 	$dat = array($documento->numero, $documento->revision, $documento->nombre, $documento->status);
@@ -184,7 +199,7 @@ foreach($extras["documentos"] as $documento){
 }
 //Listado de pendientes
 if($y>$heigth-50){
-	newPage($pdf, $data, $logo, $logo2);
+	newPage($pdf, $data, $logo, $logo2, $vp);
 	$y=40;
 }
 $pdf->SetFont('Arial','B',12);
@@ -202,7 +217,7 @@ $pdf->SetTextColor(0);
 $count = 1;
 foreach($extras["pendientes"] as $pendiente){
 	if($y>$heigth-50){
-		newPage($pdf, $data, $logo, $logo2);
+		newPage($pdf, $data, $logo, $logo2, $vp);
 		$y = 50;
 	}
 	$dat = array($count, $pendiente->numero,$pendiente->descripcion,$pendiente->pendientes,$pendiente->comentarios);
@@ -212,7 +227,7 @@ foreach($extras["pendientes"] as $pendiente){
 $y+=10;
 //Resultados finales y conclusiones
 if($y>$heigth-70){
-	newPage($pdf, $data, $logo, $logo2);
+	newPage($pdf, $data, $logo, $logo2, $vp);
 	$y=50;
 }
 $pdf->SetFont('Arial','B',12);
@@ -226,7 +241,7 @@ $pdf->SetXY(20,$y);
 $pdf->MultiCell($width-40,10,utf8_decode($data->conclusiones),0,"J");
 //Registro fotografico
 if($y>$heigth-70){
-	newPage($pdf, $data, $logo, $logo2);
+	newPage($pdf, $data, $logo, $logo2, $vp);
 	$y=40;
 }
 $pdf->SetFont('Arial','B',12);
@@ -241,7 +256,7 @@ foreach($extras["fotografias"] as $foto){
 	$h=round(($foto_height*($width-80)/2)/$foto_width);
 	$h = $h>=80 ? 80 : $h;
 	if($y+$h>$heigth-100){
-		newPage($pdf, $data, $logo, $logo2);
+		newPage($pdf, $data, $logo, $logo2, $vp);
 		$y = 50;
 	}
 	$pdf->SetFont('Arial','',10);
@@ -269,11 +284,7 @@ foreach($extras["fotografias"] as $foto){
 
 $pdf->Output();
 
-if($borrar == 1){
-	deleteVistaPrevia($idreporte);
-}
-
-function newPage($pdf, $data, $logo, $logo2){
+function newPage($pdf, $data, $logo, $logo2, $vp){
 	$heigth = $pdf->GetPageHeight();
 	$width = $pdf->GetPageWidth();
 	$pdf->AddPage();
@@ -282,7 +293,12 @@ function newPage($pdf, $data, $logo, $logo2){
 	$pdf->SetFont('Arial','B',12);
 	$pdf->SetFillColor(204,204,255);
 	$pdf->SetXY($x,10);
-	$header = array("Reporte de inspección RI-".sprintf('%02d', $data->numero_reporte)."\n"."Orden de compra ".$data->orden_compra." ".$data->componente." - ".$data->proveedor);
+	if($vp == 0){
+		$header = array("Reporte de inspección RI-".sprintf('%02d', $data->numero_reporte)."\n"."Orden de compra ".$data->orden_compra." ".$data->componente." - ".$data->proveedor);
+	}
+	else{
+		$header = array("Reporte de inspección RI-00\n"."Orden de compra ".$data->orden_compra." ".$data->componente." - ".$data->proveedor);
+	}
 	$pdf->tableRow(10, 10, $width-80, $header, array(1), array("B"), 12,true);
 	$pdf->SetFillColor(255,255,255);
 	$pdf->Rect($x,10, 30, 30, "DF");
