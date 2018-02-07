@@ -14,4 +14,4 @@
 define("DB_HOST", "localhost");
 define("DB_NAME", "gemar");
 define("DB_USER", "root");
-define("DB_PASS", "");
+define("DB_PASS", "root");

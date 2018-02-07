@@ -571,130 +571,81 @@ $(document).ready(function (e) {
 	};
 
 	function vistaPrevia(){
-		
-		var reporte = {
-		rehacer: 0,
-		reporteid: $('#reporte_modal_accion').attr("reporteid"),
-		evento: $('#reporte_modal_accion').attr("eventoid"),
-		resumen: $('#reporte_resumen').val(),
-		horario : $('#reporte_horario').val(),
-		inspeccion : $('#reporte_inspeccion').val(),
-		avance : $('#reporte_avance').val(),
-		fechacierre : new Date($('#reporte_fechacierre').val()).toISOString().slice(0, 10),
-		comentarios : $('#reporte_comentarios').val(),
-		alertas : $('#reporte_alertas').val(),
-		alcances : $('#reporte_alcances').val(),
-		conclusiones : $('#reporte_conclusiones').val(),
-		subcontratista: $('#reporte_subcontratista').val()
-		};
+		var equipos = new Array();
+		var asistentes = new Array();
+		var documentos = new Array();
+		var pendientes = new Array();
+		var fotos = new Array();
 
-		$.ajax({
-			url: "query/insert_reporte.php", // Url to which the request is send
-			type: "POST",             // Type of request to be send, called as method
-			data: {"reporte": reporte},       // To send DOMDocument or non processed data file it is set to false
-
-		}).done(function( reporteid ) {
-			//data has the recent inserted report id
-			var reporteid = reporteid;
-
-			// save insert Equipo
-			$.each( $('.insertEquipo') , function( key, value ) {
-			  	
-		  		var equipo = {
-					  	reporte: reporteid,
-					  	equipoid: $(this).attr('equipoId'),
-					  	tag: $(this).find('.equipo_tag').val(),
-					  	descripcion: $(this).find('.equipo_descripcion').val(),
-					  	proveedor: $(this).find('.equipo_proveedor').val(),
-					  	comentario: $(this).find('.equipo_comentario').val()
-				  	};
-				
-				$.ajax({
-					url: "query/insert_equipo.php", 
-					type: "POST",            
-					data: {"equipo": equipo},       
-					success: function(equipoid)   
-					{
-						console.log(equipoid);
-					}
-				});
-			});
-
-			// save insert Asistente
-			$.each( $('.insertAsistente') , function( key, value ) {
-			  	var asistente = {
-				  	reporte: reporteid,
-				  	asistenteid: $(this).attr('asistenteId'),
-			  		nombre: $(this).find('.asistente_nombre').val(),
-				  	company: $(this).find('.asistente_company').val(),
-				  	cargo: $(this).find('.asistente_cargo').val()
+		// save insert Equipo
+		$.each( $('.insertEquipo') , function( key, value ) {
+		  	
+	  		var equipo = {
+				  	equipoid: $(this).attr('equipoId'),
+				  	tag: $(this).find('.equipo_tag').val(),
+				  	descripcion: $(this).find('.equipo_descripcion').val(),
+				  	proveedor: $(this).find('.equipo_proveedor').val(),
+				  	comentario: $(this).find('.equipo_comentario').val()
 			  	};
+		  	equipos.push(equipo);
+		});
 
-				$.ajax({
-					url: "query/insert_asistente.php", 
-					type: "POST",            
-					data: {"asistentes": asistente},       
-					success: function(asistenteid)   
-					{
-						console.log(asistenteid);
-					}
-				});
-			});
+		// save insert Asistente
+		$.each( $('.insertAsistente') , function( key, value ) {
+		  	var asistente = {
+			  	asistenteid: $(this).attr('asistenteId'),
+		  		nombre: $(this).find('.asistente_nombre').val(),
+			  	compa: $(this).find('.asistente_company').val(),
+			  	cargo: $(this).find('.asistente_cargo').val()
+		  	};
+		  	asistentes.push(asistente);
+		});
 
-			// save insert Documento
-			$.each( $('.insertDocumento') , function( key, value ) {
-			  	var documento = {
-				  	reporte: reporteid,
-				  	documentoid: $(this).attr('documentoId'),
-			  		numero: $(this).find('.documento_numero').val(),
-			  		nombre: $(this).find('.documento_nombre').val(),
-				  	revision: $(this).find('.documento_revision').val(),
-				  	status: $(this).find('.documento_status').val()
-			  	};
+		// save insert Documento
+		$.each( $('.insertDocumento') , function( key, value ) {
+		  	var documento = {
+			  	documentoid: $(this).attr('documentoId'),
+		  		numero: $(this).find('.documento_numero').val(),
+		  		nombre: $(this).find('.documento_nombre').val(),
+			  	revision: $(this).find('.documento_revision').val(),
+			  	status: $(this).find('.documento_status').val()
+		  	};
+		  	documentos.push(documento);
+		});
 
-				$.ajax({
-					url: "query/insert_documento.php", 
-					type: "POST",            
-					data: {"documento": documento},       
-					success: function(documentoid)   
-					{
-						console.log(documentoid);
-					}
-				});
-			});
+		// save insert Pendiente
+		$.each( $('.insertPendiente') , function( key, value ) {
+		  	var pendiente = {
+			  	pendienteid: $(this).attr('pendienteId'),
+		  		numero: $(this).find('.pendiente_numero').val(),
+		  		descripcion: $(this).find('.pendiente_descripcion').val(),
+			  	pendientes: $(this).find('.pendiente_pendiente').val(),
+			  	comentarios: $(this).find('.pendiente_comentarios').val()
+		  	};
+		  	pendientes.push(pendiente);
+		});
 
-			// save insert Pendiente
-			$.each( $('.insertPendiente') , function( key, value ) {
-			  	var pendiente = {
-				  	reporte: reporteid,
-				  	pendienteid: $(this).attr('pendienteId'),
-			  		numero: $(this).find('.pendiente_numero').val(),
-			  		descripcion: $(this).find('.pendiente_descripcion').val(),
-				  	pendiente: $(this).find('.pendiente_pendiente').val(),
-				  	comentarios: $(this).find('.pendiente_comentarios').val()
-			  	};
-
-				$.ajax({
-					url: "query/insert_pendiente.php", 
-					type: "POST",            
-					data: {"pendientes":pendiente},       
-					success: function(pendienteid)   
-					{
-						console.log(pendienteid);
-					}
-				});
-			});
-
-			// save insert Fotos
-			$.each( $('.insertFotos') , function( key, value ) {
-
-
+		// save insert Fotos
+		$.each( $('.insertFotos') , function( key, value ) {
+			if($(this).attr('rehacer') == 1){
+				var herefoto = $(this);
+				var path = herefoto.find('.dropify').attr('data-default-file');
+				var imgpath = path.split("/")[4];
+				var foto = {
+			  			imagen_path: imgpath,
+				  		elemento: herefoto.find('.fotografias_elemento').val(),
+				  		observaciones: herefoto.find('.fotografias_observaciones').val()
+			  		};
+			  	fotos.push(foto);
+			}
+			else{
+				console.log("foto");
 				var herefoto = $(this);
 				//save img first, so you can save the full path to db too
 				send = new FormData();
 				send.append( 'pictures', $( this ).find('.dropify')[0].files[0] );
 				send.append( 'folder', "reportes" );
-
+	
 				$.ajax({
 					url: "ajax/save_img.php", // Url to which the request is send
 					type: "POST",             // Type of request to be send, called as method
@@ -702,43 +653,52 @@ $(document).ready(function (e) {
 					contentType: false,       // The content type used when sending data to the server.
 					cache: false,             // To unable request pages to be cached
 					processData:false,        // To send DOMDocument or non processed data file it is set to false
+					async: false,
 					success: function(imgpath)   // A function to be called if request succeeds
-					{
-
+					{	console.log("ajax");
 						var foto = {
-				  			reporte: reporteid,
-				  			imagenpath: imgpath,
+				  			imagen_path: imgpath,
 					  		elemento: herefoto.find('.fotografias_elemento').val(),
 					  		observaciones: herefoto.find('.fotografias_observaciones').val()
 				  		};
-
-						$.ajax({
-							url: "query/insert_fotos.php", 
-							type: "POST",            
-							data: {"foto": foto},       
-							success: function(fotoid)   
-							{
-								console.log(fotoid);
-							}
-						});
-
+				  		fotos.push(foto);
 					}
 				});
+			}
+		});
 
-			});
+		var reporte = {
+				data: {
+					evento: $('#reporte_modal_accion').attr("eventoid"),
+					resumen: $('#reporte_resumen').val(),
+					horario_trabajado : $('#reporte_horario').val(),
+					tipo_inspeccion : $('#reporte_inspeccion').val(),
+					avance : $('#reporte_avance').val(),
+					fecha_estimada_cierre : new Date($('#reporte_fechacierre').val()).toISOString().slice(0, 10),
+					comentarios : $('#reporte_comentarios').val(),
+					alertas : $('#reporte_alertas').val(),
+					alcances : $('#reporte_alcances').val(),
+					conclusiones : $('#reporte_conclusiones').val(),
+					subcontratista: $('#reporte_subcontratista').val()
+				},
+				extras: {
+					equipos: equipos,
+					asistentes: asistentes,
+					documentos: documentos,
+					pendientes: pendientes,
+					fotografias: fotos
+				}
+		};
 
 		$('#reportemodal').closeModal();
 		Materialize.toast("Generando vista previa", 3000);
 		//end the add extra (ajax done)
-
-	    $('#downloadreport').attr("idreporte", reporteid);
-	    $('#generatepdfmodal').find('.modal-content').html('<iframe src="ajax/generate_pdf.php?idreporte='+ reporteid +'&borrar=1" style="width: 100%; height: 100%; border: none; margin: 0; padding: 0; display: block;"></iframe>');
+	    //$('#downloadreport').attr("idreporte", reporteid);
+	    var str = JSON.stringify(reporte)
+	    console.log(str);
+	    $('#generatepdfmodal').find('.modal-content').html('<iframe src="ajax/generate_pdf.php?vista_previa=1&reporte='+ encodeURIComponent(str) +'" style="width: 100%; height: 100%; border: none; margin: 0; padding: 0; display: block;"></iframe>');
 	    $('#generatepdfmodal').openModal();
 	    
-	  	});
-		
-		
-		
 	};
 
 
