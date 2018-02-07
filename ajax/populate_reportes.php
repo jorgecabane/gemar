@@ -401,7 +401,7 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
 	}
 	function fillFecha(inspeccion){
 
-		var html = 	'<div class="insertFecha" inspeccionId="'+inspeccion.inspeccion_id+'">' +
+		var html = 	'<div class="insertFecha" updateFecha="1" inspeccionId="'+inspeccion.inspeccion_id+'">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Fecha de inspección</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">'+
             			'<input type="text" class="datepicker active" id="reporte_fechainspeccion" value="'+inspeccion.fecha+'">'+
@@ -418,7 +418,7 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
 	function fillFotos(foto){
 		var path =  "/gemar/images/reportes/";
 		console.log(path);
-		var html = 	'<div class="insertFotos" rehacer="1">' +
+		var html = 	'<div class="insertFotos" updateFoto="1" fotoId="' + foto.fotografias_id + '" rehacer="1">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Registro Fotográfico</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<form action="" method="post" enctype="multipart/form-data" class="imagesubmitform center">'+
         			'<div class="progress loadingbarform" style="display:none">' +

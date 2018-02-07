@@ -143,12 +143,33 @@ $(document).ready(function (e) {
     });
 
 	//$('.dropify').dropify();
-
+	var del = {equipos: [], asistentes: [], documentos:[], pendientes:[], fotos:[], fechas:[]};
+	
 	$(document).on('click', '.deleteextra', function(){
+		if($(this).parent().parent().attr("updateequipo") == 1){
+			del.equipos.push($(this).parent().parent().attr("equipoid"));
+		}
+		if($(this).parent().parent().attr("updateasistente") == 1){
+			del.asistentes.push($(this).parent().parent().attr("asistenteid"));
+		}
+		if($(this).parent().parent().attr("updatedocumento") == 1){
+			del.documentos.push($(this).parent().parent().attr("documentoid"));
+		}
+		if($(this).parent().parent().attr("updatependiente") == 1){
+			del.pendientes.push($(this).parent().parent().attr("pendienteid"));
+		}
+		if($(this).parent().parent().attr("updatefoto") == 1){
+			del.fotos.push($(this).parent().parent().attr("fotoid"));
+		}
+		if($(this).parent().parent().attr("updatefecha") == 1){
+			del.fechas.push($(this).parent().parent().attr("inspeccionid"));
+		}
 		$(this).parent().parent().remove();
+		console.log(del);
 	});
 
 	$(document).on('click', '#cancelReporte', function(){
+		del = {equipos: [], asistentes: [], documentos:[], pendientes:[], fotos:[], fechas:[]};
 		$('.insertEquipo').remove();
 		$('.insertAsistente').remove();
 		$('.insertDocumento').remove();
@@ -347,6 +368,66 @@ $(document).ready(function (e) {
 				}
 
 			});
+		//delete equipos
+		$.each( del.equipos , function( key, value ) {
+			$.ajax({
+				url: "query/delete_equipo.php", 
+				type: "POST",            
+				data: {"equipoid": value},       
+				success: function()   
+				{
+					console.log("deleted");
+				}
+			});
+		});
+		//delete asistentes
+		$.each( del.asistentes , function( key, value ) {
+			$.ajax({
+				url: "query/delete_asistente.php", 
+				type: "POST",            
+				data: {"asistenteid": value},       
+				success: function()   
+				{
+					console.log("deleted");
+				}
+			});
+		});
+		//delete documentos
+		$.each( del.documentos , function( key, value ) {
+			$.ajax({
+				url: "query/delete_documento.php", 
+				type: "POST",            
+				data: {"documentoid": value},       
+				success: function()   
+				{
+					console.log("deleted");
+				}
+			});
+		});
+		//delete pendientes
+		$.each( del.pendientes , function( key, value ) {
+			$.ajax({
+				url: "query/delete_pendiente.php", 
+				type: "POST",            
+				data: {"pendienteid": value},       
+				success: function()   
+				{
+					console.log("deleted");
+				}
+			});
+		});
+		//delete fotos
+		$.each( del.fotos , function( key, value ) {
+			$.ajax({
+				url: "query/delete_fotografia.php", 
+				type: "POST",            
+				data: {"fotografiaid": value},       
+				success: function()   
+				{
+					console.log("deleted");
+				}
+			});
+		});
 
 		$('#reportemodal').closeModal();
 		Materialize.toast("Reporte Ingresado", 3000);
