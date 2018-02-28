@@ -52,7 +52,7 @@
 
         <!-- Avance Proyecto -->
         <div class="input-field row">
-            <input id="reporte_avance" type="number" placeholder="Ingresar solo número, ej: 80">
+            <input id="reporte_avance" type="number" min="1" max="100" placeholder="Ingresar solo número, ej: 80">
             <label class="active" for="reporte_avance">Avance del Proyecto</label>
         </div>
 
@@ -70,7 +70,7 @@
 
          <!-- Comentarios Proyecto -->
         <div class="input-field row">
-            <textarea id="reporte_comentarios" class="materialize-textarea"></textarea>
+            <textarea id="reporte_comentarios" maxlength="100" class="materialize-textarea"></textarea>
             <label for="reporte_comentarios">Comentarios del Proyecto</label>
         </div>
 
@@ -82,13 +82,13 @@
 
          <!-- Alcances Proyecto -->
         <div class="input-field row">
-            <textarea id="reporte_alcances" class="materialize-textarea"></textarea>
+            <textarea id="reporte_alcances" class="materialize-textarea" maxlength="300"></textarea>
             <label for="reporte_alcances">Alcances del Proyecto</label>
         </div>
 
          <!-- Conclusiones Proyecto -->
         <div class="input-field row">
-            <textarea id="reporte_conclusiones" class="materialize-textarea"></textarea>
+            <textarea id="reporte_conclusiones" class="materialize-textarea" maxlength="300"></textarea>
             <label for="reporte_conclusiones">Conclusiones del Proyecto</label>
         </div>
         
@@ -475,19 +475,19 @@ $(document).ready(function (e) {
 		var html =  '<div class="insertEquipo">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Listado de Equipos</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">' +
-            			'<input class="equipo_tag" type="text">' +
+            			'<input class="equipo_tag" type="text" maxlength="45">' +
             			'<label>Tag</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="equipo_descripcion" type="text">' +
+            			'<input class="equipo_descripcion" type="text" maxlength="45">' +
             			'<label>Descripción</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="equipo_proveedor" type="text">' +
+            			'<input class="equipo_proveedor" type="text" maxlength="45">' +
             			'<label>Proveedor</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-			            '<textarea class="materialize-textarea equipo_comentario"></textarea>' +
+			            '<textarea class="materialize-textarea equipo_comentario" maxlength="100"></textarea>' +
 			            '<label>Comentarios</label>'+
 			        '</div>' +
 			        '</div>';
@@ -504,15 +504,15 @@ $(document).ready(function (e) {
 		var html = 	'<div class="insertAsistente">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Asistentes</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">' +
-            			'<input class="asistente_nombre" type="text">' +
+            			'<input class="asistente_nombre" type="text" maxlength="45">' +
             			'<label>Nombre</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="asistente_company" type="text">' +
+            			'<input class="asistente_company" type="text" maxlength="45">' +
             			'<label>Compañía</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="asistente_cargo" type="text">' +
+            			'<input class="asistente_cargo" type="text" maxlength="45">' +
             			'<label>Cargo</label>' +
        				'</div>' + 
        				'</div>';
@@ -528,19 +528,19 @@ $(document).ready(function (e) {
 		var html = 	'<div class="insertDocumento">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Documentos Utilizados</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">' +
-            			'<input class="documento_numero" type="text">' +
+            			'<input class="documento_numero" type="text" maxlength="45">' +
             			'<label>N° del documento</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="documento_revision" type="text">' +
+            			'<input class="documento_revision" type="text" maxlength="10">' +
             			'<label>Revisión</label>' +
        				'</div>' +
 					'<div class="input-field row">' +
-            			'<input class="documento_nombre" type="text">' +
+            			'<input class="documento_nombre" type="text" maxlength="45">' +
             			'<label>Nombre</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="documento_status" type="text">' +
+            			'<input class="documento_status" type="text" maxlength="45">' +
             			'<label>Status de aprobación</label>' +
        				'</div>' +
        				'</div>';
@@ -556,19 +556,19 @@ $(document).ready(function (e) {
 		var html = 	'<div class="insertPendiente">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Listado de Pendientes</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">' +
-            			'<input class="pendiente_numero" type="text">' +
+            			'<input class="pendiente_numero" type="text" maxlength="45">' +
             			'<label>N° de documento</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="pendiente_descripcion" type="text">' +
+            			'<input class="pendiente_descripcion" type="text" maxlength="150">' +
             			'<label>Descripción</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="pendiente_pendiente" type="text">' +
-            			'<label>Pendientes</label>' +
+            			'<input class="pendiente_pendiente" type="text" maxlength="45">' +
+            			'<label>Pendientes-NCR-Deficiencias</label>' +
        				'</div>'+
        				'<div class="input-field row">' +
-            			'<input class="pendiente_comentarios" type="text">' +
+            			'<input class="pendiente_comentarios" type="text" maxlength="100">' +
             			'<label>Comentarios</label>' +
        				'</div>' +
        				'</div>';
@@ -610,11 +610,11 @@ $(document).ready(function (e) {
   					'</button>' +
 					'</form>' +
 					'<div class="input-field row">' +
-            			'<input class="fotografias_elemento" type="text">' +
+            			'<input class="fotografias_elemento" type="text" maxlength="45">' +
             			'<label>Elemento</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="fotografias_observaciones" type="text">' +
+            			'<input class="fotografias_observaciones" type="text" maxlength="100">' +
             			'<label>Observaciones</label>' +
        				'</div>' +
        				'</div>';

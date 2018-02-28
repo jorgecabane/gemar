@@ -6,22 +6,24 @@ $month = $_REQUEST['month'];
 $year = $_REQUEST['year'];
 
 include_once dirname(__FILE__) . '/../query/get_eventos.php';
+include_once dirname(__FILE__) . '/../query/get_enviado.php';
 
   if($admin){
     //Admin ve todos los eventos
     $eventos = get_eventos(null, $month, $year);
     foreach($eventos as $evento){
-
+	  
+      $enviado = get_enviado($evento->reporte_id);
       if($evento->criticidad == 1){
         //Evento Critico
         echo '<li>
-            <div class="collapsible-header red white-text"><i class="mdi-device-access-alarms"></i>'.$evento->nombre_proyecto.' ('.$evento->orden_compra.') - '. $evento->user_first_name .' '. $evento->user_last_name . '</div>
+            <div class="collapsible-header red white-text"><input type="checkbox" class="filled-in enviado" id="'.$evento->reporte_id.'" '.$enviado.'/><label for="'.$evento->reporte_id.'">'.$evento->nombre_proyecto.' ('.$evento->orden_compra.') - '. $evento->user_first_name .' '. $evento->user_last_name . '</label></div>
             <div class="collapsible-body red lighten-5">';
       }
       else{
         //Evento No Critico
         echo '<li>
-            <div class="collapsible-header"><i class="mdi-social-notifications-off"></i>'.$evento->nombre_proyecto.' ('.$evento->orden_compra.') - '. $evento->user_first_name .' '. $evento->user_last_name . '</div>
+            <div class="collapsible-header"><input type="checkbox" class="filled-in enviado" id="'.$evento->reporte_id.'" '.$enviado.' /><label for="'.$evento->reporte_id.'">'.$evento->nombre_proyecto.' ('.$evento->orden_compra.') - '. $evento->user_first_name .' '. $evento->user_last_name . '</label></div>
             <div class="collapsible-body">';
       }
 
@@ -258,6 +260,23 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
       $('#generatepdfmodal').openModal();
     }); 
 
+    $('.enviado').on('click', function(event){
+        var here = $(this);
+        var idreporte = here.attr('id');
+		if(here.prop('checked') == true){
+			$.ajax({
+				url: "query/insert_send.php", 
+				type: "POST",            
+				data: {"idreporte": idreporte,
+						"iduser": 1},
+				success: function(response)   
+				{
+					console.log("Checked on"+idreporte);
+				}
+			});
+		}
+    });
+	
     $('#downloadreport').on('click', function(e){
       e.preventDefault();  //stop the browser from following
       var idreporte = $(this).attr("idreporte");
@@ -295,19 +314,19 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
 		var html =  '<div class="insertEquipo" updateEquipo="1" equipoId="'+equipo.equipos_id+'">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Listado de Equipos</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">' +
-            			'<input class="equipo_tag" type="text" value="'+equipo.tag+'">' +
+            			'<input class="equipo_tag" type="text" maxlength="45" value="'+equipo.tag+'">' +
             			'<label class="active">Tag</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="equipo_descripcion" type="text" value="'+equipo.descripcion+'">' +
+            			'<input class="equipo_descripcion" type="text" maxlength="45" value="'+equipo.descripcion+'">' +
             			'<label class="active">Descripción</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="equipo_proveedor" type="text" value="'+equipo.proveedor+'">' +
+            			'<input class="equipo_proveedor" type="text" maxlength="45" value="'+equipo.proveedor+'">' +
             			'<label class="active">Proveedor</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-			            '<textarea class="materialize-textarea equipo_comentario">'+equipo.comentario+'</textarea>' +
+			            '<textarea class="materialize-textarea equipo_comentario" maxlength="100">'+equipo.comentario+'</textarea>' +
 			            '<label class="active">Comentarios</label>'+
 			        '</div>' +
 			        '</div>';
@@ -324,15 +343,15 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
 		var html = 	'<div class="insertAsistente" updateAsistente="1" asistenteId="'+asistente.asistentes_id+'">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Asistentes</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">' +
-            			'<input class="asistente_nombre" type="text" value="'+asistente.nombre+'">' +
+            			'<input class="asistente_nombre" type="text" maxlength="45" value="'+asistente.nombre+'">' +
             			'<label class="active">Nombre</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="asistente_company" type="text" value="'+asistente.compa+'">' +
+            			'<input class="asistente_company" type="text" maxlength="45" value="'+asistente.compa+'">' +
             			'<label class="active">Compañía</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="asistente_cargo" type="text" value="'+asistente.cargo+'">' +
+            			'<input class="asistente_cargo" type="text" maxlength="45" value="'+asistente.cargo+'">' +
             			'<label class="active">Cargo</label>' +
        				'</div>' + 
        				'</div>';
@@ -348,19 +367,19 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
 		var html = 	'<div class="insertDocumento" updateDocumento="1" documentoId="'+documento.documentos_id+'">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Documentos Utilizados</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">' +
-            			'<input class="documento_numero" type="text" value="'+documento.numero+'">' +
+            			'<input class="documento_numero" type="text" maxlength="45" value="'+documento.numero+'">' +
             			'<label class="active">N° del documento</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="documento_revision" type="text" value="'+documento.revision+'">' +
+            			'<input class="documento_revision" type="text" maxlength="10" value="'+documento.revision+'">' +
             			'<label class="active">Revisión</label>' +
        				'</div>' +
 					'<div class="input-field row">' +
-            			'<input class="documento_nombre" type="text" value="'+documento.nombre+'">' +
+            			'<input class="documento_nombre" type="text" maxlength="45" value="'+documento.nombre+'">' +
             			'<label class="active">Nombre</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="documento_status" type="text" value="'+documento.status+'">' +
+            			'<input class="documento_status" type="text" maxlength="45" value="'+documento.status+'">' +
             			'<label class="active">Status de aprobación</label>' +
        				'</div>' +
        				'</div>';
@@ -376,19 +395,19 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
 		var html = 	'<div class="insertPendiente" updatePendiente="1" pendienteId="'+pendiente.pendientes_id+'">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Listado de Pendientes</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">' +
-            			'<input class="pendiente_numero" type="text" value="'+pendiente.numero+'">' +
+            			'<input class="pendiente_numero" type="text" maxlength="45" value="'+pendiente.numero+'">' +
             			'<label class="active">N° de documento</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="pendiente_descripcion" type="text" value="'+pendiente.descripcion+'">' +
+            			'<input class="pendiente_descripcion" type="text" maxlength="150" value="'+pendiente.descripcion+'">' +
             			'<label class="active">Descripción</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="pendiente_pendiente" type="text" value="'+pendiente.pendientes+'">' +
-            			'<label class="active">Pendientes</label>' +
+            			'<input class="pendiente_pendiente" type="text" maxlength="45" value="'+pendiente.pendientes+'">' +
+            			'<label class="active">Pendientes-NCR-Deficiencias</label>' +
        				'</div>'+
        				'<div class="input-field row">' +
-            			'<input class="pendiente_comentarios" type="text" value="'+pendiente.comentarios+'">' +
+            			'<input class="pendiente_comentarios" type="text" maxlength="100" value="'+pendiente.comentarios+'">' +
             			'<label class="active">Comentarios</label>' +
        				'</div>' +
        				'</div>';
@@ -431,11 +450,11 @@ include_once dirname(__FILE__) . '/../query/get_eventos.php';
   					'</button>' +
 					'</form>' +
 					'<div class="input-field row">' +
-            			'<input class="fotografias_elemento" type="text" value="'+foto.elemento+'">' +
+            			'<input class="fotografias_elemento" type="text" maxlength="45" value="'+foto.elemento+'">' +
             			'<label class="active">Elemento</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="fotografias_observaciones" type="text" value="'+foto.observaciones+'">' +
+            			'<input class="fotografias_observaciones" type="text" maxlength="100" value="'+foto.observaciones+'">' +
             			'<label class="active">Observaciones</label>' +
        				'</div>' +
        				'</div>';

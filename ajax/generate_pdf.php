@@ -35,12 +35,14 @@ else{
 }
 $fechaInicio = explode("-",explode(" ",$data->HoraInicio)[0]);
 $fechaTermino = explode("-", explode(" ",$data->HoraTermino)[0]);
+$fechaReporte = explode("-", explode(" ",$data->fecha)[0]);
 $horarioTrabajado = (($data->horario_trabajado == 1) ? "Jornada Completa" : ($data->horario_trabajado == 0.5 ? "Media jornada" : "Residente"));
 $tipoVisita = ["","","",""];
 $tipoVisita[$data->tipo_inspeccion-1] = "X";
 $fechaEstimadaCierre = explode("-", explode(" ",$data->fecha_estimada_cierre)[0]);
 $logo = dirname(dirname(__FILE__)) . "/images/login-logo.png";
 $logo2 = dirname(dirname(__FILE__)) . "/images/empresas/".$data->logopath;
+$firma = dirname(dirname(__FILE__)) . "/images/firma.png";
 $fotos_path = dirname(dirname(__FILE__)) . "/images/reportes/";
 
 $pdf = new PDF_MC_Table();
@@ -51,7 +53,7 @@ $row = array();
 newPage($pdf, $data, $logo, $logo2, $vp);
 
 //Tabla inicial - cabeceras
-$row[1] = array("Comprador Activador", $data->comprador, "Fecha", "Fecha inspeccion"); //Aca va la fecha de la inspección
+$row[1] = array("Comprador Activador", $data->comprador, "Fecha", $fechaReporte[2]."/".$fechaReporte[1]."/".$fechaReporte[0]); //Aca va la fecha de la inspección
 $row[2] = array("Cliente Final", $data->nombre, "Proveedor", $data->proveedor);
 $row[3] = array("Orden de Compra", $data->orden_compra,"Proyecto", $data->nombre_proyecto, "Tipo de inspección");
 $row[4] = array("Dirección", $data->direccion.", ".$data->comuna.", ".$data->ciudad, "Visita Semanal", $tipoVisita[0]);
@@ -76,7 +78,7 @@ $y = $pdf->tableRow(10, $y, ($width-20)*0.6, $row[10], array(0.335,0.665), array
 $h = $y - $y1;
 $y = $pdf->summaryCell($y1, ($width-20), $data->resumen, $h, 0.4);
 //Indice
-$y=165;
+$y+=20;
 $pdf->SetFont('Arial','B',12);
 $pdf->SetXY(($width/2)-25,$y);
 $y+=10;
@@ -101,7 +103,7 @@ $pdf->SetXY(20,60);
 $pdf->MultiCell($width-40,5,utf8_decode("En este cuadro deben indicar el porcentaje de avance del proyecto de acuerdo a vuestra evaluación. Fecha de término de orden de compra estimada por ustedes y comentarios generales resumen de actividades de esta orden de compra."),0,"J");
 $pdf->SetFillColor(60,135,200);
 $pdf->SetTextColor(255);
-$y=80;
+$y+=30;
 $dat = array("Avance Fabricación","Fecha estimada \n de cierre","Comentarios");
 $y = $pdf->tableRow(20, $y, ($width-40), $dat, array(0.2,0.25,0.55), array("B","B","B"), 10);
 $pdf->SetFillColor(235);
@@ -109,13 +111,14 @@ $pdf->SetTextColor(0);
 $pdf->SetXY(20,90);
 $dat = array($data->avance."%", $fechaEstimadaCierre[2]."/".$fechaEstimadaCierre[1]."/".$fechaEstimadaCierre[0], $data->comentarios);
 $y = $pdf->tableRow(20, $y, ($width-40), $dat, array(0.2,0.25,0.55), array("","",""), 10);
-$pdf->SetXY(20,$y+=20);
+$pdf->SetXY(20,$y+=10);
 $pdf->SetFont('Arial','B',12);
 $pdf->MultiCell(($width-40)/6,10,utf8_decode("2. Alertas:"),0,"L");
 $pdf->SetXY(20,$y+=10);
 $pdf->SetFont('Arial','',10);
+$y = $y+7*$pdf->NbLines($width-40,utf8_decode($data->alertas));
 $pdf->MultiCell($width-40,10,utf8_decode($data->alertas),0,"J");
-$pdf->SetXY(20,$y+=40);
+$pdf->SetXY(20,$y+=15);
 $pdf->SetFont('Arial','B',12);
 $pdf->MultiCell(($width-40)/6,10,utf8_decode("3. Alcances:"),0,"L");
 $pdf->SetXY(20,$y+=10);
@@ -251,11 +254,18 @@ $pdf->SetXY(20,$y);
 $pdf->MultiCell(($width-40),5,utf8_decode("8. Registro fotográfico"),0,"L");
 $y+=15;
 $count=1;
+$n_fotos = count($extras["fotografias"]);
 foreach($extras["fotografias"] as $foto){
 	list($foto_width, $foto_height) = getimagesize($fotos_path.$foto->imagen_path);
-	$h=round(($foto_height*($width-80)/2)/$foto_width);
-	$h = $h>=80 ? 80 : $h;
-	if($y+$h>$heigth-100){
+	$w = ($width-80)/2;
+	$h=round(($foto_height*$w)/$foto_width);
+	if($h > 60){
+		$w = $w*60/$h;
+		$h = 60;	
+	}
+	$margin_up = (70 - $h)/2;
+	$margin_left = (((20+($width-40)/2)-25)-$w)/2;
+	if($y+$h>$heigth-80){
 		newPage($pdf, $data, $logo, $logo2, $vp);
 		$y = 50;
 	}
@@ -263,31 +273,40 @@ foreach($extras["fotografias"] as $foto){
 	$pdf->SetTextColor(0);
 	$pdf->SetXY(20,$y);
 	$align = ($count%2 == 0) ? 1 : 0;
-	$pdf->Rect(20+$align*((20+($width-40)/2)-15),$y,(20+($width-40)/2)-25, 80);
-	$pdf->Image($fotos_path.$foto->imagen_path, (27+$align*((20+($width-40)/2)-15)),$y+5, ($width-80)/2, $h);
-	$y+=80;
-	$pdf->SetXY(20+$align*((20+($width-40)/2)-15),$y);
-	$pdf->MultiCell(((20+($width-40)/2)-25)/3,10,utf8_decode("Elemento"),1,"C");
-	$pdf->SetXY(20+$align*((20+($width-40)/2)-15)+((20+($width-40)/2)-25)/3,$y);
-	$pdf->MultiCell(((20+($width-40)/2)-25)*2/3,10,utf8_decode($foto->elemento),1,"C");
-	$y+=10;
-	$pdf->SetXY(20+$align*((20+($width-40)/2)-15),$y);
-	$pdf->MultiCell(((20+($width-40)/2)-25)/3,10,utf8_decode("Observaciones"),1,"C");
-	$pdf->SetXY(20+$align*((20+($width-40)/2)-15)+((20+($width-40)/2)-25)/3,$y);
-	$pdf->MultiCell(((20+($width-40)/2)-25)*2/3,10,utf8_decode($foto->observaciones),1,"C");
-	$y=$y-90;
-	if($align == 1){
+	$pdf->Rect(20+$align*((20+($width-40)/2)-15),$y,(20+($width-40)/2)-25, 70);
+	$pdf->Image($fotos_path.$foto->imagen_path, ($margin_left+20+$align*((20+($width-40)/2)-15)),$margin_up+$y, $w, $h);
+	$y+=70;
+	$dat = array("Elemento", $foto->elemento);
+	$y_nb = $pdf->tableRow(20+$align*((20+($width-40)/2)-15), $y, ((20+($width-40)/2)-25), $dat, array(0.35,0.65), array("",""), 10)-$y;
+	$nb = $y_nb/7;
+	$y=$y+$y_nb;
+	$dat = array("Observaciones", $foto->observaciones);
+	$pdf->tableRow(20+$align*((20+($width-40)/2)-15), $y, ((20+($width-40)/2)-25), $dat, array(0.35,0.65), array("",""), 10);
+	$y=$y-70-$y_nb;
+	if($align == 1 && $count!= $n_fotos){
 		$y+=100;
 	}
 	$count++;
 }
-
+//firma
+if($y>$heigth-70){
+	newPage($pdf, $data, $logo, $logo2, $vp);
+	$y=40;
+}
+else{
+	$y+=115;
+}
+$pdf->Image($firma, 20, $y, 80);
+$y+=35;
+$pdf->Text(($width/2)-20, $y, "FIN DEL DOCUMENTO");
 $pdf->Output();
 
 function newPage($pdf, $data, $logo, $logo2, $vp){
 	$heigth = $pdf->GetPageHeight();
 	$width = $pdf->GetPageWidth();
 	$pdf->AddPage();
+	$pdf->Rect(4,4,$width-8,$heigth-8);
+	$pdf->Rect(5,5,$width-10,$heigth-10);
 	$x = 10;
 	//Header
 	$pdf->SetFont('Arial','B',12);
@@ -305,13 +324,15 @@ function newPage($pdf, $data, $logo, $logo2, $vp){
 	$pdf->Image($logo, 12, 12, 26);
 	$pdf->Rect($width-40,10, 30, 30, "DF");
 	$pdf->Image($logo2, $width-38, 12, 26, 26);
+	$pdf->Rect($x-1,9, $width-18, 32);
 	//Footer
 	$pdf->SetFont('Arial','',7);
-	$pdf->SetXY($x,$heigth-30);
-	$pdf->MultiCell(0,3,utf8_decode("La emisión del Reporte de inspección, no libera al Proveedor de sus responsabilidades y obligaciones bajo contrato o la ley, con respecto a los materiales y equipo descritos en este reporte de inspección. Esto no implica la aceptación de estos materiales y equipos por el comprador o Dueño."),0,"C");
+	$pdf->Image($logo, 9, $heigth-30, 12);
+	$pdf->SetXY($x+5,$heigth-30);
+	$pdf->MultiCell(0,3,utf8_decode("La emisión del Reporte de inspección, no libera al Proveedor de sus responsabilidades y obligaciones bajo contrato o la ley, con respecto a los materiales \ny equipo descritos en este reporte de inspección. Esto no implica la aceptación de estos materiales y equipos por el comprador o Dueño."),0,"C");
 	$pdf->SetFont('Arial','B',8);
 	$pdf->SetTextColor(0,0,110);
-	$pdf->SetXY($x,$heigth-23);
+	$pdf->SetXY($x+5,$heigth-23);
 	$pdf->MultiCell(0,2,utf8_decode("GEMAR Ingeniería y asesorías técnicas. Vespucio Sur 1117 Las Condes Celular: +56 989210647 www.gemaringenieria.cl"),0,"C");
 	$pdf->SetTextColor(0);
 }
