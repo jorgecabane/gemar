@@ -9,8 +9,7 @@ function get_jornadas() {
 	
 	$query = "SELECT COUNT(i.inspeccion_id) AS media_jornada
 			FROM inspeccion i
-			INNER JOIN reporte r ON (i.reporte_reporte_id = r.reporte_id AND r.horario_trabajado='0.5')
-			WHERE i.fecha >= $date";
+			WHERE i.jornada='0.5' AND i.fecha >= $date";
 
 	if ($result = $con->query($query)) {
 		while ( $result_row = $result->fetch_object() ) {
@@ -20,8 +19,7 @@ function get_jornadas() {
 	
 	$query = "SELECT COUNT(i.inspeccion_id) AS jornada_completa
 	FROM inspeccion i
-	INNER JOIN reporte r ON (i.reporte_reporte_id = r.reporte_id AND r.horario_trabajado='1')
-	WHERE i.fecha >= $date";
+	WHERE i.jornada='1' AND  i.fecha >= $date";
 	
 	if ($result = $con->query($query)) {
 		while ( $result_row = $result->fetch_object() ) {
@@ -31,8 +29,7 @@ function get_jornadas() {
 	
 	$query = "SELECT COUNT(i.inspeccion_id) AS jornada_residente
 	FROM inspeccion i
-	INNER JOIN reporte r ON (i.reporte_reporte_id = r.reporte_id AND r.horario_trabajado='0')
-	WHERE i.fecha >= $date";
+	WHERE i.jornada='0' AND i.fecha >= $date";
 	
 	if ($result = $con->query($query)) {
 		while ( $result_row = $result->fetch_object() ) {

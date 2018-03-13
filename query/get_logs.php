@@ -8,7 +8,7 @@ function get_logs($start, $end) {
 
   
         $query = "SELECT * FROM logs
-                    WHERE fecha between $start AND $end
+                    WHERE fecha >= $start AND fecha <= $end
                     ORDER BY fecha DESC";
 
     if ($result = $con->query($query)) {

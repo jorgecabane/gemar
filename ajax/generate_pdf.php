@@ -17,7 +17,6 @@ require_once dirname(__FILE__) . "/fpdi/src/autoload.php";
 require_once dirname(__FILE__) . "/fpdf/fpdf.php";
 require_once dirname(dirname(__FILE__)) . "/query/get_pdfdata.php";
 require_once dirname(dirname(__FILE__)) . "/query/get_extras.php";
-require_once dirname(dirname(__FILE__)) . "/query/delete_vista_previa.php";
 require_once dirname(__FILE__) . "/table.php";
 
 if($vp == 0){
@@ -36,7 +35,7 @@ else{
 $fechaInicio = explode("-",explode(" ",$data->HoraInicio)[0]);
 $fechaTermino = explode("-", explode(" ",$data->HoraTermino)[0]);
 $fechaReporte = explode("-", explode(" ",$data->fecha)[0]);
-$horarioTrabajado = (($data->horario_trabajado == 1) ? "Jornada Completa" : ($data->horario_trabajado == 0.5 ? "Media jornada" : "Residente"));
+//$horarioTrabajado = (($data->horario_trabajado == 1) ? "Jornada Completa" : ($data->horario_trabajado == 0.5 ? "Media jornada" : "Residente"));
 $tipoVisita = ["","","",""];
 $tipoVisita[$data->tipo_inspeccion-1] = "X";
 $fechaEstimadaCierre = explode("-", explode(" ",$data->fecha_estimada_cierre)[0]);
@@ -44,6 +43,13 @@ $logo = dirname(dirname(__FILE__)) . "/images/login-logo.png";
 $logo2 = dirname(dirname(__FILE__)) . "/images/empresas/".$data->logopath;
 $firma = dirname(dirname(__FILE__)) . "/images/firma.png";
 $fotos_path = dirname(dirname(__FILE__)) . "/images/reportes/";
+
+$horarioTrabajado = "";
+foreach ($extras["inspeccion"] as $inspeccion){
+	$f = explode("-",explode(" ",$inspeccion->fecha)[0]);
+	$jornada = (($inspeccion->jornada == 1) ? "Jornada Completa" : ($inspeccion->jornada == 0.5 ? "Media jornada" : "Residente"));
+	$horarioTrabajado.= $f[2]."/".$f[1]."/".$f[0]."-".$jornada."\n";
+}
 
 $pdf = new PDF_MC_Table();
 $heigth = $pdf->GetPageHeight();
@@ -88,7 +94,7 @@ $pdf->MultiCell(($width-40)/6,10,utf8_decode("1.\n2.\n3.\n4.\n5.\n6.\n7.\n8."),0
 $pdf->SetXY(40,$y);
 $pdf->MultiCell(0,10,utf8_decode("Resumen:\nAlertas:\nAlcances de la inspección:\nAsistentes:\nDocumentos utilizados:\nListado de pendientes, deficiencias notadas - No comformidades:\nResultados finales/Conclusiones:\nRegistro fotográfico:"),0,"L");
 $pdf->SetXY(190,$y);
-$pdf->MultiCell(($width-40)/6,10,utf8_decode("1\n2\n3\n4\n5\n6\n7\n8"),0,"L");
+$pdf->MultiCell(($width-40)/6,10,utf8_decode("2\n2\n2\n3\n3\3\n4\n4"),0,"L");
 
 //Pagina 2
 $y = 0;
@@ -291,7 +297,7 @@ foreach($extras["fotografias"] as $foto){
 //firma
 if($y>$heigth-70){
 	newPage($pdf, $data, $logo, $logo2, $vp);
-	$y=40;
+	$y=50;
 }
 else{
 	$y+=115;
@@ -306,7 +312,7 @@ function newPage($pdf, $data, $logo, $logo2, $vp){
 	$width = $pdf->GetPageWidth();
 	$pdf->AddPage();
 	$pdf->Rect(4,4,$width-8,$heigth-8);
-	$pdf->Rect(5,5,$width-10,$heigth-10);
+	$pdf->Rect(4.7,4.7,$width-9.4,$heigth-9.4);
 	$x = 10;
 	//Header
 	$pdf->SetFont('Arial','B',12);
@@ -324,7 +330,7 @@ function newPage($pdf, $data, $logo, $logo2, $vp){
 	$pdf->Image($logo, 12, 12, 26);
 	$pdf->Rect($width-40,10, 30, 30, "DF");
 	$pdf->Image($logo2, $width-38, 12, 26, 26);
-	$pdf->Rect($x-1,9, $width-18, 32);
+	$pdf->Rect($x-0.7,9.3, $width-18.7, 31.3);
 	//Footer
 	$pdf->SetFont('Arial','',7);
 	$pdf->Image($logo, 9, $heigth-30, 12);

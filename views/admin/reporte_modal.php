@@ -10,7 +10,6 @@
                 <p id="reporte_modal_accion" rehacer="" reporteid="" eventoid="">Editar Reporte</p>
             </div>
             <?php
-
   			if ($_SESSION['user_role'] == 0) {
 	  			echo '<button class="center btn waves-effect waves-light left pink lighten-1" id="vistaPrevia">
 						<i class="mdi-image-remove-red-eye left"></i>			  	
@@ -20,18 +19,7 @@
   			?>
         </div>
         <br>
-
-        <!-- Horario Trabajado -->
-        <div class="input-field row">
-            <label class="active" for="reporte_horario">Horario Trabajado</label> 
-            <select class="browser-default active" id="reporte_horario">
-                <option value="" disabled selected>Elegir horario</option>
-                <option value="1">Jornada Completa</option>
-                <option value="0.5">Media Jornada</option>
-				<option value="0">Residente</option>
-            </select>
-        </div>
-
+        
         <!-- Tipo Inspeccion -->
         <div class="input-field row">
             <label class="active" for="reporte_inspeccion">Tipo de Inspección</label> 
@@ -46,7 +34,7 @@
 
         <!-- Subcontratista -->
         <div class="input-field row">
-            <input id="reporte_subcontratista" type="text">
+            <input id="reporte_subcontratista" class="upper" type="text">
             <label for="reporte_subcontratista">Subcontratista</label>
         </div>
 
@@ -58,7 +46,7 @@
 
         <!-- Resumen Actividad -->
         <div class="input-field row">
-            <input id="reporte_resumen" type="text" maxlength="40">
+            <input id="reporte_resumen" class="upper" type="text" maxlength="40">
             <label for="reporte_resumen">Actividad Resumida</label>
         </div>
 
@@ -70,34 +58,45 @@
 
          <!-- Comentarios Proyecto -->
         <div class="input-field row">
-            <textarea id="reporte_comentarios" maxlength="100" class="materialize-textarea"></textarea>
+            <textarea id="reporte_comentarios" maxlength="100" class="materialize-textarea upper"></textarea>
             <label for="reporte_comentarios">Comentarios del Proyecto</label>
         </div>
 
          <!-- Alertas Proyecto -->
         <div class="input-field row">
-            <textarea id="reporte_alertas" class="materialize-textarea"></textarea>
+            <textarea id="reporte_alertas" class="materialize-textarea upper"></textarea>
             <label for="reporte_alertas">Alertas del Proyecto</label>
         </div>
 
          <!-- Alcances Proyecto -->
         <div class="input-field row">
-            <textarea id="reporte_alcances" class="materialize-textarea" maxlength="300"></textarea>
+            <textarea id="reporte_alcances" class="materialize-textarea upper" maxlength="300"></textarea>
             <label for="reporte_alcances">Alcances del Proyecto</label>
         </div>
 
          <!-- Conclusiones Proyecto -->
         <div class="input-field row">
-            <textarea id="reporte_conclusiones" class="materialize-textarea" maxlength="300"></textarea>
+            <textarea id="reporte_conclusiones" class="materialize-textarea upper" maxlength="300"></textarea>
             <label for="reporte_conclusiones">Conclusiones del Proyecto</label>
         </div>
         
         <!-- Fecha de la inspección -->
-        <div class="input-field row">
-            <input type="text" class="datepicker active" id="reporte_fechainspeccion">
-            <label for="fecha_inspeccion active">Fecha de inspección</label>
-        </div>       
-
+        <div class="insertFecha">
+	        <div class="input-field row">
+	            <input type="text" class="datepicker active" id="reporte_fechainspeccion">
+	            <label for="fecha_inspeccion active">Fecha de inspección</label>
+	        </div>  
+	        <!-- Horario Trabajado -->
+	        <div class="input-field row">
+	            <label class="active" for="reporte_horario">Horario Trabajado</label> 
+	            <select class="browser-default active inspeccion_jornada" id="reporte_horario">
+	                <option value="" disabled selected>Elegir horario</option>
+	                <option value="1">Jornada Completa</option>
+	                <option value="0.5">Media Jornada</option>
+					<option value="0">Residente</option>
+	            </select>
+	        </div>
+        </div>
     </div>
 
     <!-- Footer -->
@@ -111,6 +110,7 @@
 		        <option value="4">Pendiente</option>
 		        <option value="5">Registro Fotográfico</option>
 		        <option value="6">Fecha de inspección</option>
+		        <option value="7">Añadir Archivo</option>
 		    </select>
 
 	       	<button class="center btn waves-effect waves-light left" id="addextra">
@@ -142,7 +142,15 @@ $(document).ready(function (e) {
         autoclose: true
     });
 
-	//$('.dropify').dropify();
+ 	function jsUcfirst(string) 
+    {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    $(document).on('keyup', '.upper',function(){
+		$(this).val(jsUcfirst($(this).val()));
+    });
+
 	var del = {equipos: [], asistentes: [], documentos:[], pendientes:[], fotos:[], fechas:[]};
 	
 	$(document).on('click', '.deleteextra', function(){
@@ -176,6 +184,7 @@ $(document).ready(function (e) {
 		$('.insertPendiente').remove();
 		$('.insertFotos').remove();
 		$('.insertFecha').remove();
+		$('.insertFile').remove();
 	});
 
 	$('#vistaPrevia').click( function(e){
@@ -307,13 +316,14 @@ $(document).ready(function (e) {
 			});
 
 			// save fecha inspeccion
-			$.each( $('#reporte_fechainspeccion') , function( key, value ) {
+			$.each( $('.insertFecha') , function( key, value ) {
 			  	var inspeccion = {
 				  	reporte: reporteid,
 				  	inspeccionid: $(this).attr('inspeccionId'),
-				  	fecha: new Date($(this).val()).toISOString().slice(0, 10)
+				  	fecha: new Date($(this).find('.datepicker').val()).toISOString().slice(0, 10),
+				  	jornada: $(this).find('.inspeccion_jornada').val()
 			  	};
-
+				console.log(inspeccion);
 				$.ajax({
 					url: "query/insert_fecha.php", 
 					type: "POST",            
@@ -368,6 +378,49 @@ $(document).ready(function (e) {
 				}
 
 			});
+
+			// save insert Fotos
+			$.each( $('.insertFiles') , function( key, value ) {
+
+
+				var herefoto = $(this);
+				//save img first, so you can save the full path to db too
+				send = new FormData();
+				send.append( 'files', $( this ).find('.dropify')[0].files[0] );
+				send.append( 'folder', "files" );
+
+				if($(this).attr("rehacer") == 0){
+					$.ajax({
+						url: "ajax/save_file.php", // Url to which the request is send
+						type: "POST",             // Type of request to be send, called as method
+						data: send, 			  // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+						contentType: false,       // The content type used when sending data to the server.
+						cache: false,             // To unable request pages to be cached
+						processData:false,        // To send DOMDocument or non processed data file it is set to false
+						success: function(filepath)   // A function to be called if request succeeds
+						{
+	
+							var file = {
+					  			reporte: reporteid,
+					  			filepath: filepath
+					  		};
+	
+							$.ajax({
+								url: "query/insert_file.php", 
+								type: "POST",            
+								data: {"file": file},       
+								success: function(fileid)   
+								{
+									console.log(fileid);
+								}
+							});
+	
+						}
+					});
+				}
+
+			});
+			
 		//delete equipos
 		$.each( del.equipos , function( key, value ) {
 			$.ajax({
@@ -416,6 +469,18 @@ $(document).ready(function (e) {
 				}
 			});
 		});
+		//delete fechas de inspeccion
+		$.each( del.fechas , function( key, value ) {
+			$.ajax({
+				url: "query/delete_fechas.php", 
+				type: "POST",            
+				data: {"inspeccionid": value},       
+				success: function()   
+				{
+					console.log("deleted");
+				}
+			});
+		});
 		//delete fotos
 		$.each( del.fotos , function( key, value ) {
 			$.ajax({
@@ -433,9 +498,6 @@ $(document).ready(function (e) {
 		Materialize.toast("Reporte Ingresado", 3000);
 		//end de add extra (ajax done)
 	  	});
-
-
-
 
 		//$(".imagesubmitform").trigger('submit');
 	});
@@ -470,24 +532,54 @@ $(document).ready(function (e) {
 		});
 	}));
 
+	$(document).on('submit', '.filesubmitform', (function(e) {
+		e.preventDefault();
+
+		var button = $(this).find('.submitfile');
+		var loadingbar = $(this).find('.loadingbarform');
+		loadingbar.show();
+
+		send = new FormData();
+		send.append( 'files', $( this ).find('.dropify')[0].files[0] );
+		send.append( 'folder', "files" );
+		
+		$.ajax({
+			url: "ajax/save_file.php", // Url to which the request is send
+			type: "POST",             // Type of request to be send, called as method
+			data: send, 			  // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+			contentType: false,       // The content type used when sending data to the server.
+			cache: false,             // To unable request pages to be cached
+			processData:false,        // To send DOMDocument or non processed data file it is set to false
+			success: function(data)   // A function to be called if request succeeds
+			{
+
+				setTimeout(function(){ 
+					loadingbar.hide(); 
+				}, 1000);
+				button.hide();
+				Materialize.toast(data, 3000);
+			}
+		});
+	}));
+
 	// ADD EXTRA DATA
 	function appendEquipos(){
 		var html =  '<div class="insertEquipo">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Listado de Equipos</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">' +
-            			'<input class="equipo_tag" type="text" maxlength="45">' +
+            			'<input class="equipo_tag upper" type="text" maxlength="45">' +
             			'<label>Tag</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="equipo_descripcion" type="text" maxlength="45">' +
+            			'<input class="equipo_descripcion upper" type="text" maxlength="45">' +
             			'<label>Descripción</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="equipo_proveedor" type="text" maxlength="45">' +
+            			'<input class="equipo_proveedor upper" type="text" maxlength="45">' +
             			'<label>Proveedor</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-			            '<textarea class="materialize-textarea equipo_comentario" maxlength="100"></textarea>' +
+			            '<textarea class="materialize-textarea equipo_comentario upper" maxlength="100"></textarea>' +
 			            '<label>Comentarios</label>'+
 			        '</div>' +
 			        '</div>';
@@ -504,15 +596,15 @@ $(document).ready(function (e) {
 		var html = 	'<div class="insertAsistente">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Asistentes</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">' +
-            			'<input class="asistente_nombre" type="text" maxlength="45">' +
+            			'<input class="asistente_nombre upper" type="text" maxlength="45">' +
             			'<label>Nombre</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="asistente_company" type="text" maxlength="45">' +
+            			'<input class="asistente_company upper" type="text" maxlength="45">' +
             			'<label>Compañía</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="asistente_cargo" type="text" maxlength="45">' +
+            			'<input class="asistente_cargo upper" type="text" maxlength="45">' +
             			'<label>Cargo</label>' +
        				'</div>' + 
        				'</div>';
@@ -528,19 +620,19 @@ $(document).ready(function (e) {
 		var html = 	'<div class="insertDocumento">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Documentos Utilizados</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">' +
-            			'<input class="documento_numero" type="text" maxlength="45">' +
+            			'<input class="documento_numero upper" type="text" maxlength="45">' +
             			'<label>N° del documento</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="documento_revision" type="text" maxlength="10">' +
+            			'<input class="documento_revision upper" type="text" maxlength="10">' +
             			'<label>Revisión</label>' +
        				'</div>' +
 					'<div class="input-field row">' +
-            			'<input class="documento_nombre" type="text" maxlength="45">' +
+            			'<input class="documento_nombre upper" type="text" maxlength="45">' +
             			'<label>Nombre</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="documento_status" type="text" maxlength="45">' +
+            			'<input class="documento_status upper" type="text" maxlength="45">' +
             			'<label>Status de aprobación</label>' +
        				'</div>' +
        				'</div>';
@@ -556,19 +648,19 @@ $(document).ready(function (e) {
 		var html = 	'<div class="insertPendiente">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Listado de Pendientes</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">' +
-            			'<input class="pendiente_numero" type="text" maxlength="45">' +
+            			'<input class="pendiente_numero upper" type="text" maxlength="45">' +
             			'<label>N° de documento</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="pendiente_descripcion" type="text" maxlength="150">' +
+            			'<input class="pendiente_descripcion upper" type="text" maxlength="150">' +
             			'<label>Descripción</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="pendiente_pendiente" type="text" maxlength="45">' +
+            			'<input class="pendiente_pendiente upper" type="text" maxlength="45">' +
             			'<label>Pendientes-NCR-Deficiencias</label>' +
        				'</div>'+
        				'<div class="input-field row">' +
-            			'<input class="pendiente_comentarios" type="text" maxlength="100">' +
+            			'<input class="pendiente_comentarios upper" type="text" maxlength="100">' +
             			'<label>Comentarios</label>' +
        				'</div>' +
        				'</div>';
@@ -587,12 +679,31 @@ $(document).ready(function (e) {
             			'<input type="text" class="datepicker active" id="reporte_fechainspeccion">'+
             			'<label for="fecha_inspeccion active">Fecha de inspección</label>'+
         			'</div>'+
+        			'<div class="input-field row">' +
+        			'<label class="active">Horario Trabajado</label>' +
+                    '<select class="browser-default inspeccion_jornada active">' +
+                        '<option value="" disabled selected>Elegir horario</option>' +
+                        '<option value="1">Jornada Completa</option>' +
+                        '<option value="0.5">Media Jornada</option>' +
+        				'<option value="0">Residente</option>' +
+                    '</select>' +
+   					'</div>'+
        				'</div>';
 
 		
 		$.when($('#reportemodal').find('.modal-content').append(html)).then(function( value ) {
     		$('#reportemodal').find('.modal-content').animate({scrollTop: $('#reportemodal').find('.modal-content').prop("scrollHeight")}, 'slow');
     	});
+
+		$('.datepicker').pickadate({
+	        selectMonths: true, // Creates a dropdown to control month
+	        selectYears: 4, // Creates a dropdown of 15 years to control year,
+	        today: 'Today',
+	        clear: 'Clear',
+	        close: 'Ok',
+	        closeOnSelect: true, // Close upon selecting a date,
+	        autoclose: true
+	    });
 
 	}
 	function appendFotos(){
@@ -603,18 +714,18 @@ $(document).ready(function (e) {
         			'<div class="progress loadingbarform" style="display:none">' +
       				'<div class="indeterminate"></div>' +
   					'</div>' +
-		    		'<input type="file" name="pictures" accept="image/*" id="file" class="dropify"/>' +
+		    		'<input type="file" name="pictures" id="file" class="dropify" data-allowed-file-extensions="jpg png jpeg" />' +
 		    		'<button class="center btn waves-effect waves-light submitpicture" type="submit" name="action" style="display:none">' +
 		    		'Guardar' +
     				'<i class="mdi-file-cloud-upload right"></i>' +
   					'</button>' +
 					'</form>' +
 					'<div class="input-field row">' +
-            			'<input class="fotografias_elemento" type="text" maxlength="45">' +
+            			'<input class="fotografias_elemento upper" type="text" maxlength="45">' +
             			'<label>Elemento</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="fotografias_observaciones" type="text" maxlength="100">' +
+            			'<input class="fotografias_observaciones upper" type="text" maxlength="100">' +
             			'<label>Observaciones</label>' +
        				'</div>' +
        				'</div>';
@@ -624,6 +735,30 @@ $(document).ready(function (e) {
 			$('.dropify').dropify();
     		$('#reportemodal').find('.modal-content').animate({scrollTop: $('#reportemodal').find('.modal-content').prop("scrollHeight")}, 'slow');
     		//refreshfunctions();
+    	});
+
+	}
+
+	function appendFile(){
+
+		var html = 	'<div class="insertFiles" rehacer="0">' +
+					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Subir Archivo</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
+					'<form action="" method="post" enctype="multipart/form-data" class="filesubmitform center">'+
+        			'<div class="progress loadingbarform" style="display:none">' +
+      				'<div class="indeterminate"></div>' +
+  					'</div>' +
+		    		'<input type="file" name="files" id="file" class="dropify" />' +
+		    		'<button class="center btn waves-effect waves-light submitfile" type="submit" name="action" style="display:none">' +
+		    		'Guardar' +
+    				'<i class="mdi-file-cloud-upload right"></i>' +
+  					'</button>' +
+					'</form>' +
+       				'</div>';
+
+		
+		$.when($('#reportemodal').find('.modal-content').append(html)).then(function( value ) {
+			$('.dropify').dropify();
+    		$('#reportemodal').find('.modal-content').animate({scrollTop: $('#reportemodal').find('.modal-content').prop("scrollHeight")}, 'slow');
     	});
 
 	}
@@ -648,6 +783,9 @@ $(document).ready(function (e) {
 		    case 6:
 			    appendFecha();
 			    break;
+		    case 7:
+			    appendFile();
+			    break;
 		}
 	};
 
@@ -656,6 +794,7 @@ $(document).ready(function (e) {
 		var asistentes = new Array();
 		var documentos = new Array();
 		var pendientes = new Array();
+		var inspeccion = new Array();
 		var fotos = new Array();
 
 		// save insert Equipo
@@ -704,6 +843,17 @@ $(document).ready(function (e) {
 			  	comentarios: $(this).find('.pendiente_comentarios').val()
 		  	};
 		  	pendientes.push(pendiente);
+		});
+
+		// save insert Equipo
+		$.each( $('.insertFecha') , function( key, value ) {
+		  	
+	  		var inspeccion = {
+				  	inspeccionid: $(this).attr('inspeccionId'),
+				  	fecha: new Date($(this).find('.datepicker').val()).toISOString().slice(0, 10),
+				  	jornada: $(this).find('.inspeccion_jornada').val()
+			  	};
+		  	inspeccion.push(inspeccion);
 		});
 
 		// save insert Fotos
@@ -767,6 +917,7 @@ $(document).ready(function (e) {
 					asistentes: asistentes,
 					documentos: documentos,
 					pendientes: pendientes,
+					inspeccion: inspeccion,
 					fotografias: fotos
 				}
 		};

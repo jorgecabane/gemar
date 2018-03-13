@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/conexion.php';
+require_once dirname(__FILE__) . '/insert_notification.php';
 
 function insertReporte($reporte) {
     global $con;
@@ -57,6 +58,14 @@ function insertReporte($reporte) {
 		        WHERE reporte_id = '$reporteid'";
 
         if ($result = $con->query($query)) {
+        	$notifiaction_info_sql =  "SELECT e.nombre_proyecto, e.HoraTermino, u.user_id, u.user_first_name, u.user_last_name 
+        								FROM evento e 
+        								INNER JOIN users u ON (u.user_id = e.users_user_id AND e.evento_id = '$evento')";
+        	if ($info = $con->query($notifiaction_info_sql)) {
+        		$notification_info = $info->fetch_object();
+	        	$descripcion = $notification_info->user_first_name." ".$notification_info->user_last_name." actualizó un reporte para ".$notification_info->nombre_proyecto;
+	        	echo insertNotification('2', '1', $descripcion);
+        	}
         	return $reporteid;
         }
         else {
@@ -66,6 +75,14 @@ function insertReporte($reporte) {
 	else{
     	$query = "INSERT INTO `gemar`.`reporte`  VALUES (NULL, '$evento', '$lastversion', NOW(), '$horario', '$inspeccion', '$avance', '$fechacierre', '$comentarios', '$alertas', '$alcances', '$conclusiones', '$resumen', 0, '$subcontratista', '$number')";
     	if ($result = $con->query($query)) {
+    		$notifiaction_info_sql =  "SELECT e.nombre_proyecto, e.HoraTermino, u.user_id, u.user_first_name, u.user_last_name
+							    		FROM evento e
+							    		INNER JOIN users u ON (u.user_id = e.users_user_id AND e.evento_id = '$evento')";
+    		if ($info = $con->query($notifiaction_info_sql)) {
+    			$notification_info = $info->fetch_object();
+    			$descripcion = $notification_info->user_first_name." ".$notification_info->user_last_name." entregó un reporte para ".$notification_info->nombre_proyecto;
+    			echo insertNotification('1', '1', $descripcion);
+    		}
     		return $con->insert_id;
     	}
     	else {
