@@ -25,35 +25,35 @@
          <!-- Orden de Compra -->
         <div class="input-field row">
             <i class="mdi-action-shopping-cart prefix"></i>
-            <input id="orden-compra" type="text">
+            <input id="orden-compra" class="upper" type="text">
             <label for="orden-compra">Orden de Compra</label>
         </div>
 
         <!-- Nombre Proyecto -->
         <div class="input-field row">
             <i class="mdi-action-info-outline prefix"></i>
-            <input id="nombre-proyecto" type="text">
+            <input id="nombre-proyecto" class="upper" type="text">
             <label for="nombre-proyecto">Nombre Proyecto</label>
         </div>
 
         <!-- Comprador - Activador -->
         <div class="input-field row">
             <i class="mdi-action-info-outline prefix"></i>
-            <input id="comprador-proyecto" type="text">
+            <input id="comprador-proyecto" class="upper" type="text">
             <label for="comprador-proyecto">Comprador - Activador</label>
         </div>
 
         <!-- Proveedor -->
         <div class="input-field row">
             <i class="mdi-action-info-outline prefix"></i>
-            <input id="proveedor-proyecto" type="text">
+            <input id="proveedor-proyecto" class="upper" type="text">
             <label for="proveedor-proyecto">Proveedor</label>
         </div>
 
         <!-- Componente -->
         <div class="input-field row">
             <i class="mdi-action-info-outline prefix"></i>
-            <input id="componente-proyecto" type="text">
+            <input id="componente-proyecto" class="upper" type="text">
             <label for="componente-proyecto">Componente</label>
         </div>
 
@@ -77,7 +77,7 @@
         <!-- Descripcion Proyecto -->
         <div class="input-field row">
             <i class="mdi-action-list prefix"></i>
-            <textarea id="descripcion-proyecto" class="materialize-textarea"></textarea>
+            <textarea id="descripcion-proyecto" class="materialize-textarea upper"></textarea>
             <label for="descripcion-proyecto">Descripción Proyecto</label>
         </div>
 
@@ -170,5 +170,16 @@
             closeOnSelect: true, // Close upon selecting a date,
             autoclose: true
         });
+
+        function jsUcfirst(string) 
+        {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        $('.upper').keyup(function(){
+			$(this).val(jsUcfirst($(this).val()));
+        });
+
+        
     });
 </script>

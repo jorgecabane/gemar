@@ -141,13 +141,12 @@ $( document ).ready(function() {
               var ywString = datepickerValue.getFullYear() + '-' + weekNum;
               $(this).val(ywString);
               $(this).prev().html(ywString);
-              startDate = new Date(datepickerValue.getFullYear(), datepickerValue.getMonth(), datepickerValue.getDate() - datepickerValue.getDay() +1).getTime();
-              endDate = new Date(datepickerValue.getFullYear(), datepickerValue.getMonth(), datepickerValue.getDate() - datepickerValue.getDay() + 7).getTime();
+              startDate = new Date(datepickerValue.getFullYear(), datepickerValue.getMonth(), datepickerValue.getDate() - datepickerValue.getDay());
+              endDate = new Date(datepickerValue.getFullYear(), datepickerValue.getMonth(), datepickerValue.getDate() - datepickerValue.getDay() + 6);
               selectCurrentWeek();
               $(this).data('datepicker').inline = true;
               globalAdditionalFunction(globalTriggeringElement);
               weekchange($('#weekPicker').val(),userid);
-              //$('#ui-datepicker-div').hide();
           },
           onClose: function() {
               $(this).data('datepicker').inline = false;
@@ -174,7 +173,7 @@ $( document ).ready(function() {
 
   };
 
-  var convertToWeekPicker = function(targetElement) { 
+  var convertToWeekPicker = function(targetElement) {
       if (targetElement.prop("tagName") == "INPUT" && (targetElement.attr("type") == "text" || targetElement.attr("type") == "hidden")) {
           var week = targetElement.val();
           $('<span class="displayDate" style="display:none">' + week + '</span>').insertBefore(targetElement);

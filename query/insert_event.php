@@ -10,6 +10,7 @@
  * 1 si success o 0 si fail
  */
 require_once dirname(__FILE__) . '/conexion.php';
+require_once dirname(__FILE__) . '/insert_notification.php';
 
 function insertEvento($userid, $centroid, $start, $end, $nombreproyecto, $ordencompra, $contacto, $descripcion, $visitasagendadas, $criticidad, $color, $proveedor, $comprador, $componente) {
     global $con;
@@ -27,6 +28,8 @@ function insertEvento($userid, $centroid, $start, $end, $nombreproyecto, $ordenc
 
   
     if ($result = $con->query($query)) {
+    	$notificacion_descripcion = "Se te ha asignado el evento ".$nombreproyecto." con fecha para:";
+    	insertNotification('3', $userid, $notificacion_descripcion, $newEnd);
         return $con->insert_id;
      } 
      else {

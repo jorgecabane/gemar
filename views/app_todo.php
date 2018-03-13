@@ -49,8 +49,8 @@
 </div>
 <?php   
   include_once dirname(__FILE__) . '/admin/generatepdf_modal.php';
-
   include_once dirname(__FILE__) . '/admin/reporte_modal.php';
+  include_once dirname(__FILE__) . '/admin/files_modal.php';
 ?> 
 
 

@@ -116,17 +116,9 @@
 						<?php
 					
 						foreach($notifications as $notification){
-							if ($login->isAdminUser() == true){
-								$time = time-strtotime($notification->fecha);
-								echo '<li>'.$notification->user_first_name.' '.$notification->user_last_name.
-								' entregó un reporte para '.$notification->nombre_proyecto.
-								'</br><time class="media-meta">'.$notification->fecha.'</time></li>';
-							}
-							else{
-								$fecha = explode(" ",$notification->HoraTermino)[0];
-								echo '<li>Se te ha asignado el evento '.$notification->nombre_proyecto.' con fecha para:'.
-								'</br><time class="media-meta">'.$fecha.'</time></li>';
-							}
+							$time = time-strtotime($notification->fecha);
+							echo '<li class="notification" notificationid="'.$notification->notificacion_id.'">'.$notification->descripcion.
+							'</br><time class="media-meta">'.$notification->fecha.'</time></li>';
 						}						
 						?>
 					</ul>
@@ -318,7 +310,7 @@
   				setTimeout(function() {
   			    	$('#content').load('views/app_todo.php');      
   			    }, 1000);
-		    }); 
+		    }); 		    
 		});
     </script>
     <script>
@@ -326,6 +318,18 @@
 		$( ".sidebarlink" ).on('click', function() {
 			$( ".sidebarlink" ).removeClass('active');
 			$(this).addClass('active');
+		});
+		$(document).on('click', '.notification', function(){
+			$(this).addClass("blue-grey lighten-4");
+			$.ajax({
+			      method: "POST",
+			      url: "query/update_notification.php",
+			      data: {"notificacion_id": $(this).attr("notificationid")},
+			      success: function(response)
+			      {
+			       	//console.log(response);
+			      }
+			    });
 		});
 	});				
 	</script>

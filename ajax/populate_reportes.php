@@ -7,6 +7,7 @@ $year = $_REQUEST['year'];
 
 include_once dirname(__FILE__) . '/../query/get_eventos.php';
 include_once dirname(__FILE__) . '/../query/get_enviado.php';
+include_once dirname(__FILE__) . '/../query/get_files.php';
 
   if($admin){
     //Admin ve todos los eventos
@@ -14,16 +15,17 @@ include_once dirname(__FILE__) . '/../query/get_enviado.php';
     foreach($eventos as $evento){
 	  
       $enviado = get_enviado($evento->reporte_id);
+      $files_attached = (!empty(getFiles($evento->reporte_id))) ? "<span class='viewfiles' reportid='".$evento->reporte_id."'><i class='right mdi-editor-attach-file' style='color:grey'></i></span>" : "";
       if($evento->criticidad == 1){
         //Evento Critico
         echo '<li>
-            <div class="collapsible-header red white-text"><input type="checkbox" class="filled-in enviado" id="'.$evento->reporte_id.'" '.$enviado.'/><label for="'.$evento->reporte_id.'">'.$evento->nombre_proyecto.' ('.$evento->orden_compra.') - '. $evento->user_first_name .' '. $evento->user_last_name . '</label></div>
+            <div class="collapsible-header red white-text"><input type="checkbox" class="filled-in enviado" id="'.$evento->reporte_id.'" '.$enviado.'/><label for="'.$evento->reporte_id.'">'.$evento->nombre_proyecto.' ('.$evento->orden_compra.') - '. $evento->user_first_name .' '. $evento->user_last_name . '</label>'.$files_attached.'</div>
             <div class="collapsible-body red lighten-5">';
       }
       else{
         //Evento No Critico
         echo '<li>
-            <div class="collapsible-header"><input type="checkbox" class="filled-in enviado" id="'.$evento->reporte_id.'" '.$enviado.' /><label for="'.$evento->reporte_id.'">'.$evento->nombre_proyecto.' ('.$evento->orden_compra.') - '. $evento->user_first_name .' '. $evento->user_last_name . '</label></div>
+            <div class="collapsible-header"><input type="checkbox" class="filled-in enviado" id="'.$evento->reporte_id.'" '.$enviado.' /><label for="'.$evento->reporte_id.'">'.$evento->nombre_proyecto.' ('.$evento->orden_compra.') - '. $evento->user_first_name .' '. $evento->user_last_name .'</label>'.$files_attached.'</div>
             <div class="collapsible-body">';
       }
 
@@ -179,7 +181,14 @@ include_once dirname(__FILE__) . '/../query/get_enviado.php';
       $('#reportemodal').openModal();
       filldata($(this).attr("reportid"));
       //$( this ).off( event );
-    });  
+    });
+
+	 $('.viewfiles').on('click', function(e){
+      e.stopPropagation();
+      $('#files_modal_accion').attr("reporteid", $(this).attr("reportid"));
+      $('#filesmodal').openModal();
+      fillfiles($(this).attr("reportid"));
+    });
 
 	//fill data if report is going to be updated
 	function filldata(idreporte){
@@ -191,7 +200,7 @@ include_once dirname(__FILE__) . '/../query/get_enviado.php';
 					success: function(response)   
 					{
 						response = JSON.parse(response);
-						$("#reporte_horario").val(response[0]["horario_trabajado"]);
+						
 						$("#reporte_inspeccion").val(response[0]["tipo_inspeccion"]);
 						$('#reporte_subcontratista').val(response[0]["subcontratista"]);
 						$('#reporte_avance').val(response[0]["avance"]); 
@@ -238,7 +247,9 @@ include_once dirname(__FILE__) . '/../query/get_enviado.php';
 						response["inspeccion"].forEach(function(element){
 							if(countInsp == 0){
 								$('#reporte_fechainspeccion').val(element.fecha);
-								$('#reporte_fechainspeccion').attr("inspeccionId",element.inspeccion_id);
+								$("#reporte_horario").val(element.jornada);
+								$('.insertFecha').attr("inspeccionId",element.inspeccion_id);
+								$('.insertFecha').attr("updateFecha","1");
 							}
 							else
 								fillFecha(element);
@@ -251,6 +262,23 @@ include_once dirname(__FILE__) . '/../query/get_enviado.php';
 				});
 			}
 	};
+
+	function fillfiles(idreporte){
+		$.ajax({
+			url: "query/get_files.php", 
+			type: "POST",            
+			data: {"idreporte": idreporte},
+			success: function(response)   
+			{
+				response = JSON.parse(response);
+				response.forEach(function(element){
+					var link = "files/"+element.filepath;
+					var html =  '<li class="file-item collection-item"><div>'+element.filepath+'<a href="'+link+'" download class="secondary-content"><i class="material-icons">file_download</i></a></div></li>';
+					$.when($('#filesmodal').find('.filefill').append(html));
+				});
+			}
+		});
+	}
 		
     $('.generatepdf').on('click', function(event){
       var idreporte = $(this).attr("reportid");
@@ -314,19 +342,19 @@ include_once dirname(__FILE__) . '/../query/get_enviado.php';
 		var html =  '<div class="insertEquipo" updateEquipo="1" equipoId="'+equipo.equipos_id+'">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Listado de Equipos</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">' +
-            			'<input class="equipo_tag" type="text" maxlength="45" value="'+equipo.tag+'">' +
+            			'<input class="equipo_tag upper" type="text" maxlength="45" value="'+equipo.tag+'">' +
             			'<label class="active">Tag</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="equipo_descripcion" type="text" maxlength="45" value="'+equipo.descripcion+'">' +
+            			'<input class="equipo_descripcion upper" type="text" maxlength="45" value="'+equipo.descripcion+'">' +
             			'<label class="active">Descripción</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="equipo_proveedor" type="text" maxlength="45" value="'+equipo.proveedor+'">' +
+            			'<input class="equipo_proveedor upper" type="text" maxlength="45" value="'+equipo.proveedor+'">' +
             			'<label class="active">Proveedor</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-			            '<textarea class="materialize-textarea equipo_comentario" maxlength="100">'+equipo.comentario+'</textarea>' +
+			            '<textarea class="materialize-textarea equipo_comentario upper" maxlength="100">'+equipo.comentario+'</textarea>' +
 			            '<label class="active">Comentarios</label>'+
 			        '</div>' +
 			        '</div>';
@@ -343,15 +371,15 @@ include_once dirname(__FILE__) . '/../query/get_enviado.php';
 		var html = 	'<div class="insertAsistente" updateAsistente="1" asistenteId="'+asistente.asistentes_id+'">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Asistentes</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">' +
-            			'<input class="asistente_nombre" type="text" maxlength="45" value="'+asistente.nombre+'">' +
+            			'<input class="asistente_nombre upper" type="text" maxlength="45" value="'+asistente.nombre+'">' +
             			'<label class="active">Nombre</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="asistente_company" type="text" maxlength="45" value="'+asistente.compa+'">' +
+            			'<input class="asistente_company upper" type="text" maxlength="45" value="'+asistente.compa+'">' +
             			'<label class="active">Compañía</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="asistente_cargo" type="text" maxlength="45" value="'+asistente.cargo+'">' +
+            			'<input class="asistente_cargo upper" type="text" maxlength="45" value="'+asistente.cargo+'">' +
             			'<label class="active">Cargo</label>' +
        				'</div>' + 
        				'</div>';
@@ -367,19 +395,19 @@ include_once dirname(__FILE__) . '/../query/get_enviado.php';
 		var html = 	'<div class="insertDocumento" updateDocumento="1" documentoId="'+documento.documentos_id+'">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Documentos Utilizados</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">' +
-            			'<input class="documento_numero" type="text" maxlength="45" value="'+documento.numero+'">' +
+            			'<input class="documento_numero upper" type="text" maxlength="45" value="'+documento.numero+'">' +
             			'<label class="active">N° del documento</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="documento_revision" type="text" maxlength="10" value="'+documento.revision+'">' +
+            			'<input class="documento_revision upper" type="text" maxlength="10" value="'+documento.revision+'">' +
             			'<label class="active">Revisión</label>' +
        				'</div>' +
 					'<div class="input-field row">' +
-            			'<input class="documento_nombre" type="text" maxlength="45" value="'+documento.nombre+'">' +
+            			'<input class="documento_nombre upper" type="text" maxlength="45" value="'+documento.nombre+'">' +
             			'<label class="active">Nombre</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="documento_status" type="text" maxlength="45" value="'+documento.status+'">' +
+            			'<input class="documento_status upper" type="text" maxlength="45" value="'+documento.status+'">' +
             			'<label class="active">Status de aprobación</label>' +
        				'</div>' +
        				'</div>';
@@ -395,19 +423,19 @@ include_once dirname(__FILE__) . '/../query/get_enviado.php';
 		var html = 	'<div class="insertPendiente" updatePendiente="1" pendienteId="'+pendiente.pendientes_id+'">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Listado de Pendientes</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">' +
-            			'<input class="pendiente_numero" type="text" maxlength="45" value="'+pendiente.numero+'">' +
+            			'<input class="pendiente_numero upper" type="text" maxlength="45" value="'+pendiente.numero+'">' +
             			'<label class="active">N° de documento</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="pendiente_descripcion" type="text" maxlength="150" value="'+pendiente.descripcion+'">' +
+            			'<input class="pendiente_descripcion upper" type="text" maxlength="150" value="'+pendiente.descripcion+'">' +
             			'<label class="active">Descripción</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="pendiente_pendiente" type="text" maxlength="45" value="'+pendiente.pendientes+'">' +
+            			'<input class="pendiente_pendiente upper" type="text" maxlength="45" value="'+pendiente.pendientes+'">' +
             			'<label class="active">Pendientes-NCR-Deficiencias</label>' +
        				'</div>'+
        				'<div class="input-field row">' +
-            			'<input class="pendiente_comentarios" type="text" maxlength="100" value="'+pendiente.comentarios+'">' +
+            			'<input class="pendiente_comentarios upper" type="text" maxlength="100" value="'+pendiente.comentarios+'">' +
             			'<label class="active">Comentarios</label>' +
        				'</div>' +
        				'</div>';
@@ -420,18 +448,49 @@ include_once dirname(__FILE__) . '/../query/get_enviado.php';
 	}
 	function fillFecha(inspeccion){
 
+		var op1 = '<option value="1">Jornada Completa</option>';
+		var op2 = '<option value="0.5">Media Jornada</option>';
+		var op3 = '<option value="0">Residente</option>';
+		
+		if(inspeccion.jornada == 1){
+			op1 = '<option value="1" selected>Jornada Completa</option>';
+		}
+		else if(inspeccion.jornada == 0.5){
+			op2 = '<option value="0.5" selected>Media Jornada</option>';
+		}
+		else{
+			op3 = '<option value="0" selected>Residente</option>';
+		}
+
 		var html = 	'<div class="insertFecha" updateFecha="1" inspeccionId="'+inspeccion.inspeccion_id+'">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Fecha de inspección</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">'+
             			'<input type="text" class="datepicker active" id="reporte_fechainspeccion" value="'+inspeccion.fecha+'">'+
             			'<label class="active" for="fecha_inspeccion active">Fecha de inspección</label>'+
         			'</div>'+
+        			'<div class="input-field row">' +
+        			'<label class="active">Horario Trabajado</label>' +
+                    '<select class="browser-default inspeccion_jornada active">' +
+                        '<option value="" disabled>Elegir horario</option>' +
+                       	op1 + op2 + op3 +
+                    '</select>' +
+   					'</div>'+
        				'</div>';
 
 		
 		$.when($('#reportemodal').find('.modal-content').append(html)).then(function( value ) {
     		$('#reportemodal').find('.modal-content').animate({scrollTop: $('#reportemodal').find('.modal-content').prop("scrollHeight")}, 'slow');
     	});
+    	
+		$('.datepicker').pickadate({
+	        selectMonths: true, // Creates a dropdown to control month
+	        selectYears: 4, // Creates a dropdown of 15 years to control year,
+	        today: 'Today',
+	        clear: 'Clear',
+	        close: 'Ok',
+	        closeOnSelect: true, // Close upon selecting a date,
+	        autoclose: true
+	    });
 
 	}
 	function fillFotos(foto){
@@ -450,11 +509,11 @@ include_once dirname(__FILE__) . '/../query/get_enviado.php';
   					'</button>' +
 					'</form>' +
 					'<div class="input-field row">' +
-            			'<input class="fotografias_elemento" type="text" maxlength="45" value="'+foto.elemento+'">' +
+            			'<input class="fotografias_elemento upper" type="text" maxlength="45" value="'+foto.elemento+'">' +
             			'<label class="active">Elemento</label>' +
        				'</div>' +
        				'<div class="input-field row">' +
-            			'<input class="fotografias_observaciones" type="text" maxlength="100" value="'+foto.observaciones+'">' +
+            			'<input class="fotografias_observaciones upper" type="text" maxlength="100" value="'+foto.observaciones+'">' +
             			'<label class="active">Observaciones</label>' +
        				'</div>' +
        				'</div>';
