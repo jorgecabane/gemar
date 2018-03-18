@@ -218,7 +218,6 @@ include_once dirname(__FILE__) . '/../query/get_files.php';
 						$("label[for='reporte_alertas']").addClass('active');
 						$("label[for='reporte_alcances']").addClass('active');
 						$("label[for='reporte_conclusiones']").addClass('active');
-						$("label[for='fecha_inspeccion active']").addClass('active');
 					},
 					error: function(e){
 						alert("error");
@@ -231,6 +230,7 @@ include_once dirname(__FILE__) . '/../query/get_files.php';
 					success: function(response)   
 					{
 						response = JSON.parse(response);
+						console.log(response);
 						response["equipos"].forEach(function(element){
 							fillEquipos(element);
 						});
@@ -248,6 +248,7 @@ include_once dirname(__FILE__) . '/../query/get_files.php';
 							if(countInsp == 0){
 								$('#reporte_fechainspeccion').val(element.fecha);
 								$("#reporte_horario").val(element.jornada);
+								$("label[for='fecha_inspeccion active']").addClass('active');
 								$('.insertFecha').attr("inspeccionId",element.inspeccion_id);
 								$('.insertFecha').attr("updateFecha","1");
 							}
@@ -462,7 +463,7 @@ include_once dirname(__FILE__) . '/../query/get_files.php';
 			op3 = '<option value="0" selected>Residente</option>';
 		}
 
-		var html = 	'<div class="insertFecha" updateFecha="1" inspeccionId="'+inspeccion.inspeccion_id+'">' +
+		var html = 	'<div class="insertFecha fechaExtra" updateFecha="1" inspeccionId="'+inspeccion.inspeccion_id+'">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Fecha de inspección</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +
 					'<div class="input-field row">'+
             			'<input type="text" class="datepicker active" id="reporte_fechainspeccion" value="'+inspeccion.fecha+'">'+

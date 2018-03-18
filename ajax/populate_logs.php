@@ -11,13 +11,8 @@ include_once dirname(__FILE__) . '/../query/get_logs.php';
       echo '<div class="row">
             <br>
             <div class="col s10">';
-
-    $logs = get_logs($start, $end);
-    if (count($logs) >= 1){
-      foreach($logs as $log){
-
-        //Cuerpo
-        echo '<table class="bordered responsive-table centered">
+      
+      echo '<table class="bordered responsive-table centered">
                 <thead>
                   <tr>
                     <th data-field="activador">Activador</th>
@@ -37,8 +32,14 @@ include_once dirname(__FILE__) . '/../query/get_logs.php';
                     <th data-field="comentario">Comentario</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
+                <tbody>';
+
+    $logs = get_logs();
+    if (count($logs) >= 1){
+      foreach($logs as $log){
+
+        //Cuerpo
+        echo 	'<tr>
                     <td>'.$log->activador.'</td>
                     <td>'.$log->informe.'</td>
                     <td>'.$log->inspector.'</td>
@@ -54,13 +55,13 @@ include_once dirname(__FILE__) . '/../query/get_logs.php';
                     <td>'.$log->avance.'</td>
                     <td>'.date("d/m/Y", strtotime($log->fecha)).'</td>
                     <td>'.$log->comentario.'</td>
-                  </tr>
-                </tbody>
-              </table>';
+                  </tr>';
 
 
       }   
     }
-    echo '</div>
+    echo '</tbody>
+          </table>
+          </div>
           </div>';
 }

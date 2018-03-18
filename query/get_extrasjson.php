@@ -4,7 +4,7 @@ include_once dirname(__FILE__) . '/conexion.php'; // archivo de conexion local
 
 function getExtras($idreporte = null) {
 	global $con;
-	$array = array("equipos"=>array(), "asistentes"=>array(), "documentos"=>array(),"pendientes"=>array(), "fotografias"=>array());
+	$array = array("equipos"=>array(), "asistentes"=>array(), "documentos"=>array(),"pendientes"=>array(), "inspeccion"=>array(),"fotografias"=>array());
 
 	$query_equipos = "SELECT r.reporte_id, e.*
 	FROM reporte r

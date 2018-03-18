@@ -2,14 +2,14 @@
 
 include_once dirname(__FILE__) . '/conexion.php'; // archivo de conexion local
 
-function get_logs($start, $end) {
+function get_logs() {
 	global $con;
 	$array = array();
 
   
-        $query = "SELECT * FROM logs
-                    WHERE fecha >= $start AND fecha <= $end
-                    ORDER BY fecha DESC";
+        $query = "SELECT * 
+        		FROM logs
+                ORDER BY fecha DESC";
 
     if ($result = $con->query($query)) {
 		while ( $result_row = $result->fetch_object() ) {

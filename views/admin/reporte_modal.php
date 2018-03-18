@@ -183,7 +183,7 @@ $(document).ready(function (e) {
 		$('.insertDocumento').remove();
 		$('.insertPendiente').remove();
 		$('.insertFotos').remove();
-		$('.insertFecha').remove();
+		$('.fechaExtra').remove();
 		$('.insertFile').remove();
 	});
 

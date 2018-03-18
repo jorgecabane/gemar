@@ -17,7 +17,7 @@ function getNotifications($iduser = null) {
 		$query = "SELECT *
 		FROM notificaciones
 		WHERE users_user_id = $iduser AND leido = 0
-		ORDER BY fecha DESC
+		ORDER BY notificacion_id DESC
 		LIMIT 10";
 	}
 
