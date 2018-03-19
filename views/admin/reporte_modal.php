@@ -5,7 +5,7 @@
     <div class="modal-content">
 
         <!-- Accion -->
-        <div id="card-alert" class="card cyan">
+        <div id="card-alert" class="card light-blue darken-3">
             <div class="card-content white-text">
                 <p id="reporte_modal_accion" rehacer="" reporteid="" eventoid="">Editar Reporte</p>
             </div>
@@ -120,7 +120,7 @@
 
 	        <!-- Acciones -->
 	        <a href="#" class="waves-effect waves-red btn-flat modal-action modal-close" id="cancelReporte">Cancelar</a>
-	        <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close cyan" id="saveReporte">Aceptar</a>
+	        <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close light-blue" id="saveReporte">Aceptar</a>
         		</div>
     </div>
 

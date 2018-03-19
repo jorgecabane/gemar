@@ -23,7 +23,7 @@
   <div class="section">
     <div class="col s12">
       <ul id="task-card" class="collection with-header">
-          <li class="collection-header cyan">
+          <li class="collection-header light-blue darken-3">
               <div class="row">
 	          	<div class="col s12 left-align">
 	                <h4 class="col task-card-title">Hoja de Tiempo - <?php echo $name.' '.$lastname;?></h4>

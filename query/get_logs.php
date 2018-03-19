@@ -19,6 +19,9 @@ function get_logs() {
 	$result->close();
 
     return $array;
-}    
+}
+
+if($_REQUEST['json'] == 1)
+	echo json_encode(get_logs());
 
 ?>

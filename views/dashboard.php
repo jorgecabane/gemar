@@ -68,7 +68,7 @@
 	<header id="header" class="page-topbar">
 		<!-- start header nav-->
 		<div class="navbar-fixed">
-			<nav class="navbar-color">
+			<nav class="navbar-color light-blue darken-4">
 				<div class="nav-wrapper">
 					<ul class="left col s2">
 						<li><h1 class="logo-wrapper" >
@@ -149,7 +149,7 @@
 			<!-- START LEFT SIDEBAR NAV-->
 			<aside id="left-sidebar-nav">
 				<ul id="slide-out" class="side-nav fixed leftside-navigation">
-					<li class="user-details cyan darken-1">
+					<li class="user-details grey lighten-3">
 						<div class="row">
 							<div class="col col s4 m4 l4">
 							<?php 
@@ -187,7 +187,7 @@
 					
 				</ul>
 				<a href="#" data-activates="slide-out"
-					class="sidebar-collapse btn-floating btn-medium waves-effect waves-light hide-on-large-only cyan"><i
+					class="sidebar-collapse btn-floating btn-medium waves-effect waves-light hide-on-large-only grey lighten-1"><i
 					class="mdi-navigation-menu"></i></a>
 			</aside>
 			<!-- END LEFT SIDEBAR NAV-->
@@ -220,7 +220,7 @@
 	<!-- //////////////////////////////////////////////////////////////////////////// -->
 
 	<!-- START FOOTER -->
-	<footer class="page-footer">
+	<footer class="page-footer light-blue darken-4">
 		<div class="footer-copyright">
 			<div class="container">
 				Copyright © 2015 <a class="grey-text text-lighten-4"

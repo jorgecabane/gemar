@@ -25,7 +25,7 @@
 			</a>
 		</li>		
 		<li class="bold sidebarlink">
-			<a href="#" what="views/admin/logs.php" where="content" class="load-content">
+			<a href="#" what="views/admin/logs.php" where="content" class="load-content ">
 				<i class="material-icons">timeline</i>
 				Logs
 			</a>
