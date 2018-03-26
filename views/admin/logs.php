@@ -47,7 +47,7 @@
   <script type="text/javascript" src="js/plugins/jquery-ui.js"></script>
   <script type="text/javascript" src="js/plugins/jsgrid/js/jsgrid.min.js"></script>
   <script type="text/javascript" src="js/plugins/jsgrid/js/i18n/jsgrid-es.js"></script>  
-  <script type="text/javascript" src="js/plugins/jsgrid/js/jsgrid-script-logs.js"></script>
+  <script type="text/javascript" src="js/plugins/jsgrid/js/jsgrid-script-logs.js" empresaid="<?php echo $_REQUEST['id'];?>"></script>
 
 <script type="text/javascript" src="js/plugins/jquery-ui.js"></script> 
 <script>

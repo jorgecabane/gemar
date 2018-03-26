@@ -17,12 +17,18 @@ $(function() {
         },
         controller:  {
             loadData: function() {
+            	var this_js_script = $('script[src*=jsgrid-script-logs]'); // or better regexp to get the file name..
+
+            	var empresaid = this_js_script.attr('empresaid');
+            	
                 var d = $.Deferred();
 
                 $.ajax({
                     url: "query/get_logs.php",
                     dataType: "json",
-                    data: {"json": 1}
+                    data: {"json": 1,
+                    		"id": empresaid
+                    }
                 }).done(function(response) {
                         //console.log(response);
                         d.resolve(response);
@@ -33,18 +39,19 @@ $(function() {
         },
         fields: [
             { name: "id",type: "number"},
+            { name: "n", title: "Nº", type: "text", align: "center", width: "auto" },
             { name: "activador", title: "Activador", type: "text", align: "center", width: "auto" },
             { name: "informe", title: "Informe", type: "text", align: "center", width: "auto" },
-            { name: "inspector", title: "Inspector", type: "text", align: "center", width: "auto" },
-            { name: "comprador", title: "Comprador", type: "text", align: "center", width: "auto" },
+            { name: "inspector", title: "Inspector Gemar", type: "text", align: "center", width: "auto" },
+            { name: "comprador", title: "Activador/ Comprador", type: "text", align: "center", width: "auto" },
             { name: "proyecto", title: "Proyecto", type: "text", align: "center", width: "auto" },
-            { name: "po", title: "Po", type: "text", align: "center", width: "auto" },
+            { name: "po", title: "PO", type: "text", align: "center", width: "auto" },
             { name: "descripcion", title: "Descripcion", type: "text", align: "center", width: "auto" },
             { name: "proveedor", title: "Proveedor", type: "text", align: "center", width: "auto" },
-            { name: "inicio", title: "Inicio", type: "text", align: "center", width: "auto" },
-            { name: "dias", title: "Dias", type: "text", align: "center", width: "auto" },
-            { name: "termino", title: "Termino", type: "text", align: "center", width: "auto" },
-            { name: "nivel", title: "Nivel", type: "text", align: "center", width: "auto" },
+            { name: "inicio", title: "Fecha de inicio según PO", type: "text", align: "center", width: "auto" },
+            { name: "termino", title: "Fecha término orden de compra", type: "text", align: "center", width: "auto" },
+            { name: "dias", title: "Dias en fabricación", type: "text", align: "center", width: "auto" },
+            { name: "nivel", title: "Nivel verificación de calidad", type: "text", align: "center", width: "auto" },
             { name: "avance", title: "Avance", type: "text", align: "center", width: "auto" },
             { name: "fecha", title: "Fecha", type: "text", align: "center", width: "auto" },
             { name: "comentario", title: "Comentario", type: "text", align: "center", width: "auto" },
@@ -69,7 +76,7 @@ $(function() {
         $.ajax({
             url: 'query/update_log.php',
             async: true,
-            data: {"id":log.logs_id, "activador": log.activador, "informe": log.informe, "inspector": log.inspector, "comprador": log.comprador, "proyecto": log.proyecto, "po": log.po, "descripcion": log.descripcion, "proveedor": log.proveedor, "inicio": log.inicio, "dias": log.dias, "termino": log.termino, "nivel": log.nivel, "avance": log.avance, "fecha": log.fecha, "comentario": log.comentario},
+            data: {"id":log.logs_id, "activador": log.activador, "informe": log.informe, "inspector": log.inspector, "comprador": log.comprador, "proyecto": log.proyecto, "po": log.po, "descripcion": log.descripcion, "proveedor": log.proveedor, "inicio": log.inicio, "termino": log.termino, "dias": log.dias, "nivel": log.nivel, "avance": log.avance, "fecha": log.fecha, "comentario": log.comentario},
             method: 'POST',
             success: function(output) {
                 if (output === '1') {

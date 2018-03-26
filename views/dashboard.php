@@ -363,5 +363,6 @@
 		require_once dirname(__FILE__) . "/admin/profile_modal.php";
 		require_once dirname(__FILE__) . "/admin/calendar_modal.php";
 		require_once dirname(__FILE__) . "/admin/hojas_modal.php";
+		require_once dirname(__FILE__) . "/admin/logs_modal.php";
 	}
 	?>

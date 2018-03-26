@@ -64,7 +64,28 @@ function insertReporte($reporte) {
         	if ($info = $con->query($notifiaction_info_sql)) {
         		$notification_info = $info->fetch_object();
 	        	$descripcion = $notification_info->user_first_name." ".$notification_info->user_last_name." actualizó un reporte para ".$notification_info->nombre_proyecto;
-	        	echo insertNotification('2', '1', $descripcion);
+	        	if($reporte['admin']==0)
+	        		insertNotification('2', '1', $descripcion);
+        	}
+        	$eventosql =  "SELECT e.*, u.*, r.* FROM evento e INNER JOIN users u ON (u.user_id = e.users_user_id) INNER JOIN reporte r ON (r.evento_evento_id = e.evento_id AND r.reporte_id = $reporteid)";
+        	if ($e = $con->query($eventosql)) {
+        		$e = $e->fetch_object();
+        		$nombre = $e->user_first_name." ".$e->user_last_name;
+        		$logssql = "UPDATE logs SET inspector ='$nombre', 
+        									comprador = '$e->comprador', 
+        									proyecto = '$e->nombre_proyecto', 
+        									po = '$e->orden_compra', 
+        									descripcion = '$e->descripcion', 
+        									proveedor = '$e->proveedor', 
+        									avance = '$e->avance', 
+        									comentario = '$e->comentarios'
+        								WHERE reporte_reporte_id = '$reporteid'";
+        		if($a = $con->query($logssql)){
+        			//echo $con->insert_id;
+        		}
+        		else{
+        			//echo $logssql;
+        		}
         	}
         	return $reporteid;
         }
@@ -84,6 +105,18 @@ function insertReporte($reporte) {
     			$descripcion = $notification_info->user_first_name." ".$notification_info->user_last_name." entregó un reporte para ".$notification_info->nombre_proyecto;
     			insertNotification('1', '1', $descripcion);
     		}
+    		$eventosql =  "SELECT e.*, u.*, r.* FROM evento e INNER JOIN users u ON (u.user_id = e.users_user_id) INNER JOIN reporte r ON (r.evento_evento_id = e.evento_id AND r.reporte_id = $reportid)";
+    		if ($e = $con->query($eventosql)) {
+    			$e = $e->fetch_object();
+    			$nombre = $e->user_first_name." ".$e->user_last_name;
+    			$logssql = "INSERT INTO `gemar`.`logs`  VALUES (NULL, '-', '-', '$nombre', '$e->comprador', '$e->nombre_proyecto', '$e->orden_compra', '$e->descripcion', '$e->proveedor', '$e->HoraInicio', '0', '$e->HoraTermino', '2','$e->avance', $e->fecha_estimada_cierre, '$e->comentarios', $reportid)";
+    			if($a = $con->query($logssql)){
+    				//echo $con->insert_id;
+    			}
+    			else{
+    				//echo $logssql;
+    			}
+    		}
     		return $reportid;
     	}
     	else {
@@ -95,19 +128,4 @@ function insertReporte($reporte) {
 
 $reporteid = insertReporte($_REQUEST['reporte']);
 echo $reporteid;
-$eventosql =  "SELECT e.*, u.* FROM evento e INNER JOIN users u ON (u.user_id = e.users_user_id) INNER JOIN reporte r ON (r.evento_evento_id = e.evento_id AND r.reporte_id = $reporteid)";
-if ($e = $con->query($eventosql)) {
-	$e = $e->fetch_object();
-	$nombre = $e->user_first_name." ".$e->user_last_name;
-	$logssql = "INSERT INTO `gemar`.`logs`  VALUES (NULL, '-', '-', '$nombre', '$e->comprador', '$e->nombre_proyecto', '$e->orden_compra', '$e->descripcion', '$e->proveedor', '$e->HoraInicio', '0', '$e->HoraTermino', '2','$avance', NOW(), '$comentarios')";
-	if($a = $con->query($logssql)){
-		echo $con->insert_id;
-	}
-	else{
-		echo $logssql;
-	}
-}
-else{
-	echo "Some error has ocurred";
-}
 ?>

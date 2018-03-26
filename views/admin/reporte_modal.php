@@ -11,10 +11,14 @@
             </div>
             <?php
   			if ($_SESSION['user_role'] == 0) {
+  				$admin = 0;
 	  			echo '<button class="center btn waves-effect waves-light left pink lighten-1" id="vistaPrevia">
 						<i class="mdi-image-remove-red-eye left"></i>			  	
 						Vista Previa
 			  		  </button>';
+  			}
+  			else{
+  				$admin = 1;
   			}
   			?>
         </div>
@@ -204,6 +208,7 @@ $(document).ready(function (e) {
 
 		var reporte = {
 		rehacer: ifrehacer,
+		admin: <?php echo $admin;?> ,
 		reporteid: $('#reporte_modal_accion').attr("reporteid"),
 		evento: $('#reporte_modal_accion').attr("eventoid"),
 		resumen: $('#reporte_resumen').val(),
@@ -222,7 +227,6 @@ $(document).ready(function (e) {
 			url: "query/insert_reporte.php", // Url to which the request is send
 			type: "POST",             // Type of request to be send, called as method
 			data: {"reporte": reporte},       // To send DOMDocument or non processed data file it is set to false
-
 		}).done(function( reporteid ) {
 			//data has the recent inserted report id
 			var reporteid = reporteid;
@@ -794,7 +798,7 @@ $(document).ready(function (e) {
 		var asistentes = new Array();
 		var documentos = new Array();
 		var pendientes = new Array();
-		var inspeccion = new Array();
+		var inspecciones = new Array();
 		var fotos = new Array();
 
 		// save insert Equipo
@@ -848,12 +852,12 @@ $(document).ready(function (e) {
 		// save insert Equipo
 		$.each( $('.insertFecha') , function( key, value ) {
 		  	
-	  		var inspeccion = {
+			var inspeccion = {
 				  	inspeccionid: $(this).attr('inspeccionId'),
 				  	fecha: new Date($(this).find('.datepicker').val()).toISOString().slice(0, 10),
 				  	jornada: $(this).find('.inspeccion_jornada').val()
 			  	};
-		  	inspeccion.push(inspeccion);
+		  	inspecciones.push(inspeccion);
 		});
 
 		// save insert Fotos
@@ -902,7 +906,7 @@ $(document).ready(function (e) {
 				data: {
 					evento: $('#reporte_modal_accion').attr("eventoid"),
 					resumen: $('#reporte_resumen').val(),
-					horario_trabajado : $('#reporte_horario').val(),
+					fecha : new Date().toISOString().slice(0, 10),
 					tipo_inspeccion : $('#reporte_inspeccion').val(),
 					avance : $('#reporte_avance').val(),
 					fecha_estimada_cierre : new Date($('#reporte_fechacierre').val()).toISOString().slice(0, 10),
@@ -917,7 +921,7 @@ $(document).ready(function (e) {
 					asistentes: asistentes,
 					documentos: documentos,
 					pendientes: pendientes,
-					inspeccion: inspeccion,
+					inspeccion: inspecciones,
 					fotografias: fotos
 				}
 		};
