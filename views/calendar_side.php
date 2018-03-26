@@ -1,7 +1,7 @@
 <div class="col s12 m2 l2">
                  
  <!-- Header Centro Nombre -->
-  <div id="card-alert" class="card cyan  z-depth-1">
+  <div id="card-alert" class="card light-blue darken-3  z-depth-1">
     <div class="card-content white-text">
       <p class="truncate" id="centro_id" centroid="<?php echo $idcentro; ?>"><?php echo $centro; ?></p>
     </div>

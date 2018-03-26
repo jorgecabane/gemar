@@ -7,13 +7,16 @@
 <link href="js/plugins/monthpicker/MonthPicker.css" type="text/css" rel="stylesheet"
   media="screen,projection">
 <link href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
-
+<!--jsgrid css-->
+  <link href="js/plugins/jsgrid/css/jsgrid.min.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <link href="js/plugins/jsgrid/css/jsgrid-theme.min.css" type="text/css" rel="stylesheet" media="screen,projection">
+ 
 <!--start container-->
 <div class="container">
   <div class="section">
     <div class="col s12">
       <ul id="task-card" class="collection with-header">
-          <li class="collection-header cyan">
+          <li class="collection-header light-blue darken-3">
               <div class="row">
                 <h4 class="col task-card-title">Reporte de Status Semanal</h4>
 
@@ -25,6 +28,8 @@
               </div>
           </li>
       </ul>
+      <!-- Js Grid -->
+      <div id="jsGrid-logs"></div>
       <div id="appendLogs">
 
 
@@ -37,36 +42,16 @@
 <?php   
   }
 ?> 
+<!--jsgrid-->
 
+  <script type="text/javascript" src="js/plugins/jquery-ui.js"></script>
+  <script type="text/javascript" src="js/plugins/jsgrid/js/jsgrid.min.js"></script>
+  <script type="text/javascript" src="js/plugins/jsgrid/js/i18n/jsgrid-es.js"></script>  
+  <script type="text/javascript" src="js/plugins/jsgrid/js/jsgrid-script-logs.js" empresaid="<?php echo $_REQUEST['id'];?>"></script>
 
 <script type="text/javascript" src="js/plugins/jquery-ui.js"></script> 
 <script>
 $( document ).ready(function() {
-  function weekchange(startDate, endDate){
-    jQuery.ajax({
-      method: "POST",
-      url: "ajax/populate_logs.php",
-      data: {
-        'start': startDate,
-        'end': endDate,
-        'role': <?php echo $_SESSION['user_role']; ?>
-      },
-      error: function(response) {
-        //console.log(response);
-      },
-      success: function(response)
-      {
-        $('#appendLogs').html(response);
-      }
-    });
-  };
-
-
-
-
-
-
-
 
 var globalTriggeringElement;
 var globalAdditionalFunction = function() { null; };
@@ -135,7 +120,6 @@ var setWeekCalendar = function(settingElement) {
             selectCurrentWeek();
             $(this).data('datepicker').inline = true;
             globalAdditionalFunction(globalTriggeringElement);
-            weekchange(startDate, endDate);
             //$('#ui-datepicker-div').hide();
         },
         onClose: function() {
@@ -202,7 +186,6 @@ var convertToWeekPicker = function(targetElement) {
 
 console.log(startDate);
 console.log(endDate);
-  weekchange(startDate, endDate);
 
 });
 </script>

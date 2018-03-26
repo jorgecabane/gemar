@@ -30,6 +30,4 @@ function insertNotification($tipo, $userid, $descripcion, $fecha = null) {
 		return $query;
 	}
 }
-
-//echo insertNotification($_REQUEST['tipo'], $_REQUEST['eventoid'], $_REQUEST['descripcion']);
 ?>

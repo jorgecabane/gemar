@@ -21,7 +21,7 @@
   <div class="section">
     <div class="col s12">
       <ul id="task-card" class="collection with-header">
-          <li class="collection-header cyan">
+          <li class="collection-header light-blue darken-3">
               <div class="row">
                 <h4 class="col task-card-title">Reportes</h4>
 

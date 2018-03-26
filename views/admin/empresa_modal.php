@@ -4,7 +4,7 @@
     <div class="modal-content">
 
         <!-- Accion -->
-        <div id="card-alert" class="card cyan">
+        <div id="card-alert" class="card light-blue darken-3">
             <div class="card-content white-text">
                 <p id="empresa_modal_accion"></p>
             </div>
@@ -69,7 +69,7 @@
     <div class="modal-footer">
         <div id="evento"></div>
         <a href="#" class="waves-effect waves-red btn-flat modal-action modal-close" id="cancelCompany">Cancelar</a>
-        <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close cyan" id="saveCompany">Aceptar</a>
+        <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close light-blue" id="saveCompany">Aceptar</a>
     </div>
 
 </div>

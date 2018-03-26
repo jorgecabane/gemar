@@ -68,7 +68,7 @@
 	<header id="header" class="page-topbar">
 		<!-- start header nav-->
 		<div class="navbar-fixed">
-			<nav class="navbar-color">
+			<nav class="navbar-color light-blue darken-4">
 				<div class="nav-wrapper">
 					<ul class="left col s2">
 						<li><h1 class="logo-wrapper" >
@@ -90,6 +90,12 @@
 						else{
 							$notifications = getNotifications($_SESSION['user_id']);
 						}
+						$count_new_notifications = 0;
+						foreach($notifications as $notification){
+							if($notification->leido == 0){
+								$count_new_notifications++;
+							}
+						}
 					?>
 					<ul class="right hide-on-med-and-down">
 						<li><a href="javascript:void(0);"
@@ -99,7 +105,7 @@
 							class="waves-effect waves-block waves-light notification-button"
 							data-activates="notifications-dropdown"><i
 								class="mdi-social-notifications"><small
-									class="notification-badge"><?php echo count($notifications); ?></small></i> </a></li>
+									class="notification-badge"><?php echo $count_new_notifications; ?></small></i> </a></li>
 						<li><a href="index.php?logout"
 							class="waves-effect waves-block waves-light"><i
 								class="mdi-action-settings-power"></i></a></li>
@@ -109,7 +115,7 @@
 					<ul id="notifications-dropdown" class="dropdown-content">
 						<li>
 							<h5>
-								NOTIFICATIONS <span class="new badge"><?php echo count($notifications); ?></span>
+								NOTIFICATIONS <span class="new badge"><?php echo $count_new_notifications; ?></span>
 							</h5>
 						</li>
 						<li class="divider"></li>
@@ -117,7 +123,11 @@
 					
 						foreach($notifications as $notification){
 							$time = time-strtotime($notification->fecha);
-							echo '<li class="notification" notificationid="'.$notification->notificacion_id.'">'.$notification->descripcion.
+							$readed = "";
+							if($notification->leido == 1){
+								$readed = "blue-grey lighten-4";
+							}
+							echo '<li class="notification '.$readed.'" notificationid="'.$notification->notificacion_id.'">'.$notification->descripcion.
 							'</br><time class="media-meta">'.$notification->fecha.'</time></li>';
 						}						
 						?>
@@ -139,7 +149,7 @@
 			<!-- START LEFT SIDEBAR NAV-->
 			<aside id="left-sidebar-nav">
 				<ul id="slide-out" class="side-nav fixed leftside-navigation">
-					<li class="user-details cyan darken-1">
+					<li class="user-details grey lighten-3">
 						<div class="row">
 							<div class="col col s4 m4 l4">
 							<?php 
@@ -177,7 +187,7 @@
 					
 				</ul>
 				<a href="#" data-activates="slide-out"
-					class="sidebar-collapse btn-floating btn-medium waves-effect waves-light hide-on-large-only cyan"><i
+					class="sidebar-collapse btn-floating btn-medium waves-effect waves-light hide-on-large-only grey lighten-1"><i
 					class="mdi-navigation-menu"></i></a>
 			</aside>
 			<!-- END LEFT SIDEBAR NAV-->
@@ -210,7 +220,7 @@
 	<!-- //////////////////////////////////////////////////////////////////////////// -->
 
 	<!-- START FOOTER -->
-	<footer class="page-footer">
+	<footer class="page-footer light-blue darken-4">
 		<div class="footer-copyright">
 			<div class="container">
 				Copyright © 2015 <a class="grey-text text-lighten-4"
@@ -222,25 +232,6 @@
 		</div>
 	</footer>
 	<!-- END FOOTER -->
-
-
-	<!-- Floating Action Button -->
-	<div class="fixed-action-btn" style="bottom: 50px; right: 19px;">
-		<a class="btn-floating btn-large"> <i class="mdi-action-stars"></i>
-		</a>
-		<ul>
-			<li><a href="css-helpers.html" class="btn-floating red"><i
-					class="large mdi-communication-live-help"></i></a></li>
-			<li><a href="app-widget.html"
-				class="btn-floating yellow darken-1"><i
-					class="large mdi-device-now-widgets"></i></a></li>
-			<li><a href="app-calendar.html" class="btn-floating green"><i
-					class="large mdi-editor-insert-invitation"></i></a></li>
-			<li><a href="app-email.html" class="btn-floating blue"><i
-					class="large mdi-communication-email"></i></a></li>
-		</ul>
-	</div>
-	<!-- Floating Action Button -->
 
 	<!-- ================================================
     Scripts
@@ -372,5 +363,6 @@
 		require_once dirname(__FILE__) . "/admin/profile_modal.php";
 		require_once dirname(__FILE__) . "/admin/calendar_modal.php";
 		require_once dirname(__FILE__) . "/admin/hojas_modal.php";
+		require_once dirname(__FILE__) . "/admin/logs_modal.php";
 	}
 	?>

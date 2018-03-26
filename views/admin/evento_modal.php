@@ -1,7 +1,7 @@
 <div id="modalEvento" class="modal modal-fixed-footer">
     <div class="modal-content">
         <!-- Nombre Inspector -->
-        <div id="card-alert" class="card cyan">
+        <div id="card-alert" class="card light-blue darken-3">
             <div class="card-content white-text">
                 <p id="inspector-modal-evento"></p>
                 <p id="centro-modal-evento"></p>

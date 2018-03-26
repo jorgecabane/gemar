@@ -2,7 +2,7 @@
     <div class="modal-content">
 
         <!-- Accion -->
-        <div id="card-alert" class="card cyan">
+        <div id="card-alert" class="card light-blue darken-4">
             <div class="card-content white-text">
                 <p id="centro_modal_accion"></p>
             </div>
@@ -58,7 +58,7 @@
     <div class="modal-footer">
         <div id="evento"></div>
         <a href="#" class="waves-effect waves-red btn-flat modal-action modal-close" id="cancelCentro">Cancelar</a>
-        <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close cyan" id="saveCentro">Aceptar</a>
+        <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close light-blue" id="saveCentro">Aceptar</a>
     </div>
 
 </div>

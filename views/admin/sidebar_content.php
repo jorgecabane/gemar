@@ -25,7 +25,7 @@
 			</a>
 		</li>		
 		<li class="bold sidebarlink">
-			<a href="#" what="views/admin/logs.php" where="content" class="load-content">
+			<a class="waves-effect waves-light modal-trigger modal-profile-trigger" href="#modal_logs">
 				<i class="material-icons">timeline</i>
 				Logs
 			</a>

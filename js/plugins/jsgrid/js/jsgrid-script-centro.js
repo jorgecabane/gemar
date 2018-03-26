@@ -38,7 +38,7 @@ $(function() {
                             url: "query/get_centrosjson.php",
                             dataType: "json"
                         }).done(function(response) {
-                                
+                                console.log(response);
                                 d.resolve(response);
                         });
 

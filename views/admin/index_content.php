@@ -16,7 +16,7 @@
 					<!--card stats start-->
 					<div id="card-stats">
 						<div class="row">
-							<div class="col s12 m6 l3">
+							<div class="col s12 m6 l4">
 								<div class="card">
 									<div class="card-content  green white-text">
 										<p class="card-stats-title">
@@ -32,7 +32,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col s12 m6 l3">
+							<div class="col s12 m6 l4">
 								<div class="card">
 									<div class="card-content pink lighten-1 white-text">
 										<p class="card-stats-title">
@@ -46,7 +46,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col s12 m6 l3">
+							<div class="col s12 m6 l4">
 								<div class="card">
 									<div class="card-content blue lighten-1 white-text">
 										<p class="card-stats-title">
