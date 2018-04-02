@@ -109,7 +109,7 @@ function insertReporte($reporte) {
     		if ($e = $con->query($eventosql)) {
     			$e = $e->fetch_object();
     			$nombre = $e->user_first_name." ".$e->user_last_name;
-    			$logssql = "INSERT INTO `gemar`.`logs`  VALUES (NULL, '-', '-', '$nombre', '$e->comprador', '$e->nombre_proyecto', '$e->orden_compra', '$e->descripcion', '$e->proveedor', '$e->HoraInicio', '0', '$e->HoraTermino', '2','$e->avance', $e->fecha_estimada_cierre, '$e->comentarios', $reportid)";
+    			$logssql = "INSERT INTO `gemar`.`logs`  VALUES (NULL, '-', '-', '$nombre', '$e->comprador', '$e->nombre_proyecto', '$e->orden_compra', '$e->descripcion', '$e->proveedor', '$e->HoraInicio', '0', '$e->HoraTermino', '2','$e->avance', '$e->fecha_estimada_cierre', '$e->comentarios', $reportid)";
     			if($a = $con->query($logssql)){
     				//echo $con->insert_id;
     			}
