@@ -94,7 +94,7 @@ function insertReporte($reporte) {
         }
     }
 	else{
-    	$query = "INSERT INTO `gemar`.`reporte`  VALUES (NULL, '$evento', '$lastversion', NOW(), '$horario', '$inspeccion', '$avance', '$fechacierre', '$comentarios', '$alertas', '$alcances', '$conclusiones', '$resumen', 0, '$subcontratista', '$number')";
+    	$query = "INSERT INTO `cge30764_gemar`.`reporte`  VALUES (NULL, '$evento', '$lastversion', NOW(), '$horario', '$inspeccion', '$avance', '$fechacierre', '$comentarios', '$alertas', '$alcances', '$conclusiones', '$resumen', 0, '$subcontratista', '$number')";
     	if ($result = $con->query($query)) {
     		$reportid = $con->insert_id;
     		$notifiaction_info_sql =  "SELECT e.nombre_proyecto, e.HoraTermino, u.user_id, u.user_first_name, u.user_last_name
@@ -109,7 +109,7 @@ function insertReporte($reporte) {
     		if ($e = $con->query($eventosql)) {
     			$e = $e->fetch_object();
     			$nombre = $e->user_first_name." ".$e->user_last_name;
-    			$logssql = "INSERT INTO `gemar`.`logs`  VALUES (NULL, '-', '-', '$nombre', '$e->comprador', '$e->nombre_proyecto', '$e->orden_compra', '$e->descripcion', '$e->proveedor', '$e->HoraInicio', '0', '$e->HoraTermino', '2','$e->avance', '$e->fecha_estimada_cierre', '$e->comentarios', $reportid)";
+    			$logssql = "INSERT INTO `cge30764_gemar`.`logs`  VALUES (NULL, '-', '-', '$nombre', '$e->comprador', '$e->nombre_proyecto', '$e->orden_compra', '$e->descripcion', '$e->proveedor', '$e->HoraInicio', '0', '$e->HoraTermino', '2','$e->avance', '$e->fecha_estimada_cierre', '$e->comentarios', $reportid)";
     			if($a = $con->query($logssql)){
     				//echo $con->insert_id;
     			}

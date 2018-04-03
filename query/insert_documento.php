@@ -13,7 +13,7 @@ function insertDocumento($documento) {
     $reporte = $documento['reporte'];
 
     if(is_null($documentoid)){
-    	$query = "INSERT INTO `gemar`.`documentos`  VALUES (NULL, '$numero', '$revision', '$nombre', '$status', '$reporte')";
+    	$query = "INSERT INTO `cge30764_gemar`.`documentos`  VALUES (NULL, '$numero', '$revision', '$nombre', '$status', '$reporte')";
     }
     else{
     	$query = "UPDATE documentos SET

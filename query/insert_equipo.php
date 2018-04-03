@@ -13,7 +13,7 @@ function insertEquipo($equipo) {
     $reporte = $equipo['reporte'];
 	
     if(is_null($equipoid)){
-    	$query = "INSERT INTO `gemar`.`equipos`  VALUES (NULL, '$tag', '$descripcion', '$proveedor', '$comentario', '$reporte')";
+    	$query = "INSERT INTO `cge30764_gemar`.`equipos`  VALUES (NULL, '$tag', '$descripcion', '$proveedor', '$comentario', '$reporte')";
     }
     else{
     	$query = "UPDATE equipos SET

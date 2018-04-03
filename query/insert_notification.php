@@ -15,10 +15,10 @@ function insertNotification($tipo, $userid, $descripcion, $fecha = null) {
 	global $con;
 	
 	if(is_null($fecha)){
-		$query = "INSERT INTO `gemar`.`notificaciones` (`tipo`, `users_user_id`, `descripcion`, `leido`, `fecha`) VALUES ('$tipo', '$userid', '$descripcion', '0', NOW())";
+		$query = "INSERT INTO `cge30764_gemar`.`notificaciones` (`tipo`, `users_user_id`, `descripcion`, `leido`, `fecha`) VALUES ('$tipo', '$userid', '$descripcion', '0', NOW())";
 	}
 	else{
-		$query = "INSERT INTO `gemar`.`notificaciones` (`tipo`, `users_user_id`, `descripcion`, `leido`, `fecha`) VALUES ('$tipo', '$userid', '$descripcion', '0', '$fecha')";
+		$query = "INSERT INTO `cge30764_gemar`.`notificaciones` (`tipo`, `users_user_id`, `descripcion`, `leido`, `fecha`) VALUES ('$tipo', '$userid', '$descripcion', '0', '$fecha')";
 	}
 	
 

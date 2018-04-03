@@ -8,7 +8,7 @@ function insertFile($file) {
 	$filepath = $file['filepath'];
 	$reporte = $file['reporte'];
 
-	$query = "INSERT INTO `gemar`.`files`  VALUES (NULL, '$filepath', '$reporte')";
+	$query = "INSERT INTO `cge30764_gemar`.`files`  VALUES (NULL, '$filepath', '$reporte')";
 
 	if ($result = $con->query($query)) {
 		return $con->insert_id;

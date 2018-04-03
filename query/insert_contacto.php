@@ -5,7 +5,7 @@ require_once dirname(__FILE__) . '/conexion.php';
 function insertContacto($nombre, $email, $direccion, $telefono, $cargo, $departamento, $companyid) {
     global $con;
 
-    $query = "INSERT INTO `gemar`.`contacto`  VALUES (NULL, '$companyid', '$nombre', '$email', '$direccion', '$telefono', '$cargo', '$departamento')";
+    $query = "INSERT INTO `cge30764_gemar`.`contacto`  VALUES (NULL, '$companyid', '$nombre', '$email', '$direccion', '$telefono', '$cargo', '$departamento')";
   
     if ($result = $con->query($query)) {
         return $con->insert_id;
