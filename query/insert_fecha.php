@@ -11,7 +11,7 @@ function insertFechaInspeccion($inspeccion) {
 	$jornada = $inspeccion['jornada'];
 
 	if(is_null($inspeccionid)){
-		$query = "INSERT INTO `gemar`.`inspeccion`  VALUES (NULL, '$fecha','$jornada','$reporte')";
+		$query = "INSERT INTO `cge30764_gemar`.`inspeccion`  VALUES (NULL, '$fecha','$jornada','$reporte')";
 	}
 	else{
 		$query = "UPDATE inspeccion SET

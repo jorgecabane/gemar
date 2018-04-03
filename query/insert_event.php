@@ -24,7 +24,7 @@ function insertEvento($userid, $centroid, $start, $end, $nombreproyecto, $ordenc
     $newStart = $newStart[0] . ' 08:00:00';
     $newEnd = $newEnd[0] . ' 21:00:00';
 
-    $query = "INSERT INTO `gemar`.`evento` (`evento_id`, `users_user_id`, `centro_centro_id`, `contacto_contacto_id`, `HoraInicio`, `HoraTermino`, `Lastmodified`, `nombre_proyecto`, `descripcion`, `orden_compra`, `visitas_agendadas`, `criticidad`, `color`,`proveedor`,`comprador`,`componente`) VALUES (NULL, '$userid', '$centroid', '$contacto', '$newStart', '$newEnd', NOW(), '$nombreproyecto', '$descripcion', '$ordencompra', '$visitasagendadas', '$criticidad', '$color', '$proveedor', '$comprador', '$componente')";
+    $query = "INSERT INTO `cge30764_gemar`.`evento` (`evento_id`, `users_user_id`, `centro_centro_id`, `contacto_contacto_id`, `HoraInicio`, `HoraTermino`, `Lastmodified`, `nombre_proyecto`, `descripcion`, `orden_compra`, `visitas_agendadas`, `criticidad`, `color`,`proveedor`,`comprador`,`componente`) VALUES (NULL, '$userid', '$centroid', '$contacto', '$newStart', '$newEnd', NOW(), '$nombreproyecto', '$descripcion', '$ordencompra', '$visitasagendadas', '$criticidad', '$color', '$proveedor', '$comprador', '$componente')";
 
   
     if ($result = $con->query($query)) {

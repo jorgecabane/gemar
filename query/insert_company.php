@@ -5,7 +5,7 @@ require_once dirname(__FILE__) . '/conexion.php';
 function insertCompany($nombre, $rut, $giro, $direccion, $comuna, $ciudad, $razonsocial, $mail, $logopath = null) {
     global $con;
 
-    $query = "INSERT INTO `gemar`.`company`  VALUES (NULL, '$nombre', '$rut', '$giro', '$direccion', '$comuna', '$ciudad', '$razonsocial', '$mail', '$logopath')";
+    $query = "INSERT INTO `cge30764_gemar`.`company`  VALUES (NULL, '$nombre', '$rut', '$giro', '$direccion', '$comuna', '$ciudad', '$razonsocial', '$mail', '$logopath')";
   
     if ($result = $con->query($query)) {
         return $con->insert_id;

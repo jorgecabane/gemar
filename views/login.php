@@ -57,14 +57,14 @@
           <div class="input-field col s12">
             <i class="mdi-social-person-outline prefix"></i>
             <input id="username" type="text" name="user_name" required>
-            <label for="username" class="center-align">Usuario</label>
+            <label for="username" class="center-align active">Usuario</label>
           </div>
         </div>
         <div class="row margin">
           <div class="input-field col s12">
             <i class="mdi-action-lock-outline prefix"></i>
             <input id="password" type="password" name="user_password" autocomplete="off" required>
-            <label for="password">Contraseña</label>
+            <label for="password" class="active">Contraseña</label>
           </div>
         </div>
         <div class="row">          
@@ -107,7 +107,7 @@
     <script type="text/javascript" src="js/plugins.min.js"></script>
     <!--custom-script.js - Add your own theme custom JS-->
     <script type="text/javascript" src="js/custom-script.js"></script>
-
+	
 </body>
 
 </html>

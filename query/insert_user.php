@@ -18,7 +18,7 @@ function insertUser($username, $password, $email, $titulo, $role, $firstname, $l
     $passhash = password_hash($password, PASSWORD_DEFAULT);
     $hexa = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
 
-    $query = "INSERT INTO `gemar`.`users`  VALUES (NULL, '$username', '$passhash', '$email', '$role', '$phone', '$region', '$titulo', '$disciplina', 'default.jpg', '$hexa', '$firstname', '$lastname')";
+    $query = "INSERT INTO `cge30764_gemar`.`users`  VALUES (NULL, '$username', '$passhash', '$email', '$role', '$phone', '$region', '$titulo', '$disciplina', 'default.jpg', '$hexa', '$firstname', '$lastname')";
   
     if ($result = $con->query($query)) {
         //sendMail($email, $username, $password, $firstname, $lastname); 

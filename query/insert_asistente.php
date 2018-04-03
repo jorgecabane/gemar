@@ -12,7 +12,7 @@ function insertAsistentes($asistentes) {
     $reporte = $asistentes['reporte'];
 	
     if(is_null($asistenteid)){
-    	$query = "INSERT INTO `gemar`.`asistentes`  VALUES (NULL, '$nombre', '$company', '$cargo', '$reporte')";
+    	$query = "INSERT INTO `cge30764_gemar`.`asistentes`  VALUES (NULL, '$nombre', '$company', '$cargo', '$reporte')";
     }
     else{
     	$query = "UPDATE asistentes SET

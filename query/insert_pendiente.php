@@ -13,7 +13,7 @@ function insertPendientes($pendientes) {
     $reporte = $pendientes['reporte'];
 
     if(is_null($pendienteid)){
-    	$query = "INSERT INTO `gemar`.`pendientes`  VALUES (NULL, '$numero', '$descripcion', '$pendiente', '$comentarios', '$reporte')";
+    	$query = "INSERT INTO `cge30764_gemar`.`pendientes`  VALUES (NULL, '$numero', '$descripcion', '$pendiente', '$comentarios', '$reporte')";
     }
     else{
     	$query = "UPDATE pendientes SET

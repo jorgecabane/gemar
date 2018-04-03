@@ -10,7 +10,7 @@ function insertFoto($foto) {
     $observaciones = $foto['observaciones'];
     $reporte = $foto['reporte'];
 
-    $query = "INSERT INTO `gemar`.`fotografias`  VALUES (NULL, '$imagenpath', '$elemento', '$observaciones', '$reporte')";
+    $query = "INSERT INTO `cge30764_gemar`.`fotografias`  VALUES (NULL, '$imagenpath', '$elemento', '$observaciones', '$reporte')";
   
     if ($result = $con->query($query)) {
         return $con->insert_id;

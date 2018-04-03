@@ -8,11 +8,11 @@ class PDF_MC_Table extends FPDF
 	function tableRow($x, $y, $w, $data, $prop, $bold, $fontSize, $header=false){
 		$nb=0;
 		for($i=0;$i<count($data);$i++){
-			$this->SetFont('Arial',$bold[$i],$fontSize);
+			$this->SetFont('Arial_Narrow',$bold[$i],$fontSize);
 			$nb=max($nb,$this->NbLines($w*$prop[$i],utf8_decode($data[$i])));
 		}
 		for($i=0; $i<count($data); $i++){
-			$this->SetFont('Arial',$bold[$i],$fontSize);
+			$this->SetFont('Arial_Narrow',$bold[$i],$fontSize);
 			$h = $nb/$this->NbLines($w*$prop[$i],utf8_decode($data[$i]));
 			$this->SetXY($x,$y);
 			if($header){
@@ -21,21 +21,34 @@ class PDF_MC_Table extends FPDF
 				$this->MultiCell($w*$prop[$i],$c,utf8_decode($data[$i]),1,"C", true);
 			}
 			else
-				$this->MultiCell($w*$prop[$i],7*$h,utf8_decode($data[$i]),1,"C", true);
+				$this->MultiCell($w*$prop[$i],5*$h,utf8_decode($data[$i]),1,"L", true);
 			$x=$x+($w*$prop[$i]);
 		}
-		return $y+7*$nb;
+		return $y+5*$nb;
 	}
 	
 	function summaryCell($y, $w, $data, $h, $prop){
 		$x = (1-$prop)*$w+10;
-		$nb=$this->NbLines($w*$prop-10,$data);
+		$nb=$this->NbLines($w*$prop-10,utf8_decode($data));
 		$c = $h/$nb;
-		$this->SetFont('Arial',"",10);
+		$this->SetFont('Arial_Narrow',"",11);
 		$this->SetTextColor(0);
 		$this->SetXY($x,$y);
-		$this->MultiCell($w*$prop,$c,utf8_decode($data),1,"C");
+		$this->MultiCell($w*$prop,$c,utf8_decode($data),1,"L");
 			return $y+$h;
+	}
+	
+	function cellWithDefinedHeight($x, $y, $h, $w, $prop, $data){
+		for($i=0; $i<count($data); $i++){
+			$this->SetDrawColor(0);
+			$this->Rect($x, $y, $w*$prop[$i], $h, "D");		
+			$n = $this->NbLines($w*$prop[$i], utf8_decode($data[$i]));
+			$this->SetFont('Arial_Narrow',"",11);
+			$this->SetXY($x,$y);
+			$this->MultiCell($w*$prop[$i],5,utf8_decode($data[$i]),0,"L");
+			$x=$x+($w*$prop[$i]);
+		}
+		return $y+$h;
 	}
 	
 	function NbLines($w,$txt)
