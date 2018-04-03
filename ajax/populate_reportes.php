@@ -495,7 +495,7 @@ include_once dirname(__FILE__) . '/../query/get_files.php';
 
 	}
 	function fillFotos(foto){
-		var path =  "/gemar/images/reportes/";
+		var path =  "images/reportes/";
 		console.log(path);
 		var html = 	'<div class="insertFotos" updateFoto="1" fotoId="' + foto.fotografias_id + '" rehacer="1">' +
 					'<div class="divider"></div><br><div class="row"><h4 class="col s8">Registro Fotográfico</h4><a class="col s4 waves-effect waves-light btn deleteextra"><i class="mdi-action-delete right"></i>Eliminar</a></div>' +

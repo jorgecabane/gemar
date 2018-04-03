@@ -84,12 +84,7 @@
 					</div>
 					<?php
 						include_once dirname(__FILE__).'/../query/get_notifications.php'; // archivo de conexion local
-						if ($login->isAdminUser() == true) {
-							$notifications = getNotifications();
-						}
-						else{
-							$notifications = getNotifications($_SESSION['user_id']);
-						}
+						$notifications = getNotifications($_SESSION['user_id']);
 						$count_new_notifications = 0;
 						foreach($notifications as $notification){
 							if($notification->leido == 0){

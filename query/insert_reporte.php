@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__) . '/conexion.php';
 require_once dirname(__FILE__) . '/insert_notification.php';
+require_once dirname(__FILE__) . '/get_admin_ids.php';
 
 function insertReporte($reporte) {
     global $con;
@@ -39,6 +40,8 @@ function insertReporte($reporte) {
             $lastversion = 1;
         }
         $resultversion->close();
+        
+    $admin_ids = get_admin_ids();
 
     if($rehacer == 1){
         $reporteid = $reporte['reporteid'];
@@ -65,7 +68,8 @@ function insertReporte($reporte) {
         		$notification_info = $info->fetch_object();
 	        	$descripcion = $notification_info->user_first_name." ".$notification_info->user_last_name." actualizó un reporte para ".$notification_info->nombre_proyecto;
 	        	if($reporte['admin']==0)
-	        		insertNotification('2', '1', $descripcion);
+	        		foreach ($admin_ids as $admin_id)
+	        			insertNotification('2', $admin_id->user_id, $descripcion);
         	}
         	$eventosql =  "SELECT e.*, u.*, r.* FROM evento e INNER JOIN users u ON (u.user_id = e.users_user_id) INNER JOIN reporte r ON (r.evento_evento_id = e.evento_id AND r.reporte_id = $reporteid)";
         	if ($e = $con->query($eventosql)) {
@@ -103,7 +107,8 @@ function insertReporte($reporte) {
     		if ($info = $con->query($notifiaction_info_sql)) {
     			$notification_info = $info->fetch_object();
     			$descripcion = $notification_info->user_first_name." ".$notification_info->user_last_name." entregó un reporte para ".$notification_info->nombre_proyecto;
-    			insertNotification('1', '1', $descripcion);
+    			foreach ($admin_ids as $admin_id)
+    				insertNotification('1', $admin_id->user_id, $descripcion);
     		}
     		$eventosql =  "SELECT e.*, u.*, r.* FROM evento e INNER JOIN users u ON (u.user_id = e.users_user_id) INNER JOIN reporte r ON (r.evento_evento_id = e.evento_id AND r.reporte_id = $reportid)";
     		if ($e = $con->query($eventosql)) {
